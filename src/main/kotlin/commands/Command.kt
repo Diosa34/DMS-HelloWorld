@@ -40,17 +40,22 @@ class Command(
     companion object {
         @JvmField
         val registry: Map<String, Command> = mapOf(
-                "help" to Command("help", ""){ args ->
-                    for ((name, command) in registry)
-                },
-                "info" to Command("info", ""){args ->
+                "help" to Command("help", "", ::forHelp),
+                "info" to Command("info", "") { args ->
                     println("Тип: средства передвижения")
                     println("Количество элементов: ${CollectionOfVehicles.globalCollection!!.size}")
                     // прочие параметры
                 }
         )
+
+        fun forHelp(args: Array<String>) {
+            for ((name, command) in registry) {
+                println("$name - ${command.help}")
+            }
+        }
     }
-    fun execute(requestString : Array<String>) = executeFun(requestString)
+
+    fun execute(requestString: Array<String>) = executeFun(requestString)
 
 }
 
