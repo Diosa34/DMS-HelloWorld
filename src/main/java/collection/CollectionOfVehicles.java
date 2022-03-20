@@ -1,10 +1,12 @@
 package collection;
 
 import classes.Vehicle;
+import com.github.Diosa34.ObjectConverter.ClassAnnotation;
+import com.github.Diosa34.ObjectConverter.Convertible;
 
-import java.util.Date;
 import java.util.LinkedList;
 
-public class CollectionOfVehicles extends LinkedList<Vehicle> {
+@ClassAnnotation(value = "Vehicle")
+public class CollectionOfVehicles extends LinkedList<Vehicle> implements Convertible {
     public static CollectionOfVehicles globalCollection = new CollectionOfVehicles();
 }

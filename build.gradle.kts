@@ -10,9 +10,11 @@ application {
 }
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
+    implementation("com.github.Diosa34:ObjectConverter:master-SNAPSHOT")
 }
 repositories {
     mavenCentral()
+    maven(url = "https://jitpack.io")
 }
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {

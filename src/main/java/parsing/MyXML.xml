@@ -1,0 +1,16 @@
+<Vehicle>
+    <element>
+        <name></name>
+        <coordinates>1.2 3</coordinates>
+        <enginePower>1.5</enginePower>
+        <vehicleType>1</vehicleType>
+        <fuelType>1</fuelType>
+    </element>
+    <element>
+        <name>Mersedes</name>
+        <coordinates>1.5 7</coordinates>
+        <enginePower>1.8</enginePower>
+        <vehicleType>1</vehicleType>
+        <fuelType>1</fuelType>
+    </element>
+</Vehicle>

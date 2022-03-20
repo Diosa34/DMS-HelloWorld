@@ -1,0 +1,10 @@
+add
+1
+gkgk
+3.6
+45
+5.8
+1
+show
+info
+

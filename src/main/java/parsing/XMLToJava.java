@@ -1,9 +1,8 @@
 package parsing;
 
-import classes.Coordinates;
-import classes.FuelType;
-import classes.Vehicle;
-import classes.VehicleType;
+import classes.*;
+import collection.CollectionOfVehicles;
+import commands.FunctionsKt;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -12,39 +11,66 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
-import java.util.Map;
 
-// можно оформить как Utility-класс
 public class XMLToJava {
-    private HashMap<String, String> vehicle;
-    private final Map<Integer, VehicleType> vehicleTypeMap;
-    private final Map<Integer, FuelType> fuelTypeMap;
+    private final HashMap<String, String> entity;
 
-    public XMLToJava(){
-        this.vehicle = new HashMap<>();
-        vehicle.put("name", "");
-        vehicle.put("coordinates", "");
-        vehicle.put("enginePower", "");
-        vehicle.put("vehicleType", "");
-        vehicle.put("fuelType", "");
-        this.vehicleTypeMap = Map.of(VehicleType.CAR.getIndex(), VehicleType.CAR,
-                VehicleType.SUBMARINE.getIndex(), VehicleType.SUBMARINE,
-                VehicleType.SHIP.getIndex(), VehicleType.SHIP);
-        this.fuelTypeMap = Map.of(FuelType.GASOLINE.getIndex(), FuelType.GASOLINE,
-                FuelType.DIESEL.getIndex(), FuelType.DIESEL,
-                FuelType.NUCLEAR.getIndex(), FuelType.NUCLEAR);
+    public XMLToJava(HashMap<String, String> vehicle) {
+        this.entity = vehicle;
     }
 
-    private void decoder(String fileName){
+    public void decoder(String fileName) {
+        boolean child_tag_state = false;
+        boolean field_tag = false;
+        boolean root = false;
         try {
-            XMLStreamReader xmlr = XMLInputFactory.newInstance().createXMLStreamReader(new BufferedReader(new FileReader(fileName)));
+            XMLStreamReader xmlReader = XMLInputFactory.newInstance().createXMLStreamReader(new BufferedReader(new FileReader(fileName)));
             String tag = "";
-            while (xmlr.hasNext()) {
-                xmlr.next();
-                if (xmlr.isStartElement()) {
-                    tag = xmlr.getLocalName(); // открывающийся тег
-                } else if (xmlr.hasText() && xmlr.getText().trim().length() > 0) {
-                    function(tag, xmlr.getText()); // содержание тега
+            String text = "";
+            while (xmlReader.hasNext()) {
+                xmlReader.next();
+                if (xmlReader.isStartElement()) {
+                    tag = xmlReader.getLocalName(); // открывающийся тег
+                    if (!root) {
+                        root = true;
+                    } else if (!child_tag_state) {
+                        child_tag_state = true;
+                    } else if (!field_tag) {
+                        field_tag = true;
+                    }
+                } else if (xmlReader.isEndElement()) {
+                    if (field_tag) {
+                        if (text.equals("")) {
+                            System.out.printf("Тег %s пуст", tag);
+                            break;
+                        }
+                        field_tag = false;
+                        text = "";
+                    } else if (child_tag_state) {
+                        child_tag_state = false;
+                        Vehicle instance = newInstance();
+                        if (instance != null) {
+                            addInstance(instance);
+                        } else {
+                            System.out.println("Перечислены не все поля");
+                            break;
+                        }
+                        entity.replaceAll((i, v) -> "");
+                    }
+                } else if (xmlReader.hasText() && xmlReader.getText().trim().length() == 0 && field_tag) {
+                    break;
+                } else if (xmlReader.hasText() && xmlReader.getText().trim().length() > 0) {
+                    text = xmlReader.getText().trim();
+                    if (child_tag_state && !field_tag) {
+                        field_tag = true;
+                    }
+                    try {
+                        field_initialization(tag, xmlReader.getText()); // содержание тега
+                    } catch (TagNameException ex) {
+                        System.out.printf("Ошибка в имени поля, поле %s не найдено", tag);
+                        break;
+                    }
+
                 }
             }
         } catch (FileNotFoundException | XMLStreamException ex) {
@@ -52,22 +78,22 @@ public class XMLToJava {
         }
     }
 
-    private void function(String key, String value){
-        if(vehicle.containsKey(key)){
-            vehicle.put(key, value);
-        } else{
-            System.out.println(String.format("Ошибка в имени поля, поле %s не найдено", key));
+    private void field_initialization(String key, String value) throws TagNameException {
+        if (entity.containsKey(key)) {
+            entity.put(key, value);
+        } else {
+            throw new TagNameException();
         }
     }
 
-    public Vehicle parser(String filename){
-        decoder(filename);
+    private Vehicle newInstance() {
+        return FunctionsKt.instanceCreate(entity.get("vehicleType"), entity.get("name"),
+                entity.get("coordinates").split(" ")[0], entity.get("coordinates").split(" ")[1],
+                entity.get("enginePower"), entity.get("fuelType"), 1);
+    }
 
-        return new Vehicle(vehicle.get("name"),
-                new Coordinates(Float.parseFloat(vehicle.get("coordinates").split(" ")[0]), Integer.parseInt(vehicle.get("coordinates").split(" ")[1])),
-                Float.parseFloat(vehicle.get("enginePower")),
-                vehicleTypeMap.get(Integer.parseInt(vehicle.get("vehicleType"))),
-                fuelTypeMap.get(Integer.parseInt(vehicle.get("fuelType"))));
+    private void addInstance(Vehicle instance) {
+        CollectionOfVehicles.globalCollection.add(instance);
     }
 }
 

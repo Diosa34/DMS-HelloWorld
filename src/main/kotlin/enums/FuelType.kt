@@ -1,4 +1,4 @@
-package classes
+package enums
 
 private var countOfInstances = 0
 
