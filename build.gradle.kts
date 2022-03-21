@@ -28,6 +28,6 @@ compileTestKotlin.kotlinOptions {
 tasks.jar {
     manifest {
         attributes(mapOf("Main-Class" to "Main",
-        "Class-Path" to "ObjectConverter"))
+        "Class-Path" to "ObjectConverter.jar"))
     }
 }
