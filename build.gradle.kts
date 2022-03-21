@@ -24,3 +24,9 @@ val compileTestKotlin: KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
     jvmTarget = "1.8"
 }
+
+tasks.jar {
+    manifest {
+        attributes(mapOf("Main-Class" to "Main"))
+    }
+}
