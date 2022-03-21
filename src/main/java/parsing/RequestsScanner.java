@@ -13,7 +13,7 @@ public class RequestsScanner {
     private final Scanner scanner;
 
     public RequestsScanner(InputStream input) throws FileNotFoundException {
-        this.scanner = new Scanner(input, StandardCharsets.UTF_8);
+        this.scanner = new Scanner(input);
     }
 
 
