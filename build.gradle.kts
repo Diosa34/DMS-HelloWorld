@@ -28,11 +28,11 @@ compileTestKotlin.kotlinOptions {
 tasks.jar {
     manifest {
         attributes(mapOf("Main-Class" to "Main",
-        "Class-Path" to "/home/s335086/lab5/lab5_prog/build/libs/ObjectConverter.jar;" +
-                "/home/s335086/lab5/kotlin-runtime/kotlin-reflect.jar;" +
-                "/home/s335086/lab5/kotlin-runtime/kotlin-stdlib-jdk7.jar;" +
-                "/home/s335086/lab5/kotlin-runtime/kotlin-stdlib-jdk8.jar;" +
-                "/home/s335086/lab5/kotlin-runtime/kotlin-stdlib.jar;" +
-                "/home/s335086/lab5/kotlin-runtime/kotlin-test.jar"))
+        "Class-Path" to "/home/s335086/lab5/lab5_prog/build/libs/ObjectConverter.jar;"))
+//                "/home/s335086/lab5/kotlin-runtime/kotlin-reflect.jar;" +
+//                "/home/s335086/lab5/kotlin-runtime/kotlin-stdlib-jdk7.jar;" +
+//                "/home/s335086/lab5/kotlin-runtime/kotlin-stdlib-jdk8.jar;" +
+//                "/home/s335086/lab5/kotlin-runtime/kotlin-stdlib.jar;" +
+//                "/home/s335086/lab5/kotlin-runtime/kotlin-test.jar"))
     }
 }
