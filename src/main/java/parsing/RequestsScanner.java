@@ -17,7 +17,7 @@ public class RequestsScanner {
     }
 
 
-    public void makeRequest(int t, InstanceCreator creator, RequestsScanner scanner) {
+    public void makeRequest(int t, InstanceCreator creator) {
         while (this.scanner.hasNextLine()) {
             String[] request = this.scanner.nextLine().split(" ");
             if (Command.registry.containsKey(request[0].trim().toLowerCase())) {
@@ -29,10 +29,6 @@ public class RequestsScanner {
                 }
             }
         }
-    }
-
-    public Scanner getScanner() {
-        return scanner;
     }
 
 //        this.request[0].executeCall();

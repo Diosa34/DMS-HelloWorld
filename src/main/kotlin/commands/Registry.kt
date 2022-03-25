@@ -49,8 +49,14 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
         "update",
         "обновить значение элемента коллекции, номер которого равен заданному"
     ) { args, attempts, creator, scanner ->
+        val changableId = if (args.size < 2){
+            println("Введите id элемента, который хотите обновить")
+            scanner.nextLine()
+        } else {
+            args[1]
+        }
         val id: Int =
-            tryGet(args[1], attempts, "Введите одно из чисел ${CollectionOfVehicles.globalCollection.map { it.id }}") {
+            tryGet(changableId, attempts, "Введите одно из чисел ${CollectionOfVehicles.globalCollection.map { it.id }}") {
                 toIntOrNull()
             } ?: return@Command
         for (elem in CollectionOfVehicles.globalCollection) {
@@ -61,9 +67,15 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
         }
     },
 
-    "remove_by_id" to Command("remove_by_id", "удалить элемент из коллекции по его номеру") { args, attempts, _, _ ->
+    "remove_by_id" to Command("remove_by_id", "удалить элемент из коллекции по его номеру") { args, attempts, _, scanner ->
+        val changableId = if (args.size < 2){
+            println("Введите id элемента, который хотите обновить")
+            scanner.nextLine()
+        } else {
+            args[1]
+        }
         val id: Int =
-            tryGet(args[1], attempts, "Введите одно из чисел ${CollectionOfVehicles.globalCollection.map { it.id }}") {
+            tryGet(changableId, attempts, "Введите одно из чисел ${CollectionOfVehicles.globalCollection.map { it.id }}") {
                 toIntOrNull()
             } ?: return@Command
         if (CollectionOfVehicles.globalCollection!!.size == 0) {
@@ -89,7 +101,7 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
 
     },
 
-    "save" to Command("save", "сохранить коллекцию в файл") { args, attempts, creator, scanner ->
+    "save" to Command("save", "сохранить коллекцию в файл") { _, _, _, _ ->
         val converter = Converter("MyXML.xml")
 
         /** Writing converted data to a file {@link Converter#xmlInitialization(Convertible, Integer)}*/
@@ -101,7 +113,7 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
     "execute_script" to Command("execute_script", "считать и исполнить скрипт из указанного файла") { args, _, _, _ ->
         try {
             val newScanner = RequestsScanner(FileInputStream(File(args[1])))
-            newScanner.makeRequest(1, InstanceCreator.CREATE_FROM_FILE, newScanner)
+            newScanner.makeRequest(1, InstanceCreator.CREATE_FROM_FILE)
         } catch (ex: FileNotFoundException) {
             println("Файл не найден")
         }
@@ -184,11 +196,17 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
 
     "count_by_type" to Command(
         "count_by_type", "вывести количество элементов, значение типа которых равно заданному"
-    ) { _, attempts, _, scanner ->
-        println(VehicleType.getTypes())
+    ) { args, attempts, _, scanner ->
+        val changableId = if (args.size < 2){
+            println("Введите номер соответствующего типа средства передвижения из предложенных")
+            println(VehicleType.getTypes())
+            scanner.nextLine()
+        } else {
+            args[1]
+        }
         // ?. - функция или поле берётся, если слева не null, в противном случае результат выражения null
         val type: VehicleType =
-            tryGet(scanner.nextLine(), attempts, "Введите номер соответствующего типа средства передвижения из предложенных") {
+            tryGet(changableId, attempts, "Введите номер соответствующего типа средства передвижения из предложенных") {
                 toIntOrNull()?.let(VehicleType::getVehicle)
             } ?: return@Command
         val count = CollectionOfVehicles.globalCollection.count {

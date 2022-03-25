@@ -3,7 +3,6 @@ package parsing;
 import classes.*;
 import collection.CollectionOfVehicles;
 import commands.FunctionsKt;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -70,11 +69,10 @@ public class XMLToJava {
                         System.out.printf("Ошибка в имени поля, поле %s не найдено", tag);
                         break;
                     }
-
                 }
             }
         } catch (FileNotFoundException | XMLStreamException ex) {
-            ex.printStackTrace();
+            System.out.println("Некорректный путь к файлу, файл не найден");
         }
     }
 
@@ -87,8 +85,8 @@ public class XMLToJava {
     }
 
     private Vehicle newInstance() {
-        return FunctionsKt.instanceCreate(entity.get("vehicleType"), entity.get("name"),
-                entity.get("coordinates").split(" ")[0], entity.get("coordinates").split(" ")[1],
+        return FunctionsKt.instanceCreate(entity.get("id"), entity.get("creationDate"), entity.get("vehicleType"),
+                entity.get("name"), entity.get("coordinates").split(" ")[0], entity.get("coordinates").split(" ")[1],
                 entity.get("enginePower"), entity.get("fuelType"), 1);
     }
 

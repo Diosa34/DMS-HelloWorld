@@ -7,7 +7,11 @@ import com.github.Diosa34.ObjectConverter.FieldAnnotation;
 import enums.FuelType;
 import enums.VehicleType;
 
+import java.time.Instant;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
+import java.time.zone.ZoneRulesException;
 
 @ClassAnnotation("element")
 public class Vehicle implements Convertible {
@@ -18,7 +22,7 @@ public class Vehicle implements Convertible {
     @FieldAnnotation("coordinates")
     private Coordinates coordinates; //Поле не может быть null
     @FieldAnnotation("creationDate")
-    private java.time.ZonedDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
+    private ZonedDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
     @FieldAnnotation("enginePower")
     private Float enginePower; //Поле не может быть null, Значение поля должно быть больше 0
     @FieldAnnotation("type")
@@ -27,19 +31,20 @@ public class Vehicle implements Convertible {
     private FuelType fuelType; //Поле может быть null
 
     public Vehicle(String name, Coordinates coordinates, Float enginePower, VehicleType type, FuelType fuelType) {
-        this.id = 0;
-        Integer max_id = 0;
-        for (Vehicle vehicle : CollectionOfVehicles.globalCollection) {
-            if (vehicle.getId() >= max_id) {
-                max_id = vehicle.getId();
-            }
-        }
-        if (this.id <= max_id) {
-            this.id = max_id + 1;
-        }
+        this.id = idGenerator();
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = ZonedDateTime.now();
+        this.enginePower = enginePower;
+        this.type = type;
+        this.fuelType = fuelType;
+    }
+
+    public Vehicle(Integer id, String name, Coordinates coordinates, ZonedDateTime creationDate, Float enginePower, VehicleType type, FuelType fuelType) {
+        this.id = id;
+        this.name = name;
+        this.coordinates = coordinates;
+        this.creationDate = creationDate;
         this.enginePower = enginePower;
         this.type = type;
         this.fuelType = fuelType;
@@ -78,5 +83,24 @@ public class Vehicle implements Convertible {
 
     public FuelType getFuelType() {
         return fuelType;
+    }
+
+    public static Integer idGenerator(){
+        Integer max_id = 0;
+        for (Vehicle vehicle : CollectionOfVehicles.globalCollection) {
+            if (vehicle.getId() >= max_id) {
+                max_id = vehicle.getId();
+            }
+        }
+        return max_id + 1;
+    }
+
+    public static ZonedDateTime timeGenerator(String creationDate){
+        try {
+            return Instant.now().atZone( ZoneId.of(creationDate));
+        } catch (DateTimeParseException | ZoneRulesException ex) {
+            System.out.println("Тег <creationDate> должен содержать правильное имя часового пояса в формате Continent/Region");
+        }
+        return null;
     }
 }

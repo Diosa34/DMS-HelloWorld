@@ -1,17 +1,16 @@
 package commands
 
 import classes.Coordinates
-
 import classes.Vehicle
+import collection.CollectionOfVehicles
 import enums.FuelType
 import enums.VehicleType
-
-
-
-fun addCall(args: Array<String>) {
-    information["add"] // как вызвать эту штуку
-}
-
+import java.time.DateTimeException
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeParseException
+import java.time.zone.ZoneRulesException
 
 fun <T: Any> tryGet(field: String, t: Int, message: String, number: String.() -> T?) : T? {
     for(i in 0 until t) {
@@ -35,12 +34,10 @@ fun <T: Any> tryGet(field: String, t: Int, message: String, number: String.() ->
             }
         }
     }
-    println("Вы истратили все попытки")
     return null
 }
 
-// как использовать эту функцию, если tryGet() должен проверять не readln(), а известное значение
-fun instanceCreate(type: String, name: String, x: String, y: String, enginePower: String, fuel: String, t: Int) : Vehicle? {
+fun instanceCreate(id: String, creationTime: String, type: String, name: String, x: String, y: String, enginePower: String, fuel: String, t: Int) : Vehicle? {
 
     // ?. - функция или поле берётся, если слева не null, в противном случае результат выражения null
     val type: VehicleType = tryGet(type, t, "Введите число от 0 до 2") {
@@ -69,11 +66,27 @@ fun instanceCreate(type: String, name: String, x: String, y: String, enginePower
         toIntOrNull()?.let(FuelType::getFuel)
     } ?: return@instanceCreate null
 
-    return Vehicle(name, Coordinates(x, y), enginePower, type, fuel)
+    val id: Int = tryGet(id, t, "ID должно быть любым целым числом, кроме ${CollectionOfVehicles.globalCollection.map { it.id }}") {
+        toIntOrNull().takeIf { !CollectionOfVehicles.globalCollection.map { it.id }.contains(toIntOrNull())}
+    } ?: return@instanceCreate null
+
+    val time: ZonedDateTime = tryGet(creationTime, t, "Тег <creationDate> должен содержать правильное имя" +
+            " часового пояса в формате Continent/Region, например, Europe/Moscow") {
+        try {
+            Instant.now().atZone(ZoneId.of((creationTime.split(" ")).joinToString ("/")))
+        } catch (ex: DateTimeParseException) {
+            return@tryGet null
+        } catch (ex: ZoneRulesException) {
+            return@tryGet null
+        } catch (ex: DateTimeException) {
+            return@tryGet null
+        }
+    } ?: return@instanceCreate null
+
+    return Vehicle(id, name, Coordinates(x, y), time, enginePower, type, fuel)
 }
 
 fun instanceCreate(attempts: Int) : Vehicle? {
-    if (attempts > 1){}
     println("Введите номер соответствующего типа средства передвижения из предложенных:")
     println(VehicleType.getTypes())
     val type: VehicleType = tryGet(readln(), attempts, "Введите число от 0 до 2") {
