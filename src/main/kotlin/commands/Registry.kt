@@ -1,10 +1,12 @@
 package commands
 
 import collection.CollectionOfVehicles
+import collection.HistoryOfExecutingScripts
 import com.github.Diosa34.ObjectConverter.Converter
 
 import enums.InstanceCreator
 import enums.VehicleType
+import parsing.FileVerification
 import parsing.RequestsScanner
 import java.io.*
 import java.util.*
@@ -38,7 +40,6 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
         } else {
             println("Коллекция пуста")
         }
-
     },
 
     "add" to Command("add", "добавить новый элемент в коллекцию") { _, _, creator, scanner ->
@@ -98,24 +99,38 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
         } else {
             println("Коллекция пуста")
         }
-
     },
 
-    "save" to Command("save", "сохранить коллекцию в файл") { _, _, _, _ ->
-        val converter = Converter("MyXML.xml")
+    "save" to Command("save", "сохранить коллекцию в файл") { _, _, _, scanner ->
+        println("Введите путь к файлу, в который хотите записать коллекцию")
+        val filename = scanner.nextLine()
+        if (FileVerification.fullVerification(filename)){
+            val converter = Converter(filename)
 
-        /** Writing converted data to a file {@link Converter#xmlInitialization(Convertible, Integer)}*/
-        /** Writing converted data to a file [Converter.xmlInitialization] */
-        converter.xmlInitialization(CollectionOfVehicles.globalCollection, 0)
-        println("Коллекция успешно сохранена")
+            converter.xmlInitialization(CollectionOfVehicles.globalCollection, 0)
+            println("Коллекция успешно сохранена")
+        }
     },
 
     "execute_script" to Command("execute_script", "считать и исполнить скрипт из указанного файла") { args, _, _, _ ->
-        try {
-            val newScanner = RequestsScanner(FileInputStream(File(args[1])))
-            newScanner.makeRequest(1, InstanceCreator.CREATE_FROM_FILE)
-        } catch (ex: FileNotFoundException) {
-            println("Файл не найден")
+        if (args.size > 1) {
+            if (FileVerification.fullVerification(args[1])) {
+                if (!FileVerification.isSameLinks(File(args[1]).toPath())) {
+                    HistoryOfExecutingScripts.CollectionOfFiles.add(File(args[1]).toPath())
+                    try {
+                        println("Выполнение скрипта: ${File(args[1])}")
+                        val newScanner = RequestsScanner(FileInputStream(File(args[1])))
+                        newScanner.makeRequest(1, InstanceCreator.CREATE_FROM_FILE)
+                        HistoryOfExecutingScripts.CollectionOfFiles.removeLast()
+                    } catch (ex: FileNotFoundException) {
+                        println("Файл не найден")
+                    }
+                } else {
+                    println("Файл ${File(args[1])} уже исполняется в данный момент.")
+                }
+            }
+        } else {
+            println("Путь к файлу не указан, введите команду заново")
         }
     },
 

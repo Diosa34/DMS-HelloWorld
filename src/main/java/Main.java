@@ -4,12 +4,11 @@ import parsing.FileVerification;
 import parsing.RequestsScanner;
 import parsing.XMLToJava;
 import java.io.FileNotFoundException;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] argv) throws FileNotFoundException {
         HashMap<String, String> vehicleForXMLToJava = new HashMap<>();
         vehicleForXMLToJava.put("id", "");
         vehicleForXMLToJava.put("name", "");
@@ -21,9 +20,9 @@ public class Main {
 
         new CollectionOfVehicles();
 
-        if (args.length != 0){
-            if (FileVerification.pathCheck(args[0])) {
-                (new XMLToJava(vehicleForXMLToJava)).decoder(Paths.get(args[0]).toString());
+        if (argv.length != 0){
+            if (FileVerification.fullVerification(argv[0])){
+                (new XMLToJava(vehicleForXMLToJava)).decoder(Paths.get(argv[0]).toString());
             }
         } else {
             System.out.println("Название файла, содержащего значения для коллекции не было введено");

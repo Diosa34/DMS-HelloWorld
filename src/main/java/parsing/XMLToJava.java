@@ -38,9 +38,9 @@ public class XMLToJava {
                         field_tag = true;
                     }
                 } else if (xmlReader.isEndElement()) {
-                    if (field_tag) {
+                    if (field_tag || child_tag_state || root) {
                         if (text.equals("")) {
-                            System.out.printf("Тег %s пуст", tag);
+                            System.out.println(String.format("Тег %s пуст", tag));
                             break;
                         }
                         field_tag = false;
@@ -71,8 +71,10 @@ public class XMLToJava {
                     }
                 }
             }
-        } catch (FileNotFoundException | XMLStreamException ex) {
+        } catch (FileNotFoundException ex) {
             System.out.println("Некорректный путь к файлу, файл не найден");
+        } catch (XMLStreamException ex) {
+            System.out.println("Файл с данными для коллекции пуст");
         }
     }
 
