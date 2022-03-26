@@ -25,17 +25,14 @@ compileTestKotlin.kotlinOptions {
     jvmTarget = "1.8"
 }
 
-val fatJar = task("fatJar", type = Jar::class) {
+val fatJar = tasks.create<Jar>("fatJar") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
         attributes["Main-Class"] = "Main"
     }
-    from(configurations.runtimeClasspath.get().map({ if (it.isDirectory) it else zipTree(it) }))
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     with(tasks.jar.get() as CopySpec)
 }
 
-tasks {
-    "build" {
-        dependsOn(fatJar)
-    }
-}
+tasks["build"].dependsOn(fatJar)
+
