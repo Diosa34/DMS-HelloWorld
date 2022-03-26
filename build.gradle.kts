@@ -25,13 +25,17 @@ compileTestKotlin.kotlinOptions {
     jvmTarget = "1.8"
 }
 
-tasks.jar {
+val fatJar = task("fatJar", type = Jar::class) {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
-        attributes(mapOf("Main-Class" to "Main",
-        "Class-Path" to "/home/s335086/lab5/kotlin-runtime/kotlin-reflect.jar;" +
-                "/home/s335086/lab5/kotlin-runtime/kotlin-stdlib-jdk7.jar;" +
-                "/home/s335086/lab5/kotlin-runtime/kotlin-stdlib-jdk8.jar;" +
-                "/home/s335086/lab5/kotlin-runtime/kotlin-stdlib.jar;" +
-                "/home/s335086/lab5/kotlin-runtime/kotlin-test.jar"))
+        attributes["Main-Class"] = "Main"
+    }
+    from(configurations.runtimeClasspath.get().map({ if (it.isDirectory) it else zipTree(it) }))
+    with(tasks.jar.get() as CopySpec)
+}
+
+tasks {
+    "build" {
+        dependsOn(fatJar)
     }
 }
