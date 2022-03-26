@@ -1,9 +1,8 @@
 package collection;
 
-import Annotations.ClassAnnotation;
-import Annotations.Convertible;
 import classes.Vehicle;
-
+import com.github.Diosa34.ObjectConverter.ClassAnnotation;
+import com.github.Diosa34.ObjectConverter.Convertible;
 
 import java.util.LinkedList;
 

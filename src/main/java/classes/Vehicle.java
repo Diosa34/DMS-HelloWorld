@@ -1,10 +1,9 @@
 package classes;
 
-import Annotations.ClassAnnotation;
-import Annotations.Convertible;
-import Annotations.FieldAnnotation;
 import collection.CollectionOfVehicles;
-
+import com.github.Diosa34.ObjectConverter.ClassAnnotation;
+import com.github.Diosa34.ObjectConverter.Convertible;
+import com.github.Diosa34.ObjectConverter.FieldAnnotation;
 import enums.FuelType;
 import enums.VehicleType;
 
