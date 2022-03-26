@@ -9,15 +9,34 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Class for file link verifications
+ */
 public class FileVerification {
+    /**
+     * Read access verification
+     */
     private static boolean readPermissionCheck(Path path) {
-        return Files.isReadable(path) && Files.isExecutable(path);
+        return Files.isReadable(path);
     }
 
+    /**
+     * Write access verification
+     */
     private static boolean writePermissionCheck(Path path) {
-        return Files.isReadable(path) && Files.isExecutable(path) && Files.isExecutable(path);
+        return Files.isWritable(path);
     }
 
+    /**
+     * Execute access verification
+     */
+    private static boolean executePermissionCheck(Path path) {
+        return Files.isExecutable(path);
+    }
+
+    /**
+     * Verification the possibility of creating a file path
+     */
     private static boolean pathCheck(String filename) {
         try {
             Paths.get(filename);
@@ -28,6 +47,9 @@ public class FileVerification {
         return false;
     }
 
+    /**
+     * Link Identity verification
+     */
     public static boolean isSameLinks(Path filePath) {
         for (Path path : HistoryOfExecutingScripts.CollectionOfFiles) {
             try {
@@ -41,9 +63,14 @@ public class FileVerification {
         return false;
     }
 
+    /**
+     * Verification the possibility of creating a file path and permissions
+     */
     public static boolean fullVerification(String filename) {
         if (FileVerification.pathCheck(filename)) {
-            if (!FileVerification.readPermissionCheck(new File(filename).toPath()) || !FileVerification.writePermissionCheck(new File(filename).toPath())) {
+            if (!FileVerification.readPermissionCheck(new File(filename).toPath()) ||
+                    !FileVerification.writePermissionCheck(new File(filename).toPath())
+            || !FileVerification.executePermissionCheck(new File(filename).toPath())) {
                 System.out.println("Недостаточно прав доступа к файлу");
                 return false;
             }
