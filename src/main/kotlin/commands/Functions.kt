@@ -12,6 +12,9 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeParseException
 import java.time.zone.ZoneRulesException
 
+/**
+ * Verification the validity of an argument
+ */
 fun <T: Any> tryGet(field: String, t: Int, message: String, number: String.() -> T?) : T? {
     for(i in 0 until t) {
         if(i == 0){
@@ -37,6 +40,9 @@ fun <T: Any> tryGet(field: String, t: Int, message: String, number: String.() ->
     return null
 }
 
+/**
+ * Verification the validity of an argument execution сonstructor for creating an instance based on file
+ */
 fun instanceCreate(id: String, creationTime: String, type: String, name: String, x: String, y: String, enginePower: String, fuel: String, t: Int) : Vehicle? {
 
     // ?. - функция или поле берётся, если слева не null, в противном случае результат выражения null
@@ -86,6 +92,9 @@ fun instanceCreate(id: String, creationTime: String, type: String, name: String,
     return Vehicle(id, name, Coordinates(x, y), time, enginePower, type, fuel)
 }
 
+/**
+ * Verification the validity of an argument execution сonstructor for creating an instance based on console
+ */
 fun instanceCreate(attempts: Int) : Vehicle? {
     println("Введите номер соответствующего типа средства передвижения из предложенных:")
     println(VehicleType.getTypes())

@@ -3,6 +3,9 @@ package commands
 import enums.InstanceCreator
 import java.util.*
 
+/**
+ * Entity describing the command
+ */
 class Command(
         val name: String,
         val help: String,

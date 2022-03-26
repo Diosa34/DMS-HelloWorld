@@ -1,0 +1,20 @@
+<Vehicle>
+    <element>
+        <id>1</id>
+        <name>Ferrari</name>
+        <coordinates>(1.2, 3)</coordinates>
+        <creationDate>2022-03-21T03:38:40.807286700+03:00[Europe/Moscow]</creationDate>
+        <enginePower>1.5</enginePower>
+        <type>SUBMARINE</type>
+        <fuelType>DIESEL</fuelType>
+    </element>
+    <element>
+        <id>2</id>
+        <name>Mersedes</name>
+        <coordinates>(1.5, 7)</coordinates>
+        <creationDate>2022-03-21T03:38:40.808174200+03:00[Europe/Moscow]</creationDate>
+        <enginePower>1.8</enginePower>
+        <type>SUBMARINE</type>
+        <fuelType>DIESEL</fuelType>
+    </element>
+</Vehicle>

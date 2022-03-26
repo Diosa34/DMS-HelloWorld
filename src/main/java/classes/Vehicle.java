@@ -1,9 +1,10 @@
 package classes;
 
+import Annotations.ClassAnnotation;
+import Annotations.Convertible;
+import Annotations.FieldAnnotation;
 import collection.CollectionOfVehicles;
-import com.github.Diosa34.ObjectConverter.ClassAnnotation;
-import com.github.Diosa34.ObjectConverter.Convertible;
-import com.github.Diosa34.ObjectConverter.FieldAnnotation;
+
 import enums.FuelType;
 import enums.VehicleType;
 
@@ -13,6 +14,9 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 import java.time.zone.ZoneRulesException;
 
+/**
+ * Description of the entity, objects in the collection
+ */
 @ClassAnnotation("element")
 public class Vehicle implements Convertible {
     @FieldAnnotation("id")
@@ -30,6 +34,9 @@ public class Vehicle implements Convertible {
     @FieldAnnotation("fuelType")
     private FuelType fuelType; //Поле может быть null
 
+    /**
+     * Constructor for creating an instance based on console input
+     */
     public Vehicle(String name, Coordinates coordinates, Float enginePower, VehicleType type, FuelType fuelType) {
         this.id = idGenerator();
         this.name = name;
@@ -40,6 +47,9 @@ public class Vehicle implements Convertible {
         this.fuelType = fuelType;
     }
 
+    /**
+     * Constructor for creating an instance based on file
+     */
     public Vehicle(Integer id, String name, Coordinates coordinates, ZonedDateTime creationDate, Float enginePower, VehicleType type, FuelType fuelType) {
         this.id = id;
         this.name = name;
@@ -85,6 +95,9 @@ public class Vehicle implements Convertible {
         return fuelType;
     }
 
+    /**
+     * A new ID is created that is one greater than the largest existing one.
+     */
     public static Integer idGenerator(){
         Integer max_id = 0;
         for (Vehicle vehicle : CollectionOfVehicles.globalCollection) {
@@ -95,6 +108,9 @@ public class Vehicle implements Convertible {
         return max_id + 1;
     }
 
+    /**
+     * Time zone conversion from Continent/Region format to ZonedDateTime
+     */
     public static ZonedDateTime timeGenerator(String creationDate){
         try {
             return Instant.now().atZone( ZoneId.of(creationDate));

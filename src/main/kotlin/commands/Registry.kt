@@ -2,17 +2,20 @@ package commands
 
 import collection.CollectionOfVehicles
 import collection.HistoryOfExecutingScripts
-import com.github.Diosa34.ObjectConverter.Converter
+
 
 import enums.InstanceCreator
 import enums.VehicleType
+import parsing.Converter
 import parsing.FileVerification
 import parsing.RequestsScanner
 import java.io.*
 import java.util.*
 import kotlin.system.exitProcess
 
-
+/**
+ * Keys - the name of the commands, values - the implementation of the commands
+ */
 // для глобальных переменных не нужно создавать класс
 internal val information: Map<String, Command> = mapOf(      // :: перед названием класса возвращают его конструктор
     "help" to Command(

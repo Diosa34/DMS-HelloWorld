@@ -1,5 +1,8 @@
 package classes;
 
+/**
+ * Entity coordinate class
+ */
 public class Coordinates {
     private Float x; //Поле не может быть null
     private Integer y; //Поле не может быть null

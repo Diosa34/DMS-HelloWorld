@@ -11,13 +11,22 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
 
+/**
+ * Read class from xml
+ */
 public class XMLToJava {
     private final HashMap<String, String> entity;
 
+    /**
+     * @param vehicle - entity field HashMap
+     */
     public XMLToJava(HashMap<String, String> vehicle) {
         this.entity = vehicle;
     }
 
+    /**
+     * Reads a file line by line and listens for events
+     */
     public void decoder(String fileName) {
         boolean child_tag_state = false;
         boolean field_tag = false;
@@ -39,7 +48,7 @@ public class XMLToJava {
                     }
                 } else if (xmlReader.isEndElement()) {
                     if (field_tag || child_tag_state || root) {
-                        if (text.equals("")) {
+                        if (text.equals("") || text.equals("\\S*")) {
                             System.out.println(String.format("Тег %s пуст", tag));
                             break;
                         }
@@ -78,6 +87,9 @@ public class XMLToJava {
         }
     }
 
+    /**
+     * Adding a tag value
+     */
     private void field_initialization(String key, String value) throws TagNameException {
         if (entity.containsKey(key)) {
             entity.put(key, value);
