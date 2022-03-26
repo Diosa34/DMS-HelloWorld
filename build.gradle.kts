@@ -5,6 +5,10 @@ plugins {
     application
     kotlin("jvm") version "1.6.10"
 }
+
+group = "com.github.Diosa34"
+version = "1.0"
+
 application {
     mainClass.set("Main")
 }
