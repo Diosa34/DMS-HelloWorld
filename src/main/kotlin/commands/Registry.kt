@@ -155,8 +155,8 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
     ) { _, attempts, creator, scanner ->
         println("Введите марку средства передвижения")
         val name = tryGet(scanner.nextLine(), attempts, "Имя не может быть пустой строкой") { takeIf { isNotBlank() } } ?: return@Command
-        val minElem = CollectionOfVehicles.globalCollection.minOf { it.name.length }
-        if (name.length < minElem) {
+        val minElem = CollectionOfVehicles.globalCollection.sortedWith(compareBy { it.name.length })[0]
+        if (minElem.compareTo(name) > 0) {
             CollectionOfVehicles.globalCollection.add(creator.invoke(scanner))
         } else {
             println("Найдены элементы с более коротким названием")
@@ -173,9 +173,9 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
             println("Введите марку средства передвижения")
             val name = tryGet(scanner.nextLine(), attempts, "Имя не может быть пустой строкой") { takeIf { isNotBlank() } }
                 ?: return@Command
-            if (CollectionOfVehicles.globalCollection.any { it.name.length < name.length }) {
+            if (CollectionOfVehicles.globalCollection.any { it.compareTo(name) < 0 }) {
                 CollectionOfVehicles.globalCollection.removeIf { elem ->
-                    elem.name.length < name.length
+                    elem.compareTo(name) < 0
                 }
                 println("Элементы удалены")
             } else {
@@ -238,4 +238,3 @@ private fun forHelp(requestString: Array<String>, attempts: Int, creator: Instan
         println("$name - ${command.help}")
     }
 }
-

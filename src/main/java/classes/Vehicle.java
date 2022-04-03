@@ -6,13 +6,15 @@ import com.github.Diosa34.ObjectConverter.Convertible;
 import com.github.Diosa34.ObjectConverter.FieldAnnotation;
 import enums.FuelType;
 import enums.VehicleType;
+import org.jetbrains.annotations.NotNull;
+
 import java.time.ZonedDateTime;
 
 /**
  * Description of the entity, objects in the collection
  */
 @ClassAnnotation("element")
-public class Vehicle implements Convertible {
+public class Vehicle implements Convertible, Comparable<String> {
     @FieldAnnotation("id")
     private final Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     @FieldAnnotation("name")
@@ -100,5 +102,10 @@ public class Vehicle implements Convertible {
             }
         }
         return max_id + 1;
+    }
+
+    @Override
+    public int compareTo(@NotNull String o) {
+        return name.length()-o.length();
     }
 }
