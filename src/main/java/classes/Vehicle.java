@@ -19,19 +19,19 @@ import java.time.zone.ZoneRulesException;
 @ClassAnnotation("element")
 public class Vehicle implements Convertible {
     @FieldAnnotation("id")
-    private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    private final Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     @FieldAnnotation("name")
-    private String name; //Поле не может быть null, Строка не может быть пустой
+    private final String name; //Поле не может быть null, Строка не может быть пустой
     @FieldAnnotation("coordinates")
-    private Coordinates coordinates; //Поле не может быть null
+    private final Coordinates coordinates; //Поле не может быть null
     @FieldAnnotation("creationDate")
-    private ZonedDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
+    private final ZonedDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
     @FieldAnnotation("enginePower")
-    private Float enginePower; //Поле не может быть null, Значение поля должно быть больше 0
+    private final Float enginePower; //Поле не может быть null, Значение поля должно быть больше 0
     @FieldAnnotation("type")
-    private VehicleType type; //Поле не может быть null
+    private final VehicleType type; //Поле не может быть null
     @FieldAnnotation("fuelType")
-    private FuelType fuelType; //Поле может быть null
+    private final FuelType fuelType; //Поле может быть null
 
     /**
      * Constructor for creating an instance based on console input
@@ -105,17 +105,5 @@ public class Vehicle implements Convertible {
             }
         }
         return max_id + 1;
-    }
-
-    /**
-     * Time zone conversion from Continent/Region format to ZonedDateTime
-     */
-    public static ZonedDateTime timeGenerator(String creationDate){
-        try {
-            return Instant.now().atZone( ZoneId.of(creationDate));
-        } catch (DateTimeParseException | ZoneRulesException ex) {
-            System.out.println("Тег <creationDate> должен содержать правильное имя часового пояса в формате Continent/Region");
-        }
-        return null;
     }
 }
