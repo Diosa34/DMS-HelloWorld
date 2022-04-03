@@ -1,0 +1,20 @@
+<Vehicle>
+    <element>
+        <id>1</id>
+        <name>Ferrari</name>
+        <coordinates>1.2 3</coordinates>
+        <creationDate>Europe/Moscow</creationDate>
+        <enginePower>1.5</enginePower>
+        <vehicleType>1</vehicleType>
+        <fuelType>0</fuelType>
+    </element>
+    <element>
+        <id>2</id>
+        <name>Mersedes</name>
+        <coordinates>1.5 7</coordinates>
+        <creationDate>Europe/Moscow</creationDate>
+        <enginePower>1.8</enginePower>
+        <vehicleType>0</vehicleType>
+        <fuelType>2</fuelType>
+    </element>
+</Vehicle>

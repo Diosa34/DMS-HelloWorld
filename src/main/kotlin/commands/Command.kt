@@ -21,8 +21,3 @@ class Command(
         val registry = information
     }
 }
-
-
-//class Example<T: Collection<*>>
-//val a: Int
-//fun execute(requestString : Array<String>) : Nothing = TODO()

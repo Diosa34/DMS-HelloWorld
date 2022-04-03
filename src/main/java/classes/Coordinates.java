@@ -4,8 +4,8 @@ package classes;
  * Entity coordinate class
  */
 public class Coordinates {
-    private Float x; //Поле не может быть null
-    private Integer y; //Поле не может быть null
+    private final Float x; //Поле не может быть null
+    private final Integer y; //Поле не может быть null
 
     public Coordinates(Float x, Integer y){
         this.x = x;
@@ -15,5 +15,4 @@ public class Coordinates {
     public String toString() {
         return "(" + this.x + ", " + this.y + ")";
     }
-
 }

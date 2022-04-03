@@ -47,8 +47,8 @@ public class XMLToJava {
                         field_tag = true;
                     }
                 } else if (xmlReader.isEndElement()) {
-                    if (field_tag || child_tag_state || root) {
-                        if (text.equals("") || text.equals("\\S*")) {
+                    if (field_tag) {
+                        if (text.equals("")) {
                             System.out.println(String.format("Тег %s пуст", tag));
                             break;
                         }
@@ -59,9 +59,7 @@ public class XMLToJava {
                         Vehicle instance = newInstance();
                         if (instance != null) {
                             addInstance(instance);
-                        } else {
-                            System.out.println("Перечислены не все поля");
-                            break;
+                            System.out.println(String.format("Количество элементов в коллекции: %s", CollectionOfVehicles.globalCollection.size()));
                         }
                         entity.replaceAll((i, v) -> "");
                     }

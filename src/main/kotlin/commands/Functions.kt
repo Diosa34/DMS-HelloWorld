@@ -46,7 +46,7 @@ fun <T: Any> tryGet(field: String, t: Int, message: String, number: String.() ->
 fun instanceCreate(id: String, creationTime: String, type: String, name: String, x: String, y: String, enginePower: String, fuel: String, t: Int) : Vehicle? {
 
     // ?. - функция или поле берётся, если слева не null, в противном случае результат выражения null
-    val type: VehicleType = tryGet(type, t, "Введите число от 0 до 2") {
+    val type: VehicleType = tryGet(type, t, "В качестве типа средства передвижения введите число от 0 до 2") {
         toIntOrNull()?.let(VehicleType::getVehicle)
     } ?: return@instanceCreate null
 
@@ -55,11 +55,11 @@ fun instanceCreate(id: String, creationTime: String, type: String, name: String,
     val name = tryGet(name, t, "Марка не может быть пустой строкой") { takeIf { isNotBlank() } } ?: return@instanceCreate null
 
 
-    val x: Float = tryGet(x, t, "Введите число в десятичных дробях через точку, без лишних символов")
+    val x: Float = tryGet(x, t, "Координата Х должна быть числом в десятичных дробях через точку без лишних символов")
     { toFloatOrNull() } ?: return@instanceCreate null
 
 
-    val y: Int = tryGet(y, t, "Введите число от 0 до 2") { toIntOrNull() } ?: return@instanceCreate null
+    val y: Int = tryGet(y, t, "Координата Y должна быть целым числом") { toIntOrNull() } ?: return@instanceCreate null
 
 
     val enginePower: Float = tryGet(enginePower, t, "Мощность должна быть положительным дробным числом") {
@@ -68,7 +68,7 @@ fun instanceCreate(id: String, creationTime: String, type: String, name: String,
 
 
     // ?. - функция или поле берётся, если слева не null, в противном случае результат выражения null
-    val fuel: FuelType = tryGet(fuel, t, "Введите число от 0 до 2:") {
+    val fuel: FuelType = tryGet(fuel, t, "В качестве типа топлива введите число от 0 до 2:") {
         toIntOrNull()?.let(FuelType::getFuel)
     } ?: return@instanceCreate null
 
