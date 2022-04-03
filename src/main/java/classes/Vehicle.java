@@ -6,12 +6,7 @@ import com.github.Diosa34.ObjectConverter.Convertible;
 import com.github.Diosa34.ObjectConverter.FieldAnnotation;
 import enums.FuelType;
 import enums.VehicleType;
-
-import java.time.Instant;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeParseException;
-import java.time.zone.ZoneRulesException;
 
 /**
  * Description of the entity, objects in the collection
