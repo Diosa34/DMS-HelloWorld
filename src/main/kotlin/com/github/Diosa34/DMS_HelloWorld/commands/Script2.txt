@@ -1,0 +1,1 @@
+execute_script C:\Users\Diosa\IdeaProjects\Laboratory5\src\main\kotlin\com.github.Diosa34.DMS_HelloWorld.commands\Script.txt

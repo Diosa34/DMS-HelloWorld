@@ -1,17 +1,17 @@
-package classes;
+package com.github.Diosa34.DMS_HelloWorld.classes;
 
-import collection.CollectionOfVehicles;
+import com.github.Diosa34.DMS_HelloWorld.collection.CollectionOfVehicles;
 import com.github.Diosa34.ObjectConverter.ClassAnnotation;
 import com.github.Diosa34.ObjectConverter.Convertible;
 import com.github.Diosa34.ObjectConverter.FieldAnnotation;
-import enums.FuelType;
-import enums.VehicleType;
+import com.github.Diosa34.DMS_HelloWorld.enums.FuelType;
+import com.github.Diosa34.DMS_HelloWorld.enums.VehicleType;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.ZonedDateTime;
 
 /**
- * Description of the entity, objects in the collection
+ * Description of the entity, objects in the com.github.Diosa34.DMS_HelloWorld.collection
  */
 @ClassAnnotation("element")
 public class Vehicle implements Convertible, Comparable<String> {

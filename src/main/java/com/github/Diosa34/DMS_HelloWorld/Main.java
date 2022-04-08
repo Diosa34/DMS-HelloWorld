@@ -1,8 +1,10 @@
-import collection.CollectionOfVehicles;
-import enums.InstanceCreator;
-import parsing.FileVerification;
-import parsing.RequestsScanner;
-import parsing.XMLToJava;
+package com.github.Diosa34.DMS_HelloWorld;
+
+import com.github.Diosa34.DMS_HelloWorld.collection.CollectionOfVehicles;
+import com.github.Diosa34.DMS_HelloWorld.enums.InstanceCreator;
+import com.github.Diosa34.DMS_HelloWorld.parsing.FileVerification;
+import com.github.Diosa34.DMS_HelloWorld.parsing.RequestsScanner;
+import com.github.Diosa34.DMS_HelloWorld.parsing.XMLToJava;
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 import java.util.HashMap;

@@ -1,10 +1,10 @@
-package commands
+package com.github.Diosa34.DMS_HelloWorld.commands
 
-import classes.Coordinates
-import classes.Vehicle
-import collection.CollectionOfVehicles
-import enums.FuelType
-import enums.VehicleType
+import com.github.Diosa34.DMS_HelloWorld.classes.Coordinates
+import com.github.Diosa34.DMS_HelloWorld.classes.Vehicle
+import com.github.Diosa34.DMS_HelloWorld.collection.CollectionOfVehicles
+import com.github.Diosa34.DMS_HelloWorld.enums.FuelType
+import com.github.Diosa34.DMS_HelloWorld.enums.VehicleType
 import java.time.DateTimeException
 import java.time.Instant
 import java.time.ZoneId

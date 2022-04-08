@@ -1,4 +1,4 @@
-package enums
+package com.github.Diosa34.DMS_HelloWorld.enums
 
 private var countOfInstances = 0
 

@@ -1,8 +1,8 @@
-package parsing;
+package com.github.Diosa34.DMS_HelloWorld.parsing;
 
-import classes.*;
-import collection.CollectionOfVehicles;
-import commands.FunctionsKt;
+import com.github.Diosa34.DMS_HelloWorld.classes.*;
+import com.github.Diosa34.DMS_HelloWorld.collection.CollectionOfVehicles;
+import com.github.Diosa34.DMS_HelloWorld.commands.FunctionsKt;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;

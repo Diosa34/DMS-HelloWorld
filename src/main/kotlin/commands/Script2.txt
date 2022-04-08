@@ -1,1 +1,0 @@
-execute_script C:\Users\Diosa\IdeaProjects\Laboratory5\src\main\kotlin\commands\Script.txt

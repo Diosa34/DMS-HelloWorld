@@ -1,4 +1,4 @@
-package collection;
+package com.github.Diosa34.DMS_HelloWorld.collection;
 
 import java.nio.file.Path;
 import java.util.LinkedList;

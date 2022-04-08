@@ -1,7 +1,7 @@
-package parsing;
+package com.github.Diosa34.DMS_HelloWorld.parsing;
 
-import commands.Command;
-import enums.InstanceCreator;
+import com.github.Diosa34.DMS_HelloWorld.commands.Command;
+import com.github.Diosa34.DMS_HelloWorld.enums.InstanceCreator;
 
 import java.io.InputStream;
 import java.util.Scanner;

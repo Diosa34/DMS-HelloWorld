@@ -1,19 +1,19 @@
-package commands
+package com.github.Diosa34.DMS_HelloWorld.commands
 
-import collection.CollectionOfVehicles
-import collection.HistoryOfExecutingScripts
+import com.github.Diosa34.DMS_HelloWorld.collection.CollectionOfVehicles
+import com.github.Diosa34.DMS_HelloWorld.collection.HistoryOfExecutingScripts
 import com.github.Diosa34.ObjectConverter.Converter
 
-import enums.InstanceCreator
-import enums.VehicleType
-import parsing.FileVerification
-import parsing.RequestsScanner
+import com.github.Diosa34.DMS_HelloWorld.enums.InstanceCreator
+import com.github.Diosa34.DMS_HelloWorld.enums.VehicleType
+import com.github.Diosa34.DMS_HelloWorld.parsing.FileVerification
+import com.github.Diosa34.DMS_HelloWorld.parsing.RequestsScanner
 import java.io.*
 import java.util.*
 import kotlin.system.exitProcess
 
 /**
- * Keys - the name of the commands, values - the implementation of the commands
+ * Keys - the name of the com.github.Diosa34.DMS_HelloWorld.commands, values - the implementation of the com.github.Diosa34.DMS_HelloWorld.commands
  */
 // для глобальных переменных не нужно создавать класс
 internal val information: Map<String, Command> = mapOf(      // :: перед названием класса возвращают его конструктор

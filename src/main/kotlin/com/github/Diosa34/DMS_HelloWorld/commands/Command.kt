@@ -1,6 +1,6 @@
-package commands
+package com.github.Diosa34.DMS_HelloWorld.commands
 
-import enums.InstanceCreator
+import com.github.Diosa34.DMS_HelloWorld.enums.InstanceCreator
 import java.util.*
 
 /**

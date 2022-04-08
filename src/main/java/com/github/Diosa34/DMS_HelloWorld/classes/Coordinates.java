@@ -1,4 +1,4 @@
-package classes;
+package com.github.Diosa34.DMS_HelloWorld.classes;
 
 /**
  * Entity coordinate class

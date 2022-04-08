@@ -1,6 +1,6 @@
-package parsing;
+package com.github.Diosa34.DMS_HelloWorld.parsing;
 
-import collection.HistoryOfExecutingScripts;
+import com.github.Diosa34.DMS_HelloWorld.collection.HistoryOfExecutingScripts;
 
 import java.io.File;
 import java.io.IOException;
