@@ -47,6 +47,10 @@ public class FileVerification {
         return false;
     }
 
+    private static boolean existenceCheck(String filename) {
+        return Files.exists(new File(filename).toPath());
+    }
+
     /**
      * Link Identity verification
      */
@@ -67,7 +71,10 @@ public class FileVerification {
      * Verification the possibility of creating a file path and permissions
      */
     public static boolean fullVerification(String filename) {
-        if (FileVerification.pathCheck(filename)) {
+        if (!FileVerification.existenceCheck(filename)){
+            System.out.println("Такой файл не существует");
+            return false;
+        } else if (FileVerification.pathCheck(filename)) {
             if (!FileVerification.readPermissionCheck(new File(filename).toPath()) ||
                     !FileVerification.writePermissionCheck(new File(filename).toPath())
             || !FileVerification.executePermissionCheck(new File(filename).toPath())) {
