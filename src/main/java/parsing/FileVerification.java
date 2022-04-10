@@ -47,9 +47,17 @@ public class FileVerification {
         return false;
     }
 
+    /**
+     * Existence verification
+     */
     private static boolean existenceCheck(String filename) {
         return Files.exists(new File(filename).toPath());
     }
+
+    /**
+     * Is it directory verification
+     */
+    private static boolean isDirectoryCheck(String filename){return Files.isDirectory(new File(filename).toPath());}
 
     /**
      * Link Identity verification
@@ -73,6 +81,9 @@ public class FileVerification {
     public static boolean fullVerification(String filename) {
         if (!FileVerification.existenceCheck(filename)){
             System.out.println("Такой файл не существует");
+            return false;
+        } else if (isDirectoryCheck(filename)){
+            System.out.println("Указанный файл является директорией");
             return false;
         } else if (FileVerification.pathCheck(filename)) {
             if (!FileVerification.readPermissionCheck(new File(filename).toPath()) ||
