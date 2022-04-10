@@ -107,14 +107,17 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
     },
 
     "save" to Command("save", "сохранить коллекцию в файл") { _, _, _, scanner, globalArgs ->
-        println("Введите путь к файлу, в который хотите записать коллекцию")
-        val filename = scanner.getNextLine()
-        if (FileVerification.fullVerification(filename)){
-            val converter = Converter(filename)
-
-            converter.xmlInitialization(CollectionOfVehicles.globalCollection, 0)
-            println("Коллекция успешно сохранена")
+        var filename = globalArgs.filepath
+        if (!FileVerification.fullVerification(globalArgs.filepath)) {
+            println("Введите путь к файлу, в который хотите записать коллекцию")
+            filename = scanner.getNextLine()
+            if (!FileVerification.fullVerification(filename)) {
+                return@Command
+            }
         }
+        val converter = Converter(filename)
+        converter.xmlInitialization(CollectionOfVehicles.globalCollection, 0)
+        println("Коллекция успешно сохранена")
     },
 
     "execute_script" to Command("execute_script", "считать и исполнить скрипт из указанного файла") { args, _, _, _, globalArgs ->
