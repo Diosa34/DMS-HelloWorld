@@ -1,5 +1,8 @@
 package com.github.Diosa34.DMS_HelloWorld.parsing
 
+/**
+ * Читает команды из предустановленного массива
+ */
 class BufferedParser(
     vararg rows: String
 ): AbstractParser(){
