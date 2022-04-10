@@ -17,24 +17,22 @@ import java.time.zone.ZoneRulesException
  */
 fun <T: Any> tryGet(field: String, t: Int, message: String, number: String.() -> T?) : T? {
     for(i in 0 until t) {
-        if(i == 0){
-            field.number().let{ number ->
-                if(number == null){
-                    println("Данные некорректны")
-                    println(message)
-                    println("Количество оставшихся попыток: ${t-i-1}")
-                }
-                else return@tryGet number
+        var data = field
+        if(i != 0){
+            data = readln()
         }
-        } else{
-            readln().number().let{ number ->
-                if(number == null){
-                    println("Данные некорректны")
+        data.number().let{ number ->
+            if(number == null){
+                println("Данные некорректны")
+                if (i != t-1) {
                     println(message)
                     println("Количество оставшихся попыток: ${t-i-1}")
+                } else {
+                    println("Попытки закончились")
+                    println("Выполнение команды завершено")
                 }
-                else return@tryGet number
             }
+            else return@tryGet number
         }
     }
     return null
