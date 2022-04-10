@@ -1,13 +1,12 @@
 package com.github.Diosa34.DMS_HelloWorld.commands
 
+import com.github.Diosa34.DMS_HelloWorld.Application
 import com.github.Diosa34.DMS_HelloWorld.collection.CollectionOfVehicles
 import com.github.Diosa34.DMS_HelloWorld.collection.HistoryOfExecutingScripts
-import com.github.Diosa34.ObjectConverter.Converter
-
 import com.github.Diosa34.DMS_HelloWorld.enums.InstanceCreator
 import com.github.Diosa34.DMS_HelloWorld.enums.VehicleType
-import com.github.Diosa34.DMS_HelloWorld.parsing.FileVerification
-import com.github.Diosa34.DMS_HelloWorld.parsing.RequestsScanner
+import com.github.Diosa34.DMS_HelloWorld.parsing.*
+import com.github.Diosa34.ObjectConverter.Converter
 import java.io.*
 import java.util.*
 import kotlin.system.exitProcess
@@ -23,7 +22,7 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
         ::forHelp
     ), // слово to создаёт из своих операндов пару
 
-    "info" to Command("info", "вывести информацию о коллекции") { _, _, _, _ ->
+    "info" to Command("info", "вывести информацию о коллекции") { _, _, _, _, _ ->
         println("Тип: средства передвижения")
         println("Количество элементов: ${CollectionOfVehicles.globalCollection!!.size}")
         if (CollectionOfVehicles.globalCollection!!.size > 0) {
@@ -34,7 +33,7 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
         }
     },
 
-    "show" to Command("show", "вывести все элементы коллекции") { _, _, _, _->
+    "show" to Command("show", "вывести все элементы коллекции") { _, _, _, _, _->
         if (CollectionOfVehicles.globalCollection!!.size > 0) {
             for (elem in CollectionOfVehicles.globalCollection) {
                 println(elem.toString())
@@ -44,38 +43,42 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
         }
     },
 
-    "add" to Command("add", "добавить новый элемент в коллекцию") { _, _, creator, scanner ->
+    "add" to Command("add", "добавить новый элемент в коллекцию") { _, _, creator, scanner, _ ->
         CollectionOfVehicles.globalCollection.add(creator.invoke(scanner))
     },
 
     "update" to Command(
         "update",
         "обновить значение элемента коллекции, номер которого равен заданному"
-    ) { args, attempts, creator, scanner ->
-        val changableId = if (args.size < 2){
-            println("Введите id элемента, который хотите обновить")
-            scanner.nextLine()
-        } else {
-            args[1]
-        }
-        val id: Int =
-            tryGet(changableId, attempts, "Введите одно из чисел ${CollectionOfVehicles.globalCollection.map { it.id }}") {
-                toIntOrNull()
-            } ?: return@Command
-        for (elem in CollectionOfVehicles.globalCollection) {
-            if (elem.id == id) {
-                CollectionOfVehicles.globalCollection[CollectionOfVehicles.globalCollection.indexOf(elem)] =
-                    creator.invoke(scanner)
+    ) { args, attempts, creator, scanner, _ ->
+        if (CollectionOfVehicles.globalCollection!!.size > 0) {
+            val changableId = if (args.size < 1){
+                println("Введите id элемента, который хотите обновить")
+                scanner.getNextLine()
+            } else {
+                args[0]
             }
+            val id: Int =
+                tryGet(changableId, attempts, "Введите одно из чисел ${CollectionOfVehicles.globalCollection.map { it.id }}") {
+                    toIntOrNull()
+                } ?: return@Command
+            for (elem in CollectionOfVehicles.globalCollection) {
+                if (elem.id == id) {
+                    CollectionOfVehicles.globalCollection[CollectionOfVehicles.globalCollection.indexOf(elem)] =
+                        creator.invoke(scanner)
+                }
+            }
+        } else {
+            println("Коллекция пуста")
         }
     },
 
-    "remove_by_id" to Command("remove_by_id", "удалить элемент из коллекции по его номеру") { args, attempts, _, scanner ->
+    "remove_by_id" to Command("remove_by_id", "удалить элемент из коллекции по его номеру") { args, attempts, _, scanner, _ ->
         val changableId = if (args.size < 2){
             println("Введите id элемента, который хотите обновить")
-            scanner.nextLine()
+            scanner.getNextLine()
         } else {
-            args[1]
+            args[0]
         }
         val id: Int =
             tryGet(changableId, attempts, "Введите одно из чисел ${CollectionOfVehicles.globalCollection.map { it.id }}") {
@@ -94,7 +97,7 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
         }
     },
 
-    "clear" to Command("clear", "очистить коллекцию") { _, _, _, _ ->
+    "clear" to Command("clear", "очистить коллекцию") { _, _, _, _, _ ->
         if (CollectionOfVehicles.globalCollection!!.size > 0) {
             CollectionOfVehicles.globalCollection.clear()
             println("Коллекция очищена")
@@ -103,9 +106,9 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
         }
     },
 
-    "save" to Command("save", "сохранить коллекцию в файл") { _, _, _, scanner ->
+    "save" to Command("save", "сохранить коллекцию в файл") { _, _, _, scanner, globalArgs ->
         println("Введите путь к файлу, в который хотите записать коллекцию")
-        val filename = scanner.nextLine()
+        val filename = scanner.getNextLine()
         if (FileVerification.fullVerification(filename)){
             val converter = Converter(filename)
 
@@ -114,21 +117,21 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
         }
     },
 
-    "execute_script" to Command("execute_script", "считать и исполнить скрипт из указанного файла") { args, _, _, _ ->
-        if (args.size > 1) {
-            if (FileVerification.fullVerification(args[1])) {
-                if (!FileVerification.isSameLinks(File(args[1]).toPath())) {
-                    HistoryOfExecutingScripts.CollectionOfFiles.add(File(args[1]).toPath())
+    "execute_script" to Command("execute_script", "считать и исполнить скрипт из указанного файла") { args, _, _, _, globalArgs ->
+        if (args.isNotEmpty()) {
+            if (FileVerification.fullVerification(args[0])) {
+                if (!FileVerification.isSameLinks(File(args[0]).toPath())) {
+                    HistoryOfExecutingScripts.CollectionOfFiles.add(File(args[0]).toPath())
                     try {
-                        println("Выполнение скрипта: ${File(args[1])}")
-                        val newScanner = RequestsScanner(FileInputStream(File(args[1])))
-                        newScanner.makeRequest(1, InstanceCreator.CREATE_FROM_FILE)
+                        println("Выполнение скрипта: ${File(args[0])}")
+                        val executer = CommandExecuter(globalArgs.filepath, ScannerParser(FileInputStream(File(args[0]))))
+                        executer.execute(1, InstanceCreator.CREATE_FROM_FILE)
                         HistoryOfExecutingScripts.CollectionOfFiles.removeLast()
                     } catch (ex: FileNotFoundException) {
                         println("Файл не найден")
                     }
                 } else {
-                    println("Файл ${File(args[1])} уже исполняется в данный момент.")
+                    println("Файл ${File(args[0])} уже исполняется в данный момент.")
                 }
             }
         } else {
@@ -136,11 +139,11 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
         }
     },
 
-    "exit" to Command("exit", "завершить программу (без сохранения в файл)") { _, _, _, _ ->
+    "exit" to Command("exit", "завершить программу (без сохранения в файл)") { _, _, _, _, _ ->
         exitProcess(0)
     },
 
-    "remove_first" to Command("remove_first", "удалить первый элемент из коллекции") { _, _, _, _ ->
+    "remove_first" to Command("remove_first", "удалить первый элемент из коллекции") { _, _, _, _, _ ->
         if (CollectionOfVehicles.globalCollection!!.size > 0) {
             CollectionOfVehicles.globalCollection.removeFirst()
             println("Первый элемент удалён")
@@ -152,26 +155,29 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
     "add_if_min" to Command(
         "add_if_min", "добавить новый элемент в коллекцию, если его значение меньше," +
                 " чем у наименьшего элемента этой коллекции (элементы сравниваются по длине марки средства передвижения)"
-    ) { _, attempts, creator, scanner ->
+    ) { _, attempts, creator, scanner, _ ->
         println("Введите марку средства передвижения")
-        val name = tryGet(scanner.nextLine(), attempts, "Имя не может быть пустой строкой") { takeIf { isNotBlank() } } ?: return@Command
-        val minElem = CollectionOfVehicles.globalCollection.sortedWith(compareBy { it.name.length })[0]
-        if (minElem.compareTo(name) > 0) {
-            CollectionOfVehicles.globalCollection.add(creator.invoke(scanner))
+        val name = tryGet(scanner.getNextLine(), attempts, "Имя не может быть пустой строкой") { takeIf { isNotBlank() } } ?: return@Command
+        if (CollectionOfVehicles.globalCollection!!.size != 0){
+            val minElem = CollectionOfVehicles.globalCollection.sortedWith(compareBy { it.name.length })[0]
+            if (minElem.compareTo(name) > 0) {
+                CollectionOfVehicles.globalCollection.add(creator.invoke(scanner))
+            } else {
+                println("Найдены элементы с более коротким названием")
+            }
         } else {
-            println("Найдены элементы с более коротким названием")
+            println("Коллекция пуста")
+            CollectionOfVehicles.globalCollection.add(creator.invoke(scanner))
         }
     },
 
     "remove_lower" to Command(
         "remove_lower", "удалить из коллекции все элементы, меньшие, чем" +
                 " заданный (элементы сравниваются по длине марки средства передвижения)"
-    ) { _, attempts, _, scanner ->
-        if (CollectionOfVehicles.globalCollection!!.size == 0) {
-            println("Коллекция пуста")
-        } else {
+    ) { _, attempts, _, scanner, _ ->
+        if (CollectionOfVehicles.globalCollection!!.size != 0) {
             println("Введите марку средства передвижения")
-            val name = tryGet(scanner.nextLine(), attempts, "Имя не может быть пустой строкой") { takeIf { isNotBlank() } }
+            val name = tryGet(scanner.getNextLine(), attempts, "Имя не может быть пустой строкой") { takeIf { isNotBlank() } }
                 ?: return@Command
             if (CollectionOfVehicles.globalCollection.any { it.compareTo(name) < 0 }) {
                 CollectionOfVehicles.globalCollection.removeIf { elem ->
@@ -181,22 +187,25 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
             } else {
                 println("Элементов с более короткой маркой не найдено")
             }
-        }
-    },
-
-    "sum_of_engine_power" to Command("sum_of_engine_power", "вывести сумму значений мощностей двигателей всех элементов") { _, _, _, _ ->
-        var summa = 0.0
-        for (elem in CollectionOfVehicles.globalCollection) {
-            summa += elem.enginePower
-        }
-        println(summa)
-        if (CollectionOfVehicles.globalCollection!!.size > 0) {
+        } else {
             println("Коллекция пуста")
         }
     },
 
+    "sum_of_engine_power" to Command("sum_of_engine_power", "вывести сумму значений мощностей двигателей всех элементов") { _, _, _, _, _ ->
+        if (CollectionOfVehicles.globalCollection!!.size == 0) {
+            println("Коллекция пуста")
+        } else {
+            var summa = 0.0
+            for (elem in CollectionOfVehicles.globalCollection) {
+                summa += elem.enginePower
+            }
+            println(summa)
+        }
+    },
+
     "group_counting_by_type" to Command("group_counting_by_type", "сгруппировать элементы коллекции по значению типа средства передвижения, вывести количество элементов в каждой группе"
-    ) { _, _, _, _ ->
+    ) { _, _, _, _, _ ->
         val countOfCar = CollectionOfVehicles.globalCollection.count {
             it.type == VehicleType.CAR
         }
@@ -213,27 +222,31 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
 
     "count_by_type" to Command(
         "count_by_type", "вывести количество элементов, значение типа которых равно заданному"
-    ) { args, attempts, _, scanner ->
-        val changableId = if (args.size < 2){
-            println("Введите номер соответствующего типа средства передвижения из предложенных")
-            println(VehicleType.getTypes())
-            scanner.nextLine()
+    ) { args, attempts, _, scanner, _ ->
+        if (CollectionOfVehicles.globalCollection!!.size == 0) {
+            println("Коллекция пуста")
         } else {
-            args[1]
+            val changableId = if (args.size < 1){
+                println("Введите номер соответствующего типа средства передвижения из предложенных")
+                println(VehicleType.getTypes())
+                scanner.getNextLine()
+            } else {
+                args[0]
+            }
+            // ?. - функция или поле берётся, если слева не null, в противном случае результат выражения null
+            val type: VehicleType =
+                tryGet(changableId, attempts, "Введите номер соответствующего типа средства передвижения из предложенных") {
+                    toIntOrNull()?.let(VehicleType::getVehicle)
+                } ?: return@Command
+            val count = CollectionOfVehicles.globalCollection.count {
+                it.type == type
+            }
+            println(count)
         }
-        // ?. - функция или поле берётся, если слева не null, в противном случае результат выражения null
-        val type: VehicleType =
-            tryGet(changableId, attempts, "Введите номер соответствующего типа средства передвижения из предложенных") {
-                toIntOrNull()?.let(VehicleType::getVehicle)
-            } ?: return@Command
-        val count = CollectionOfVehicles.globalCollection.count {
-            it.type == type
-        }
-        println(count)
     }
 )
 
-private fun forHelp(requestString: Array<String>, attempts: Int, creator: InstanceCreator, scanner: Scanner) {
+private fun forHelp(requestString: Array<String>, attempts: Int, creator: InstanceCreator, parser: AbstractParser, globalArgs: Application) {
     for ((name, command) in information) {
         println("$name - ${command.help}")
     }

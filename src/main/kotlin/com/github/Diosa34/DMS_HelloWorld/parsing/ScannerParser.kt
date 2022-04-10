@@ -16,6 +16,4 @@ class ScannerParser(input: InputStream) : AbstractParser() {
     override fun getNextLine(): String {
         return this.scanner.nextLine()
     }
-
-
 }

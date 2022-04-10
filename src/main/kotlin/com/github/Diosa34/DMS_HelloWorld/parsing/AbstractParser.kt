@@ -5,7 +5,7 @@ import com.github.Diosa34.DMS_HelloWorld.commands.Command
 abstract class AbstractParser: Iterable<Pair<Command, Array<String>>?>{
     abstract fun hasNextLine(): Boolean
 
-    protected abstract fun getNextLine(): String
+    abstract fun getNextLine(): String
 
     fun parse(): Pair<Command, Array<String>>? {
         val request = this.getNextLine().trim().split(Regex("""\s+"""))
