@@ -94,8 +94,8 @@ public class Vehicle implements Convertible, Comparable<String> {
     /**
      * A new ID is created that is one greater than the largest existing one.
      */
-    public static Integer idGenerator(){
-        Integer max_id = 0;
+    public static int idGenerator(){
+        int max_id = 0;
         for (Vehicle vehicle : CollectionOfVehicles.globalCollection) {
             if (vehicle.getId() >= max_id) {
                 max_id = vehicle.getId();

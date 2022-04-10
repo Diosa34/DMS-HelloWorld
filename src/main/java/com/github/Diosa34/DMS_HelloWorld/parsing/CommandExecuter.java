@@ -19,7 +19,11 @@ public class CommandExecuter implements ApplicationPart {
 
     public void execute(int attempts, InstanceCreator creator){
         for(Pair<? extends Command, ? extends String[]> i: parser) {
-            i.getFirst().execute(i.getSecond(), attempts, creator, parser, applicationInstance);
+            if (i != null) {
+                i.getFirst().execute(i.getSecond(), attempts, creator, parser, applicationInstance);
+            } else {
+                System.out.println("Введена несуществующая команда, информация о командах доступна по команде 'help'");
+            }
         }
     }
 
