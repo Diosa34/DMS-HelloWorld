@@ -14,7 +14,8 @@ class ParserSimpleTest {
 
     @Test
     fun itIsWorking() = this.assertTypes(
-        "help" to Command.registry["help"]!! // TODO() переделать registry в enum
+        "help" to Command.registry["help"]!!, // TODO() переделать registry в enum
+        "" to null
     )
 
 }
