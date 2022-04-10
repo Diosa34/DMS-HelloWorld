@@ -21,8 +21,13 @@ fun <T: Any> tryGet(field: String, t: Int, message: String, number: String.() ->
             field.number().let{ number ->
                 if(number == null){
                     println("Данные некорректны")
-                    println(message)
-                    println("Количество оставшихся попыток: ${t-i-1}")
+                    if (i != t-1) {
+                        println(message)
+                        println("Количество оставшихся попыток: ${t-i-1}")
+                    } else {
+                        println("Попытки закончились")
+                        println("Выполнение команды завершено")
+                    }
                 }
                 else return@tryGet number
         }
@@ -30,8 +35,13 @@ fun <T: Any> tryGet(field: String, t: Int, message: String, number: String.() ->
             readln().number().let{ number ->
                 if(number == null){
                     println("Данные некорректны")
-                    println(message)
-                    println("Количество оставшихся попыток: ${t-i-1}")
+                    if (i != t-1) {
+                        println(message)
+                        println("Количество оставшихся попыток: ${t-i-1}")
+                    } else {
+                        println("Попытки закончились")
+                        println("Выполнение команды завершено")
+                    }
                 }
                 else return@tryGet number
             }

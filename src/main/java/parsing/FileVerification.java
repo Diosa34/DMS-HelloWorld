@@ -80,7 +80,7 @@ public class FileVerification {
      */
     public static boolean fullVerification(String filename) {
         if (!FileVerification.existenceCheck(filename)){
-            System.out.println("Такой файл не существует");
+            System.out.println("Указанного файла не существует");
             return false;
         } else if (isDirectoryCheck(filename)){
             System.out.println("Указанный файл является директорией");
