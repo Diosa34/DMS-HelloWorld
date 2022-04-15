@@ -108,11 +108,13 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
 
     "save" to Command("save", "сохранить коллекцию в файл") { _, _, _, scanner, globalArgs ->
         var filename = globalArgs.filepath
-        if (!FileVerification.fullVerification(globalArgs.filepath)) {
+        if (!FileVerification.fullVerification(filename)) {
             println("Введите путь к файлу, в который хотите записать коллекцию")
             filename = scanner.getNextLine()
             if (!FileVerification.fullVerification(filename)) {
                 return@Command
+            } else {
+                globalArgs.filepath = filename
             }
         }
         val converter = Converter(filename)

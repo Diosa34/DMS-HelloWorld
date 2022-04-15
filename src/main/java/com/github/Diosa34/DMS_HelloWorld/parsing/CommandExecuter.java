@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
 
 
 public class CommandExecuter implements ApplicationPart {
-    private AbstractParser parser;
-    private Application applicationInstance;
+    private final AbstractParser parser;
+    private final Application applicationInstance;
 
     public CommandExecuter(String filepath, AbstractParser parser){
         this.applicationInstance = new Application(filepath);
