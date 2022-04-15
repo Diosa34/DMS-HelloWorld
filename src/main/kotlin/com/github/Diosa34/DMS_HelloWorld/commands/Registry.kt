@@ -75,7 +75,7 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
 
     "remove_by_id" to Command("remove_by_id", "удалить элемент из коллекции по его номеру") { args, attempts, _, scanner, _ ->
         val changableId = if (args.size < 2){
-            println("Введите id элемента, который хотите обновить")
+            println("Введите id элемента, который хотите удалить")
             scanner.getNextLine()
         } else {
             args[0]
