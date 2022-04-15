@@ -104,6 +104,9 @@ public class Vehicle implements Convertible, Comparable<String> {
         return maxId + 1;
     }
 
+    /**
+     * Comparison of vehicle names
+     */
     @Override
     public int compareTo(@NotNull String o) {
         return name.length()-o.length();

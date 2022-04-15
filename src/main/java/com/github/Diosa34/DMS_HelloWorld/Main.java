@@ -34,7 +34,7 @@ public class Main {
 
         System.out.println("Информация о командах доступна по команде 'help'");
 
-        CommandExecuter executer = new CommandExecuter(arguments, new ScannerParser(System.in));
-        executer.execute(3, InstanceCreator.CREATE_WITH_INPUT);
+        Commandexecutor executor = new Commandexecutor(arguments, new ScannerParser(System.in));
+        executor.execute(3, InstanceCreator.CREATE_WITH_INPUT);
     }
 }

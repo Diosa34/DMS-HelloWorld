@@ -7,16 +7,28 @@ import com.github.Diosa34.DMS_HelloWorld.enums.InstanceCreator;
 import kotlin.Pair;
 import org.jetbrains.annotations.NotNull;
 
-
-public class CommandExecuter implements ApplicationPart {
+/**
+ * This class invokes commands
+ */
+public class Commandexecutor implements ApplicationPart {
     private final AbstractParser parser;
     private final Application applicationInstance;
 
-    public CommandExecuter(String filepath, AbstractParser parser){
+    /**
+     *
+     * @param filepath is initial to save the collection
+     * @param parser scanner for client or tests
+     */
+    public Commandexecutor(String filepath, AbstractParser parser){
         this.applicationInstance = new Application(filepath);
         this.parser = parser;
     }
 
+    /**
+     *
+     * @param attempts for data input
+     * @param creator for instance creating from file or interactive
+     */
     public void execute(int attempts, InstanceCreator creator){
         for(Pair<? extends Command, ? extends String[]> i: parser) {
             if (i != null) {

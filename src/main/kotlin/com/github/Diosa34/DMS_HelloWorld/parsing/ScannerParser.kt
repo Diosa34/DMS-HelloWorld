@@ -4,7 +4,7 @@ import java.io.InputStream
 import java.util.*
 
 /**
- * Читает команды из класса Scanner
+ * Reads commands using class Scanner
  */
 class ScannerParser(input: InputStream) : AbstractParser() {
     private val scanner = Scanner(input)
