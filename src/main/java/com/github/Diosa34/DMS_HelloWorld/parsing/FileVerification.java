@@ -79,7 +79,10 @@ public class FileVerification {
      * Verification the possibility of creating a file path and permissions
      */
     public static boolean fullVerification(String filename) {
-        if (!FileVerification.existenceCheck(filename)){
+        if (filename == null) {
+            System.out.println("Файл не найден");
+            return false;
+        } else if (!FileVerification.existenceCheck(filename)){
             System.out.println("Указанного файла не существует");
             return false;
         } else if (isDirectoryCheck(filename)){
@@ -92,9 +95,6 @@ public class FileVerification {
                 System.out.println("Недостаточно прав доступа к файлу");
                 return false;
             }
-        } else {
-            System.out.println("Файл не найден, введите команду заново");
-            return false;
         }
         return true;
     }

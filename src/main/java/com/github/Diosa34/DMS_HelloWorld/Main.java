@@ -21,12 +21,12 @@ public class Main {
 
         new CollectionOfVehicles();
 
-
-        if (argv.length != 0){
-            new Application(argv[0]);
+        String arguments = null;
+        if (argv.length != 0 && argv[0].trim().length() != 0){
             if (FileVerification.fullVerification(argv[0])){
                 (new XMLToJava(vehicleForXMLToJava)).decoder(Paths.get(argv[0]).toString());
             }
+            arguments = argv[0];
         } else {
             System.out.println("Название файла, содержащего значения для коллекции не было введено");
             System.out.println("Коллекция пуста");
@@ -34,7 +34,7 @@ public class Main {
 
         System.out.println("Информация о командах доступна по команде 'help'");
 
-        CommandExecuter executer = new CommandExecuter(argv[0], new ScannerParser(System.in));
+        CommandExecuter executer = new CommandExecuter(arguments, new ScannerParser(System.in));
         executer.execute(3, InstanceCreator.CREATE_WITH_INPUT);
     }
 }
