@@ -1,5 +1,6 @@
 package com.github.Diosa34.DMS_HelloWorld;
 
+import com.github.Diosa34.DMS_HelloWorld.classes.Vehicle;
 import com.github.Diosa34.DMS_HelloWorld.collection.CollectionOfVehicles;
 import com.github.Diosa34.DMS_HelloWorld.enums.InstanceCreator;
 import com.github.Diosa34.DMS_HelloWorld.parsing.*;
@@ -10,21 +11,13 @@ import java.util.HashMap;
 
 public class Main {
     public static void main(String[] argv) throws FileNotFoundException {
-        HashMap<String, String> vehicleForXMLToJava = new HashMap<>();
-        vehicleForXMLToJava.put("id", "");
-        vehicleForXMLToJava.put("name", "");
-        vehicleForXMLToJava.put("coordinates", "");
-        vehicleForXMLToJava.put("creationDate", "");
-        vehicleForXMLToJava.put("enginePower", "");
-        vehicleForXMLToJava.put("vehicleType", "");
-        vehicleForXMLToJava.put("fuelType", "");
-
         new CollectionOfVehicles();
 
         String arguments = null;
         if (argv.length != 0 && argv[0].trim().length() != 0){
             if (FileVerification.fullVerification(argv[0])){
-                (new XMLToJava(vehicleForXMLToJava)).decoder(Paths.get(argv[0]).toString());
+                Vehicle.initializeVehicleForXMLToJava();
+                (new XMLToJava(Vehicle.getVehicleForXMLToJava())).decoder(Paths.get(argv[0]).toString());
             }
             arguments = argv[0];
         } else {
