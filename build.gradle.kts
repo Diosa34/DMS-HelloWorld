@@ -10,7 +10,7 @@ group = "com.github.Diosa34"
 version = "1.0"
 
 application {
-    mainClass.set("Main")
+    mainClass.set("com.github.Diosa34.DMS_HelloWorld.Main")
 }
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
@@ -33,7 +33,7 @@ compileTestKotlin.kotlinOptions {
 val fatJar = tasks.create<Jar>("fatJar") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
-        attributes["Main-Class"] = "Main"
+        attributes["Main-Class"] = "com.github.Diosa34.DMS_HelloWorld.Main"
     }
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     with(tasks.jar.get() as CopySpec)
