@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * This class invokes commands
  */
-public class Commandexecutor implements ApplicationPart {
+public class CommandExecutor implements ApplicationPart {
     private final AbstractParser parser;
     private final Application applicationInstance;
 
@@ -19,7 +19,7 @@ public class Commandexecutor implements ApplicationPart {
      * @param filepath is initial to save the collection
      * @param parser scanner for client or tests
      */
-    public Commandexecutor(String filepath, AbstractParser parser){
+    public CommandExecutor(String filepath, AbstractParser parser){
         this.applicationInstance = new Application(filepath);
         this.parser = parser;
     }

@@ -129,7 +129,7 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
                     HistoryOfExecutingScripts.CollectionOfFiles.add(File(args[0]).toPath())
                     try {
                         println("Выполнение скрипта: ${File(args[0])}")
-                        val executor = Commandexecutor(globalArgs.filepath, ScannerParser(FileInputStream(File(args[0]))))
+                        val executor = CommandExecutor(globalArgs.filepath, ScannerParser(FileInputStream(File(args[0]))))
                         executor.execute(1, InstanceCreator.CREATE_FROM_FILE)
                         HistoryOfExecutingScripts.CollectionOfFiles.removeLast()
                     } catch (ex: FileNotFoundException) {
