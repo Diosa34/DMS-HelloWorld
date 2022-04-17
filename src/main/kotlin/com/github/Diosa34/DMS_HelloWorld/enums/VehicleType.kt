@@ -27,11 +27,11 @@ enum class VehicleType {
             return types
         }
 
-//        @JvmStatic
-//        fun typesToString() {
-//            types.keys.forEach{key ->
-//                println("$key - ${types[key]}")
-//            }
-//        }
+        @JvmStatic
+        val stringToType: Map<String, VehicleType> = mapOf(
+            "CAR" to CAR,
+            "SUBMARINE" to SUBMARINE,
+            "SHIP" to SHIP
+        )
     }
 }

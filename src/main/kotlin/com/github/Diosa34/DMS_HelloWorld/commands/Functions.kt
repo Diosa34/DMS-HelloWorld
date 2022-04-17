@@ -24,12 +24,11 @@ fun <T: Any> tryGet(field: String, t: Int, message: String, number: String.() ->
         data.number().let{ number ->
             if(number == null){
                 println("Данные некорректны")
+                println(message)
                 if (i != t-1) {
-                    println(message)
                     println("Количество оставшихся попыток: ${t-i-1}")
                 } else {
                     println("Попытки закончились")
-                    println("Выполнение команды завершено")
                 }
             }
             else return@tryGet number
@@ -44,8 +43,13 @@ fun <T: Any> tryGet(field: String, t: Int, message: String, number: String.() ->
 fun instanceCreate(id: String, creationTime: String, type: String, name: String, x: String, y: String, enginePower: String, fuel: String, t: Int) : Vehicle? {
 
     // ?. - функция или поле берётся, если слева не null, в противном случае результат выражения null
-    val type: VehicleType = tryGet(type, t, "В качестве типа средства передвижения введите число от 0 до 2") {
-        toIntOrNull()?.let(VehicleType::getVehicle)
+    val type: VehicleType = tryGet(type, t, "В качестве типа средства передвижения введите одно из " +
+            "названий ${VehicleType.getTypes().values}") {
+        if ( VehicleType.stringToType.containsKey(this) ) {
+            VehicleType.stringToType[this]
+        } else {
+            null
+        }
     } ?: return@instanceCreate null
 
 
@@ -66,18 +70,29 @@ fun instanceCreate(id: String, creationTime: String, type: String, name: String,
 
 
     // ?. - функция или поле берётся, если слева не null, в противном случае результат выражения null
-    val fuel: FuelType = tryGet(fuel, t, "В качестве типа топлива введите число от 0 до 2:") {
-        toIntOrNull()?.let(FuelType::getFuel)
+    val fuel: FuelType = tryGet(fuel, t, "В качестве типа топлива введите введите одно из " +
+            "названий ${FuelType.getTypes().values}") {
+        if ( FuelType.stringToType.containsKey(this) ) {
+            FuelType.stringToType[this]
+        } else {
+            null
+        }
     } ?: return@instanceCreate null
 
     val id: Int = tryGet(id, t, "ID должно быть любым целым числом, кроме ${CollectionOfVehicles.globalCollection.map { it.id }}") {
-        toIntOrNull().takeIf { !CollectionOfVehicles.globalCollection.map { it.id }.contains(toIntOrNull())}
+        toIntOrNull()?.takeIf { !CollectionOfVehicles.globalCollection.map { it.id }.contains(toIntOrNull())}
     } ?: return@instanceCreate null
 
     val time: ZonedDateTime = tryGet(creationTime, t, "Тег <creationDate> должен содержать правильное имя" +
             " часового пояса в формате Continent/Region, например, Europe/Moscow") {
+        var creationTime1 = this
+        if (!creationTime1.startsWith("[")){
+            creationTime1 = creationTime1.substring(creationTime1.indexOf("[")+1,creationTime1.indexOf("]"))
+        } else {
+            creationTime1 = creationTime
+        }
         try {
-            Instant.now().atZone(ZoneId.of((creationTime.split(" ")).joinToString ("/")))
+            Instant.now().atZone(ZoneId.of((creationTime1.split(" ")).joinToString ("/")))
         } catch (ex: DateTimeParseException) {
             return@tryGet null
         } catch (ex: ZoneRulesException) {

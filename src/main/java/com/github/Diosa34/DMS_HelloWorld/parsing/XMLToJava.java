@@ -73,7 +73,7 @@ public class XMLToJava {
                     try {
                         field_initialization(tag, xmlReader.getText()); // содержание тега
                     } catch (TagNameException ex) {
-                        System.out.printf("Ошибка в имени поля, поле %s не найдено", tag);
+                        System.out.println(String.format("Ошибка в имени поля, поле %s не найдено", tag));
                         break;
                     }
                 }
@@ -98,7 +98,7 @@ public class XMLToJava {
 
     private Vehicle newInstance() {
         return FunctionsKt.instanceCreate(entity.get("id"), entity.get("creationDate"), entity.get("vehicleType"),
-                entity.get("name"), entity.get("coordinates").split(" ")[0], entity.get("coordinates").split(" ")[1],
+                entity.get("name"), entity.get("coordinates").split(", ")[0], entity.get("coordinates").split(", ")[1],
                 entity.get("enginePower"), entity.get("fuelType"), 1);
     }
 

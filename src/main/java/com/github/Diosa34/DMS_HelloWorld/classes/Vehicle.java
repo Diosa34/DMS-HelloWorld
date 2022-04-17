@@ -26,8 +26,8 @@ public class Vehicle implements Convertible, Comparable<String> {
     private final ZonedDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
     @FieldAnnotation("enginePower")
     private final Float enginePower; //Поле не может быть null, Значение поля должно быть больше 0
-    @FieldAnnotation("type")
-    private final VehicleType type; //Поле не может быть null
+    @FieldAnnotation("vehicleType")
+    private final VehicleType vehicleType; //Поле не может быть null
     @FieldAnnotation("fuelType")
     private final FuelType fuelType; //Поле может быть null
 
@@ -42,7 +42,7 @@ public class Vehicle implements Convertible, Comparable<String> {
         this.coordinates = coordinates;
         this.creationDate = ZonedDateTime.now();
         this.enginePower = enginePower;
-        this.type = type;
+        this.vehicleType = type;
         this.fuelType = fuelType;
     }
 
@@ -55,7 +55,7 @@ public class Vehicle implements Convertible, Comparable<String> {
         this.coordinates = coordinates;
         this.creationDate = creationDate;
         this.enginePower = enginePower;
-        this.type = type;
+        this.vehicleType = type;
         this.fuelType = fuelType;
     }
 
@@ -83,7 +83,7 @@ public class Vehicle implements Convertible, Comparable<String> {
     }
 
     public VehicleType getType() {
-        return type;
+        return vehicleType;
     }
 
     public Float getEnginePower() {

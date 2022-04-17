@@ -26,5 +26,12 @@ enum class FuelType {
         fun getTypes(): Map<Int, FuelType> {
             return types
         }
+
+        @JvmStatic
+        val stringToType: Map<String, FuelType> = mapOf(
+            "GASOLINE" to GASOLINE,
+            "DIESEL" to DIESEL,
+            "NUCLEAR" to NUCLEAR
+        )
     }
 }
