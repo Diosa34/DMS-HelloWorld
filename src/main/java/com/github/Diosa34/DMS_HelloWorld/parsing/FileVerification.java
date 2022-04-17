@@ -13,6 +13,8 @@ import java.nio.file.Paths;
  * Class for file link verifications
  */
 public class FileVerification {
+
+    private FileVerification(){}
     /**
      * Read access verification
      */

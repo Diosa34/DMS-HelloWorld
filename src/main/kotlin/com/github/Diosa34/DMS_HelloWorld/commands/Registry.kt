@@ -168,7 +168,7 @@ internal val information: Map<String, Command> = mapOf(      // :: перед н
             if (minElem.compareTo(name) > 0) {
                 CollectionOfVehicles.globalCollection.add(creator.invoke(scanner))
             } else {
-                println("Найдены элементы с более коротким названием")
+                println("Найдены элементы с таким же по длине или более коротким названием")
             }
         } else {
             println("Коллекция пуста")
