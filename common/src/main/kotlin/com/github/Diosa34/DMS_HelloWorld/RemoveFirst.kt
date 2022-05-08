@@ -1,18 +1,19 @@
 package com.github.Diosa34.DMS_HelloWorld
 
-import com.github.Diosa34.DMS_HelloWorld.collection.CollectionOfVehicles
-import com.github.Diosa34.DMS_HelloWorld.commands.ApplicableToCollection
+object RemoveFirst: ApplicableToCollection, AbstractDescription {
+    override val title: String = "remove_first"
+    override val help: String = "удалить первый элемент из коллекции"
 
-object RemoveFirst: ApplicableToCollection {
-    const val title: String = "remove_first"
-    const val help: String = "удалить первый элемент из коллекции"
-
-    override fun execute(collection: CollectionOfVehicles) {
+    override fun execute(logger: Logger, collection: CollectionOfVehicles) {
         if (collection.size > 0) {
             collection.removeFirst()
-            println("Первый элемент удалён")
+            logger.print("Первый элемент удалён")
         } else {
-            println("Коллекция пуста")
+            logger.print("Коллекция пуста")
         }
+    }
+
+    fun serialize(): ByteArray {
+        return title.serialize()
     }
 }

@@ -1,31 +1,30 @@
 package com.github.Diosa34.DMS_HelloWorld
 
-import com.github.Diosa34.DMS_HelloWorld.collection.CollectionOfVehicles
-import com.github.Diosa34.DMS_HelloWorld.commands.ApplicableToCollection
-import com.github.Diosa34.DMS_HelloWorld.enums.InstanceCreator
-import com.github.Diosa34.DMS_HelloWorld.parsing.AbstractParser
-import com.github.Diosa34.DMS_HelloWorld.parsing.AbstractStringReader
-
 class Update(
     private val id: Int,
-    private val creator: InstanceCreator,
-    private val stringReader: AbstractStringReader
+    private val vehicle: Vehicle,
 ): ApplicableToCollection {
-    override fun execute(collection: CollectionOfVehicles){
+    override fun execute(logger: Logger, collection: CollectionOfVehicles){
         if (collection.size > 0) {
             for (elem in collection) {
                 if (elem.id == id) {
-                    collection[collection.indexOf(elem)] =
-                        creator.invoke(stringReader)
+                    collection[collection.indexOf(elem)] = vehicle
                 }
             }
         } else {
-            println("Коллекция пуста")
+            logger.print("Коллекция пуста")
         }
     }
 
-    companion object{
-        const val title: String = "update"
-        const val help: String = "обновить значение элемента коллекции, номер которого равен заданному"
+    fun serialize(): ByteArray{
+        var bytes: ByteArray = Add.title.serialize()
+        bytes += this.id.serialize()
+        bytes += this.vehicle.serialize()
+        return bytes
+    }
+
+    companion object Description: AbstractDescription{
+        override val title: String = "update"
+        override val help: String = "обновить значение элемента коллекции, номер которого равен заданному"
     }
 }

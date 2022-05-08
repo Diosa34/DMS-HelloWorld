@@ -1,24 +1,24 @@
 package com.github.Diosa34.DMS_HelloWorld
 
-import com.github.Diosa34.DMS_HelloWorld.collection.HistoryOfExecutingScripts
-import com.github.Diosa34.DMS_HelloWorld.commands.SystemCommand
 import java.io.File
 
 class ExecuteScript(
-    private val path: String,
-    private val globalArgs: Application
+    private val path: String
 ): SystemCommand {
-    fun execute(collection: HistoryOfExecutingScripts){
-        println("Выполнение скрипта: ${File(path)}")
-//        val executor = CommandExecutor(
-//                globalArgs.filepath,
-//                FileStringReader(FileInputStream(File(path)))
-//        )
-//        executor.execute(1, InstanceCreator.CREATE_FROM_FILE)
+    override fun execute(logger: Logger){
+        logger.print("Выполнение скрипта: ${File(path)}")
+        RequestManager.read(logger, 1, InstanceCreator.CREATE_FROM_FILE, FileStringReader(path))
+        HistoryOfExecutingScripts.removeScript()
     }
 
-    companion object{
-        const val title: String = "execute_script"
-        const val help: String = "считать и исполнить скрипт из указанного файла"
+    fun serialize(): ByteArray{
+        var bytes: ByteArray = title.serialize()
+        bytes += this.path.serialize()
+        return bytes
+    }
+
+    companion object Description: AbstractDescription{
+        override val title: String = "execute_script"
+        override val help: String = "считать и исполнить скрипт из указанного файла"
     }
 }

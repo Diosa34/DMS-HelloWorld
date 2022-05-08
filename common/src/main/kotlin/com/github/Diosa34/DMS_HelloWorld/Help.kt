@@ -1,12 +1,16 @@
 package com.github.Diosa34.DMS_HelloWorld
 
-import com.github.Diosa34.DMS_HelloWorld.commands.SystemCommand
+object Help: BoundCommand, AbstractDescription {
+    override val title: String = "help"
+    override val help: String = "вывести справку по доступным командам"
 
-object Help: SystemCommand {
-    const val title: String = "help"
-    const val help: String = "вывести справку по доступным командам"
+    fun execute(logger: Logger, vararg descriptions: AbstractDescription) {
+        for (i in descriptions.toMutableSet().apply { add(Help) }){
+            logger.print("${i.title} - ${i.help}")
+        }
+    }
 
-    override fun execute() {
-        TODO("Not yet implemented")
+    fun serialize(): ByteArray {
+        return title.serialize()
     }
 }

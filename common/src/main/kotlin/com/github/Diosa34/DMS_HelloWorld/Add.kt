@@ -1,18 +1,22 @@
 package com.github.Diosa34.DMS_HelloWorld
 
-import com.github.Diosa34.DMS_HelloWorld.classes.Vehicle
-import com.github.Diosa34.DMS_HelloWorld.collection.CollectionOfVehicles
-import com.github.Diosa34.DMS_HelloWorld.commands.ApplicableToCollection
+import java.io.Serializable
 
 class Add(
     private val vehicle: Vehicle
-): ApplicableToCollection {
-    override fun execute(collection: CollectionOfVehicles) {
-        CollectionOfVehicles.globalCollection.add(vehicle)
+): ApplicableToCollection, Serializable {
+    override fun execute(logger: Logger, collection: CollectionOfVehicles) {
+        collection.add(vehicle)
     }
 
-    companion object{
-        const val title: String = "show"
-        const val help: String = "вывести все элементы коллекции"
+    fun serialize(): ByteArray{
+        var bytes: ByteArray = title.serialize()
+        bytes += this.vehicle.serialize()
+        return bytes
+    }
+
+    companion object Description: AbstractDescription{
+        override val title: String = "add"
+        override val help: String = "добавить новый элемент в коллекцию"
     }
 }
