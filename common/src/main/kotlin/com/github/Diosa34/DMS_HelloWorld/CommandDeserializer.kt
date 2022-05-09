@@ -1,7 +1,7 @@
 package com.github.Diosa34.DMS_HelloWorld
 
-class CommandDeserializer {
-    fun deserializer(command: ByteArray): BoundCommand{
+object CommandDeserializer {
+    fun deserialize(command: ByteArray): BoundCommand{
         val iterator = command.iterator()
         try {
             val title: String = iterator.deserializeString()
@@ -10,7 +10,6 @@ class CommandDeserializer {
                 "add_if_mit" -> AddIfMin(iterator.deserializeString(), iterator.deserializeVehicle())
                 "clear" -> Clear
                 "count_by_type" -> CountByType(iterator.deserializeVehicleType())
-                "execute_script" -> ExecuteScript(iterator.deserializeString())
                 "exit" -> Exit
                 "group_counting_by_type" -> GroupCountingByType
                 "help" -> Help

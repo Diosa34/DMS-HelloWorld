@@ -5,4 +5,7 @@ import java.io.Serializable
 /**
  * Entity describing the command
  */
-interface BoundCommand: Serializable
+interface BoundCommand: Serializable {
+    fun serialize(): ByteArray
+}
+

@@ -14,7 +14,7 @@ object Show: ApplicableToCollection, AbstractDescription {
         }
     }
 
-    fun serialize(): ByteArray {
+    override fun serialize(): ByteArray {
         return title.serialize()
     }
 }

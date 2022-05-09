@@ -9,6 +9,7 @@ class Update(
             for (elem in collection) {
                 if (elem.id == id) {
                     collection[collection.indexOf(elem)] = vehicle
+                    logger.print("Элемент успешно обновлён")
                 }
             }
         } else {
@@ -16,7 +17,7 @@ class Update(
         }
     }
 
-    fun serialize(): ByteArray{
+    override fun serialize(): ByteArray{
         var bytes: ByteArray = Add.title.serialize()
         bytes += this.id.serialize()
         bytes += this.vehicle.serialize()

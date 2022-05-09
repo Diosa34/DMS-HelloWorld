@@ -10,7 +10,7 @@ object Help: BoundCommand, AbstractDescription {
         }
     }
 
-    fun serialize(): ByteArray {
+    override fun serialize(): ByteArray {
         return title.serialize()
     }
 }

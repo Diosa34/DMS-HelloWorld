@@ -30,7 +30,7 @@ class IteratorByte(
 }
 
 fun Iterator<Byte>.deserializeNumber(size: Int): ULong {
-    var number: ULong = 1U
+    var number: ULong = 0U
     for (i in IteratorByte(this, size)){
         number += number * 256U + i.toULong()
     }

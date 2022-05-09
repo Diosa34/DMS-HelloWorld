@@ -7,9 +7,10 @@ class Add(
 ): ApplicableToCollection, Serializable {
     override fun execute(logger: Logger, collection: CollectionOfVehicles) {
         collection.add(vehicle)
+        logger.print("Элемент успешно добавлен в коллекцию")
     }
 
-    fun serialize(): ByteArray{
+    override fun serialize(): ByteArray{
         var bytes: ByteArray = title.serialize()
         bytes += this.vehicle.serialize()
         return bytes

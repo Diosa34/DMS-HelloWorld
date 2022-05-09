@@ -143,7 +143,6 @@ fun instanceCreate(logger: Logger, attempts: Int) : Vehicle? {
         toIntOrNull()?.let(FuelType::getFuel)
     } ?: return@instanceCreate null
 
-    logger.print("Элемент успешно добавлен или обновлён")
     return Vehicle(
         name,
         Coordinates(x, y),

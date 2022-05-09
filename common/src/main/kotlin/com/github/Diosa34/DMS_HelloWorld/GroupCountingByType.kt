@@ -20,7 +20,7 @@ object GroupCountingByType: ApplicableToCollection, AbstractDescription {
         logger.print("$countOfShip - количество кораблей")
     }
 
-    fun serialize(): ByteArray {
+    override fun serialize(): ByteArray {
         return title.serialize()
     }
 }

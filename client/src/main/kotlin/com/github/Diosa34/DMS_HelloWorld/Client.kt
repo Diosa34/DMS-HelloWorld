@@ -6,21 +6,27 @@ import java.net.InetAddress
 import java.net.Socket
 
 class Client(
-    private val arr: ByteArray,
     private val host: InetAddress,
-    private val port: Int= 6789
-
+    private val port: Int
 ) {
     private val sock: Socket = Socket(this.host ,this.port)
+    private val arr: ByteArray = ByteArray(1024 * 1024)
 
-    fun send(){
+    fun send(serializedCommand: ByteArray) {
         val os: OutputStream = sock.getOutputStream()
-        os.write(arr)
+        println("Hello1")
+        os.write(serializedCommand)
+        println("Hello2")
     }
 
-    fun receive(){
+    fun receive() {
         val inputStream: InputStream = sock.getInputStream()
+        println("Hello3")
         inputStream.read(arr)
+        println("Hello4")
     }
 
+    fun getArr(): ByteArray {
+        return this.arr
+    }
 }

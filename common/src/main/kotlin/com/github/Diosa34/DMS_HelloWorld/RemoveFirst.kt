@@ -9,11 +9,11 @@ object RemoveFirst: ApplicableToCollection, AbstractDescription {
             collection.removeFirst()
             logger.print("Первый элемент удалён")
         } else {
-            logger.print("Коллекция пуста")
+            logger.print("Коллекция пуста, нет элементов для удаления")
         }
     }
 
-    fun serialize(): ByteArray {
+    override fun serialize(): ByteArray {
         return title.serialize()
     }
 }

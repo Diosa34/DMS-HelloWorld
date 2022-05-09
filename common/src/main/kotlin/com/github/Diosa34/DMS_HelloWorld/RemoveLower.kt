@@ -15,11 +15,11 @@ class RemoveLower(
                 logger.print("Элементов с более короткой маркой не найдено")
             }
         } else {
-            logger.print("Коллекция пуста")
+            logger.print("Коллекция пуста, нет элементов для удаления")
         }
     }
 
-    fun serialize(): ByteArray{
+    override fun serialize(): ByteArray{
         var bytes: ByteArray = title.serialize()
         bytes += this.name.serialize()
         return bytes

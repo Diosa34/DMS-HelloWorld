@@ -4,7 +4,7 @@ object Exit: BoundCommand, AbstractDescription {
     override val title: String = "exit"
     override val help: String = "завершить программу (без сохранения в файл)"
 
-    fun serialize(): ByteArray {
+    override fun serialize(): ByteArray {
         return title.serialize()
     }
 }

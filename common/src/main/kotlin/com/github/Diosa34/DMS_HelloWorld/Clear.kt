@@ -9,11 +9,11 @@ object Clear : ApplicableToCollection, AbstractDescription {
             collection.clear()
             logger.print("Коллекция очищена")
         } else {
-            logger.print("Коллекция пуста")
+            logger.print("Коллекция была пуста")
         }
     }
 
-    fun serialize(): ByteArray {
+    override fun serialize(): ByteArray {
         return title.serialize()
     }
 }

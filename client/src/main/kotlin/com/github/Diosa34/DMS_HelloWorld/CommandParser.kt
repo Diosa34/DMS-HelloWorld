@@ -5,7 +5,7 @@ import kotlin.jvm.Throws
 /**
  * Abstract class for any parser
  */
-object AbstractParser{
+object CommandParser{
      /**
      * return Pair<Command, Array<String>>? where Command is name and Array<String>>? is nullable attributes
      */
@@ -40,7 +40,7 @@ object AbstractParser{
                 val type: VehicleType =
                     tryGet(changableId, attempts, "Введите номер соответствующего типа средства" +
                             " передвижения из предложенных") {
-                        toIntOrNull()?.let(VehicleType::getVehicle)
+                        toIntOrNull()?.let(VehicleType.Companion::getVehicle)
                     } ?: throw ParseException()
                 CountByType(type)
             }

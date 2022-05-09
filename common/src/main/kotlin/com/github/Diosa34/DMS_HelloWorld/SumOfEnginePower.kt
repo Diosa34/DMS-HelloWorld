@@ -12,11 +12,11 @@ object SumOfEnginePower: ApplicableToCollection, AbstractDescription {
             for (elem in collection) {
                 summa += elem.enginePower
             }
-            logger.print(summa.toString())
+            logger.print("Суммарная мощность двигателей: $summa")
         }
     }
 
-    fun serialize(): ByteArray {
+    override fun serialize(): ByteArray {
         return title.serialize()
     }
 }

@@ -10,6 +10,8 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("com.github.Diosa34:ObjectConverter:master-SNAPSHOT")
     testImplementation(kotlin("test"))
+    implementation(project(":common"))
+    implementation(project(":client"))
 }
 repositories {
     mavenCentral()
