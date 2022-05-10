@@ -17,6 +17,7 @@ class Server(
         this.sock = serv.accept()
     }
 
+    @OptIn(ExperimentalUnsignedTypes::class)
     fun receive() {
         val arr = ByteArray(1024 * 1024)
         val buf = ByteBuffer.wrap(arr)
@@ -31,7 +32,7 @@ class Server(
         val bufferLogger = BufferLogger(this.sock)
         val command: BoundCommand
         try {
-            command = CommandDeserializer.deserialize(arr)
+            command = CommandDeserializer.deserialize(arr.toUByteArray())
         } catch (ex: DeserializeException) {
             bufferLogger.print(ex.message)
             println(ex.message)

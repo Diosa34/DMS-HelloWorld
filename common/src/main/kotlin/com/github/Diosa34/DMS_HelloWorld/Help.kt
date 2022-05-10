@@ -6,7 +6,7 @@ object Help: BoundCommand, AbstractDescription {
 
     fun execute(logger: Logger, vararg descriptions: AbstractDescription) {
         for (i in descriptions.toMutableSet().apply { add(Help) }){
-            logger.print("${i.title} - ${i.help}\n")
+            logger.print("${i.title} - ${i.help}")
         }
     }
 

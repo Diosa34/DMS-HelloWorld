@@ -9,10 +9,14 @@ class BufferLogger(
     var buf = ""
 
     override fun print(message: String) {
-        this.buf += message
+        if (buf != "") {
+            this.buf += "\n$message"
+        } else {
+            this.buf += message
+        }
     }
 
-    fun flush(){
+    fun flush() {
         this.sock.write(ByteBuffer.wrap(this.buf.serialize()))
     }
 }

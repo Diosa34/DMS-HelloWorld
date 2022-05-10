@@ -1,7 +1,8 @@
 package com.github.Diosa34.DMS_HelloWorld
 
 object CommandDeserializer {
-    fun deserialize(command: ByteArray): BoundCommand{
+    @OptIn(ExperimentalUnsignedTypes::class)
+    fun deserialize(command: UByteArray): BoundCommand{
         val iterator = command.iterator()
         try {
             val title: String = iterator.deserializeString()

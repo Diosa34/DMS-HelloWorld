@@ -34,7 +34,7 @@ class RequestManager(fileToSave: String?) {
                         logger.print("Соединение прервано, перезапустите сервер, затем клиента")
                         return
                     }
-                    logger.print(client.getArr().iterator().deserializeString())
+                    logger.print(client.getArr().toUByteArray().iterator().deserializeString())
                 } catch (e: UnexpectedCommandException) {
                     logger.print(UnexpectedCommandException.message)
                 } catch (e: ParseException) {

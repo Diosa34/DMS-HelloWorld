@@ -1,7 +1,7 @@
 package com.github.Diosa34.DMS_HelloWorld
 
 object SumOfEnginePower: ApplicableToCollection, AbstractDescription {
-    override val title: String = "add_if_min"
+    override val title: String = "sum_of_engine_power"
     override val help: String = "вывести сумму значений мощностей двигателей всех элементов"
 
     override fun execute(logger: Logger, collection: CollectionOfVehicles) {

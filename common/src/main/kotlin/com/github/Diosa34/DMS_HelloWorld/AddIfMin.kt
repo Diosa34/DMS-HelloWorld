@@ -11,7 +11,7 @@ class AddIfMin(
                 CollectionOfVehicles.globalCollection.add(vehicle)
                 logger.print("Элемент успешно добавлен в коллекцию")
             } else {
-                logger.print("Найдены элементы с таким же по длине или более коротким названием, новый элемент не был добавлен")
+                logger.print("Найдены элементы с таким же по длине или более коротким названием, новый элемент НЕ был добавлен")
             }
         } else {
             CollectionOfVehicles.globalCollection.add(vehicle)
