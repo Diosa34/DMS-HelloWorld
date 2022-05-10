@@ -18,7 +18,7 @@ class Update(
     }
 
     override fun serialize(): ByteArray{
-        var bytes: ByteArray = Add.title.serialize()
+        var bytes: ByteArray = title.serialize()
         bytes += this.id.serialize()
         bytes += this.vehicle.serialize()
         return bytes

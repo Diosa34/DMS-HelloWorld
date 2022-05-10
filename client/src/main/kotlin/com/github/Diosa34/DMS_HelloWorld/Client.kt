@@ -9,7 +9,7 @@ class Client(
     private val host: InetAddress,
     private val port: Int
 ) {
-    private val sock: Socket = Socket(this.host ,this.port)
+    val sock: Socket = Socket(this.host ,this.port)
     private val arr: ByteArray = ByteArray(1024 * 1024)
 
     fun send(serializedCommand: ByteArray) {

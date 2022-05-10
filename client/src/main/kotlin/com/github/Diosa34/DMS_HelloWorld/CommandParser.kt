@@ -19,7 +19,7 @@ object CommandParser{
         val args = request.slice(1 until request.size).toTypedArray()
         val command: BoundCommand = when (request[0]) {
             "add" -> {
-                Add(creator.invoke(stringReader) ?: throw NullPointerException())
+                Add(creator.invoke(stringReader) ?: throw ParseException())
             }
             "add_if_min" -> {
                 logger.print("Введите марку средства передвижения")

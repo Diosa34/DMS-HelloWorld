@@ -58,9 +58,9 @@ public class Vehicle implements Convertible, Comparable<String> {
 
     @Override
     public String toString() {
-        return "Номер:" + getId() + "\n" + "Марка:" + getName() + "\n" + "Координаты" + getCoordinates().toString() + "\n" +
-                "Дата создания:" + getCreationDate() + "\n" + "Мощность двигателя:" + getEnginePower() + "\n" +
-                "Тип средства передвижения:" + getType() + "\n" + "Тип топлива:" + getFuelType();
+        return "Номер: " + getId() + "\n" + "Марка: " + getName() + "\n" + "Координаты: " + getCoordinates().toString() + "\n" +
+                "Дата создания: " + getCreationDate() + "\n" + "Мощность двигателя: " + getEnginePower() + "\n" +
+                "Тип средства передвижения: " + getType() + "\n" + "Тип топлива: " + getFuelType();
     }
 
     public Integer getId() {

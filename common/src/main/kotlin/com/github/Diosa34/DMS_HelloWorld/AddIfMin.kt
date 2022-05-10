@@ -7,7 +7,7 @@ class AddIfMin(
     override fun execute(logger: Logger, collection: CollectionOfVehicles) {
         if (CollectionOfVehicles.globalCollection.size != 0){
             val minElem = CollectionOfVehicles.globalCollection.sortedWith(compareBy { it.name.length })[0]
-            if (minElem > name) {
+            if (minElem.compareTo(name) > 0) {
                 CollectionOfVehicles.globalCollection.add(vehicle)
                 logger.print("Элемент успешно добавлен в коллекцию")
             } else {

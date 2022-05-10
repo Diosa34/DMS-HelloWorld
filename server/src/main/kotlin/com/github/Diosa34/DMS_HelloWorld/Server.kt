@@ -1,15 +1,13 @@
 package com.github.Diosa34.DMS_HelloWorld
 
-import java.net.InetAddress
-import java.net.InetSocketAddress
-import java.net.SocketAddress
+import java.net.*
 import java.nio.ByteBuffer
 import java.nio.channels.ServerSocketChannel
 import java.nio.channels.SocketChannel
 
 class Server(
-    val host: InetAddress,
-    val port: Int,
+    host: InetAddress,
+    port: Int,
     var sock: SocketChannel = SocketChannel.open()
 ) {
     val serv: ServerSocketChannel = ServerSocketChannel.open()
@@ -24,12 +22,24 @@ class Server(
         val buf = ByteBuffer.wrap(arr)
         println("Hello1")
         this.sock.read(buf)
-        println("Hello2")
         buf.flip()
-        val command: BoundCommand = CommandDeserializer.deserialize(arr)
+        if (arr.contentEquals(ByteArray(1024 * 1024))) {
+            this.serv.close()
+            throw ConnectException("Завершена работа клиентского приложения")
+        }
+        println("Hello2")
         val bufferLogger = BufferLogger(this.sock)
-        executeCall(command, bufferLogger)
+        val command: BoundCommand
+        try {
+            command = CommandDeserializer.deserialize(arr)
+        } catch (ex: DeserializeException) {
+            bufferLogger.print(ex.message)
+            println(ex.message)
+            bufferLogger.flush()
+            return
+        }
         println("Hello3")
+        executeCall(command, bufferLogger)
         bufferLogger.flush()
         println("Hello4")
     }

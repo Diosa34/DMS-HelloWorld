@@ -7,7 +7,7 @@ object CommandDeserializer {
             val title: String = iterator.deserializeString()
             return when (title) {
                 "add" -> Add(iterator.deserializeVehicle())
-                "add_if_mit" -> AddIfMin(iterator.deserializeString(), iterator.deserializeVehicle())
+                "add_if_min" -> AddIfMin(iterator.deserializeString(), iterator.deserializeVehicle())
                 "clear" -> Clear
                 "count_by_type" -> CountByType(iterator.deserializeVehicleType())
                 "exit" -> Exit
@@ -20,12 +20,12 @@ object CommandDeserializer {
                 "show" -> Show
                 "sum_of_engine_power" -> SumOfEnginePower
                 "update" -> Update(iterator.deserializeInt(), iterator.deserializeVehicle())
-                else -> throw DeserializeException("Соответствующая команда не найдена при десериализации")
+                else -> throw DeserializeException("###Соответствующая команда не найдена при десериализации")
             }
         } catch (ex: DeserializeException) {
             throw ex
         } catch (ex: Exception) {
-            throw DeserializeException("Ошибка десериализации", ex)
+            throw DeserializeException("###Ошибка десериализации", ex)
         }
     }
 }
