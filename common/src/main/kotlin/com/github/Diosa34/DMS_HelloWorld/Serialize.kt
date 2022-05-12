@@ -21,7 +21,7 @@ private inline fun numberSerialise(number: ULong, l: Int): ByteArray {
     return ByteArray(l - bytes.size) { 0 } + bytes.reversed()
 }
 
-fun Int.serialize() = numberSerialise(this.toULong(), 4)
+fun Int.serialize() = numberSerialise(this.toUInt().toULong(), 4)
 
 fun Long.serialize() = numberSerialise(this.toULong(), 8)
 

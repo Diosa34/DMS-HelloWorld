@@ -40,7 +40,7 @@ fun Iterator<UByte>.deserializeNumber(size: Int): ULong {
 }
 
 fun Iterator<UByte>.deserializeInt(): Int {
-    return this.deserializeNumber(4).toInt()
+    return this.deserializeNumber(4).toUInt().toInt()
 }
 
 fun Iterator<UByte>.deserializeLong(): Long {

@@ -12,10 +12,14 @@ version = "1.0"
 application {
     mainClass.set("com.github.Diosa34.DMS_HelloWorld.Main")
 }
+val exposedVersion: String by project
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("com.github.Diosa34:ObjectConverter:master-SNAPSHOT")
     testImplementation(kotlin("test"))
+    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
 }
 repositories {
     mavenCentral()

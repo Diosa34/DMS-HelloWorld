@@ -13,17 +13,4 @@ enum class InstanceCreator(private val creator : (AbstractStringReader) -> Vehic
     CREATE_WITH_INPUT({stringReader -> instanceCreate(ConsoleLogger, 3)});
 
     override operator fun invoke(stringReader: AbstractStringReader) = creator(stringReader)
-
-//    fun serialize(): ByteArray{
-//        val bytes: ByteArray = typeToString[this]!!.serialize()
-//        return bytes
-//    }
-//
-//    companion object{
-//        @JvmStatic
-//        val typeToString: Map<InstanceCreator, String> = mapOf(
-//            CREATE_FROM_FILE to "GASOLINE",
-//            CREATE_WITH_INPUT to "DIESEL",
-//        )
-//    }
 }
