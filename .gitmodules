@@ -1,0 +1,6 @@
+[submodule "Lab5"]
+	path = Lab5
+	url = https://github.com/Diosa34/DMS-HelloWorld
+[submodule "Lab6"]
+	path = Lab6
+	url = https://github.com/Diosa34/DMS-HelloWorld
