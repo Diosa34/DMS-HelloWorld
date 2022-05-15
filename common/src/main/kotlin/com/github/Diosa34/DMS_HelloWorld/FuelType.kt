@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalUnsignedTypes::class)
+
 package com.github.Diosa34.DMS_HelloWorld
 
 private var countOfInstances = 0
@@ -9,7 +11,7 @@ enum class FuelType {
 
     var index: Int = countOfInstances++
 
-    fun serialize(): ByteArray {
+    fun serialize(): UByteArray {
         return typeToString[this]!!.serialize()
     }
 

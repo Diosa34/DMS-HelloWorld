@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalUnsignedTypes::class)
+
 package com.github.Diosa34.DMS_HelloWorld
 
 import java.io.File
@@ -11,8 +13,8 @@ class ExecuteScript(
         HistoryOfExecutingScripts.removeScript()
     }
 
-    override fun serialize(): ByteArray{
-        var bytes: ByteArray = title.serialize()
+    override fun serialize(): UByteArray{
+        var bytes: UByteArray = title.serialize()
         bytes += this.path.serialize()
         return bytes
     }

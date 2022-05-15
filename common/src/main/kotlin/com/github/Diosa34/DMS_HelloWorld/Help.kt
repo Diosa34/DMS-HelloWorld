@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalUnsignedTypes::class)
+
 package com.github.Diosa34.DMS_HelloWorld
 
 object Help: BoundCommand, AbstractDescription {
@@ -10,7 +12,7 @@ object Help: BoundCommand, AbstractDescription {
         }
     }
 
-    override fun serialize(): ByteArray {
+    override fun serialize(): UByteArray {
         return title.serialize()
     }
 }

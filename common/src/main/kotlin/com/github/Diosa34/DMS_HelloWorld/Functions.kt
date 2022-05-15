@@ -33,6 +33,7 @@ fun <T: Any> tryGet(field: String, t: Int, message: String, number: String.() ->
 /**
  * Verification the validity of an argument execution сonstructor for creating an instance based on file
  */
+@Suppress("NAME_SHADOWING")
 fun instanceCreate(id: String, creationTime: String, type: String, name: String, x: String, y: String,
                    enginePower: String, fuel: String, t: Int) : Vehicle? {
 

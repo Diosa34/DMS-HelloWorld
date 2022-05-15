@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalUnsignedTypes::class)
+
 package com.github.Diosa34.DMS_HelloWorld
 
 object Info: ApplicableToCollection, AbstractDescription {
@@ -15,7 +17,7 @@ object Info: ApplicableToCollection, AbstractDescription {
         }
     }
 
-    override fun serialize(): ByteArray {
+    override fun serialize(): UByteArray {
         return title.serialize()
     }
 

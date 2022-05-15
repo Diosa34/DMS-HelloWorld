@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalUnsignedTypes::class)
+
 package com.github.Diosa34.DMS_HelloWorld
 
 class Update(
@@ -22,8 +24,8 @@ class Update(
         }
     }
 
-    override fun serialize(): ByteArray{
-        var bytes: ByteArray = title.serialize()
+    override fun serialize(): UByteArray{
+        var bytes: UByteArray = title.serialize()
         bytes += this.id.serialize()
         bytes += this.vehicle.serialize()
         return bytes

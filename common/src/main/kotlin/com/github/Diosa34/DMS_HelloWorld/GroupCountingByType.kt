@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalUnsignedTypes::class)
+
 package com.github.Diosa34.DMS_HelloWorld
 
 object GroupCountingByType: ApplicableToCollection, AbstractDescription {
@@ -20,7 +22,7 @@ object GroupCountingByType: ApplicableToCollection, AbstractDescription {
         logger.print("$countOfShip - количество кораблей")
     }
 
-    override fun serialize(): ByteArray {
+    override fun serialize(): UByteArray {
         return title.serialize()
     }
 }

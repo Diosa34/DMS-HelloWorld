@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalUnsignedTypes::class)
+
 package com.github.Diosa34.DMS_HelloWorld
 
 class CountByType(
@@ -10,8 +12,8 @@ class CountByType(
         logger.print("Количество средств передвижения типа ${this.type}: $count")
     }
 
-    override fun serialize(): ByteArray {
-        var bytes: ByteArray = title.serialize()
+    override fun serialize(): UByteArray {
+        var bytes: UByteArray = title.serialize()
         bytes += this.type.serialize()
         return bytes
     }

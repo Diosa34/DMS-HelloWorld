@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalUnsignedTypes::class)
+
 package com.github.Diosa34.DMS_HelloWorld
 
 private var countOfInstances = 0
@@ -9,8 +11,8 @@ enum class VehicleType {
 
     var index: Int = countOfInstances++
 
-    fun serialize(): ByteArray{
-        val bytes: ByteArray = typeToString[this]!!.serialize()
+    fun serialize(): UByteArray{
+        val bytes: UByteArray = typeToString[this]!!.serialize()
         return bytes
     }
 
