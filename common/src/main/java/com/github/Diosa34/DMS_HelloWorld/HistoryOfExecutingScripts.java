@@ -11,12 +11,12 @@ import java.util.LinkedList;
 public class HistoryOfExecutingScripts extends LinkedList<Path> {
     public static HistoryOfExecutingScripts CollectionOfFiles = new HistoryOfExecutingScripts();
 
-    public static void addScript(Logger logger, String filepath) {
+    public static void addScript(Logger logger, String filepath) throws IOException {
         try {
             if (!FileVerification.isSameLinks(new File(filepath).toPath())) {
                 CollectionOfFiles.add(new File(filepath).toPath());
             }
-        } catch(SameLinksException | IOException e){
+        } catch(SameLinksException e){
             logger.print(SameLinksException.message);
         }
     }

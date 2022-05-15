@@ -6,12 +6,19 @@ plugins {
     kotlin("jvm")
 }
 
+val exposedVersion: String by project
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("com.github.Diosa34:ObjectConverter:master-SNAPSHOT")
     testImplementation(kotlin("test"))
     implementation(project(":common"))
     implementation(project(":client"))
+    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+    implementation("org.postgresql:postgresql:42.3.4")
+    implementation("com.h2database:h2:2.1.212")
+    implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
 }
 repositories {
     mavenCentral()

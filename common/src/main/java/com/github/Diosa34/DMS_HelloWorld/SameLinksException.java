@@ -1,5 +1,7 @@
 package com.github.Diosa34.DMS_HelloWorld;
 
-public class SameLinksException extends Exception{
-    public static String message = "Введена несуществующая команда, информация о командах доступна по команде 'help'";
+import java.io.IOException;
+
+public class SameLinksException extends IOException {
+    public static String message = "Этот скрипт уже выполняется в данный момент";
 }

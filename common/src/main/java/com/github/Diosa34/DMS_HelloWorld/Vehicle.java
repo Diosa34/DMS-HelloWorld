@@ -56,6 +56,8 @@ public class Vehicle implements Convertible, Comparable<String> {
         this.fuelType = fuelType;
     }
 
+
+
     @Override
     public String toString() {
         return "Номер: " + getId() + "\n" + "Марка: " + getName() + "\n" + "Координаты: " + getCoordinates().toString() + "\n" +

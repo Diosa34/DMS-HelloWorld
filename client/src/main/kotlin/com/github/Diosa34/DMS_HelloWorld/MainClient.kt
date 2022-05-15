@@ -18,6 +18,5 @@ fun main() {
 
     logger.print("Информация о командах доступна по команде 'help'")
 
-    RequestManager("MyXML.xml")
     RequestManager.manage(logger, 3, InstanceCreator.CREATE_WITH_INPUT, ConsoleStringReader, client)
 }
