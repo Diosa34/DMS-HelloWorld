@@ -69,7 +69,7 @@ object CommandParser{
                 }
                 val id: Int =
                     tryGet(changableId, attempts, "Введите одно из чисел" +
-                            " ${CollectionOfVehicles.globalCollection.map { it.id }}") {
+                            " ${CollectionInMemory.collection.map { it.id }}") {
                         toIntOrNull()
                     } ?: throw ParseException()
                 RemoveById(id)
@@ -96,7 +96,7 @@ object CommandParser{
                 }
                 val id: Int =
                     tryGet(chanId, attempts, "Введите одно из чисел" +
-                            " ${CollectionOfVehicles.globalCollection.map { it.id }}") {
+                            " ${CollectionInMemory.collection.map { it.id }}") {
                         toIntOrNull()
                     } ?: throw ParseException()
                 Update(id, creator.invoke(stringReader) ?: throw ParseException())

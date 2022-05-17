@@ -5,15 +5,10 @@ class RemoveById(
 ): ApplicableToCollection {
 
     override fun execute(logger: Logger, collection: CollectionOfVehicles) {
-        if (collection.size == 0) {
-            logger.print("Коллекция пуста")
-        } else if (collection.any { it.id == id }) {
-            collection.removeIf {
-                it.id == id
-            }
-            logger.print("Элемент c id $id удалён")
-        } else if (collection.none { it.id == id }) {
-            logger.print("Элемент с id $id не найден")
+        when (collection.removeById(id)) {
+            CollectionOfVehicles.RemoveByIdResult.EMPTY -> logger.print("Коллекция пуста, элемент с id $id не удалён")
+            CollectionOfVehicles.RemoveByIdResult.DELETED -> logger.print("Элемент c id $id успешно удалён")
+            CollectionOfVehicles.RemoveByIdResult.NOT_FOUND -> logger.print("Элемент с id $id не найден")
         }
     }
 

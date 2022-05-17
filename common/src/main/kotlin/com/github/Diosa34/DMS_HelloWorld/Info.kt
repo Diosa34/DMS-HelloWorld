@@ -5,21 +5,12 @@ object Info: ApplicableToCollection, AbstractDescription {
     override val help: String = "вывести информацию о коллекции"
 
     override fun execute(logger: Logger, collection: CollectionOfVehicles){
-        logger.print("Тип: средства передвижения")
-        logger.print("Количество элементов: ${collection.size}")
-        if (collection.size > 0) {
-            val minDate = collection.minOf { elem -> elem.creationDate }
-            logger.print("Дата инициализации: $minDate")
-        } else {
-            logger.print("Коллекция не проинициализирована")
-        }
+        logger.print(collection.info().typeOfCollection)
+        logger.print(collection.info().initDate.toString())
+        logger.print(collection.info().elemCount.toString())
     }
 
     override fun serialize(): ByteArray {
         return title.serialize()
     }
-
-//    fun <T, A, R> execute(arg: T, f: (T, A) -> R) : (A) -> R = {a ->
-//        f(arg, a)
-//    }
 }

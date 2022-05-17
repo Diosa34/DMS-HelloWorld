@@ -3,11 +3,12 @@ package com.github.Diosa34.DMS_HelloWorld
 import java.time.LocalDateTime
 import java.util.*
 
-class CollectionInMemory(
-    private val initDate: LocalDateTime
-): CollectionOfVehicles {
-    private val collection: LinkedList<Vehicle> = LinkedList()
 
+object CollectionInMemory: CollectionOfVehicles {
+    @JvmField
+    val collection: LinkedList<Vehicle> = LinkedList()
+    private val initDate: LocalDateTime = LocalDateTime.now()
+    
     override fun add(vehicle: Vehicle) {
         this.collection.add(vehicle)
     }

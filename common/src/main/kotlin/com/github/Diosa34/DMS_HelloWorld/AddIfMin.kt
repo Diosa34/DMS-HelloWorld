@@ -5,17 +5,10 @@ class AddIfMin(
     private val vehicle: Vehicle
 ): ApplicableToCollection {
     override fun execute(logger: Logger, collection: CollectionOfVehicles) {
-        if (CollectionOfVehicles.globalCollection.size != 0){
-            val minElem = CollectionOfVehicles.globalCollection.sortedWith(compareBy { it.name.length })[0]
-            if (minElem.compareTo(name) > 0) {
-                CollectionOfVehicles.globalCollection.add(vehicle)
-                logger.print("Элемент успешно добавлен в коллекцию")
-            } else {
-                logger.print("Найдены элементы с таким же по длине или более коротким названием, новый элемент НЕ был добавлен")
-            }
-        } else {
-            CollectionOfVehicles.globalCollection.add(vehicle)
-            logger.print("Коллекция была пуста, элемент успешно добавлен")
+        when (collection.addIfMin(name, vehicle)) {
+            CollectionOfVehicles.AddIfMinResult.EMPTY -> logger.print("Коллекция была пуста, элемент успешно добавлен")
+            CollectionOfVehicles.AddIfMinResult.SUCCESS -> logger.print("Элемент успешно добавлен в коллекцию")
+            CollectionOfVehicles.AddIfMinResult.LESS_FOUND -> logger.print("Найдены элементы с таким же по длине или более коротким названием, новый элемент НЕ был добавлен")
         }
     }
 

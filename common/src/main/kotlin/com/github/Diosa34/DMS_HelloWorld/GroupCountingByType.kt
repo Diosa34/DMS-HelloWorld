@@ -6,18 +6,9 @@ object GroupCountingByType: ApplicableToCollection, AbstractDescription {
             " количество элементов в каждой группе"
 
     override fun execute(logger: Logger, collection: CollectionOfVehicles) {
-        val countOfCar = collection.count {
-            it.type == VehicleType.CAR
-        }
-        val countOfSubmarine = collection.count {
-            it.type == VehicleType.SUBMARINE
-        }
-        val countOfShip = collection.count {
-            it.type == VehicleType.SHIP
-        }
-        logger.print("$countOfCar - количество машин")
-        logger.print("$countOfSubmarine - количество подводных лодок")
-        logger.print("$countOfShip - количество кораблей")
+        logger.print("${collection.groupCountingByType().countOfCar} - количество машин")
+        logger.print("${collection.groupCountingByType().countOfSubmarine} - количество подводных лодок")
+        logger.print("${collection.groupCountingByType().countOfShip} - количество кораблей")
     }
 
     override fun serialize(): ByteArray {

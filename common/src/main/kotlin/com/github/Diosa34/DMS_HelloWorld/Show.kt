@@ -5,10 +5,8 @@ object Show: ApplicableToCollection, AbstractDescription {
      override val help: String = "вывести все элементы коллекции"
 
     override fun execute(logger: Logger, collection: CollectionOfVehicles) {
-        if (collection.size > 0) {
-            for (elem in collection) {
-                logger.print(elem.toString())
-            }
+        if (collection.iterator().hasNext()) {
+            collection.iterator().next().toString()
         } else {
             logger.print("Коллекция пуста")
         }

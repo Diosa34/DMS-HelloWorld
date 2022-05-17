@@ -5,17 +5,10 @@ class RemoveLower(
 ): ApplicableToCollection {
 
     override fun execute(logger: Logger, collection: CollectionOfVehicles) {
-        if (CollectionOfVehicles.globalCollection!!.size != 0) {
-            if (collection.any { it < name }) {
-                CollectionOfVehicles.globalCollection.removeIf { elem ->
-                    elem < name
-                }
-                logger.print("Элементы удалены")
-            } else {
-                logger.print("Элементов с более короткой маркой не найдено")
-            }
-        } else {
-            logger.print("Коллекция пуста, нет элементов для удаления")
+        when (collection.removeLower(name)) {
+            CollectionOfVehicles.RemoveLowerResult.EMPTY -> logger.print("Коллекция пуста, нет элементов для удаления")
+            CollectionOfVehicles.RemoveLowerResult.DELETED -> logger.print("Элементы удалены")
+            CollectionOfVehicles.RemoveLowerResult.LESS_NOT_FOUND -> logger.print("Элементов с более короткой маркой не найдено")
         }
     }
 

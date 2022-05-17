@@ -57,7 +57,6 @@ public class Vehicle implements Convertible, Comparable<String> {
     }
 
 
-
     @Override
     public String toString() {
         return "Номер: " + getId() + "\n" + "Марка: " + getName() + "\n" + "Координаты: " + getCoordinates().toString() + "\n" +
@@ -110,9 +109,9 @@ public class Vehicle implements Convertible, Comparable<String> {
     /**
      * A new ID is created that is one greater than the largest existing one.
      */
-    public static int idGenerator(){
+    public static int idGenerator() {
         int maxId = 0;
-        for (Vehicle vehicle : CollectionOfVehicles.globalCollection) {
+        for (Vehicle vehicle : CollectionInMemory.collection) {
             if (vehicle.getId() >= maxId) {
                 maxId = vehicle.getId();
             }
@@ -125,7 +124,7 @@ public class Vehicle implements Convertible, Comparable<String> {
      */
     @Override
     public int compareTo(@NotNull String o) {
-        return name.length()-o.length();
+        return name.length() - o.length();
     }
 
     public VehicleType getVehicleType() {

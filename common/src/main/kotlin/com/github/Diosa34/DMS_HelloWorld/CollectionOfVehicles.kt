@@ -60,7 +60,7 @@ interface CollectionOfVehicles: Iterable<Vehicle> {
     }
 
     class Information(
-        val elemCount: Int,
+        val elemCount: Int = 0,
         val initDate: LocalDateTime
     ) {
         val typeOfCollection = "Средства передвижения"

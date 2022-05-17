@@ -5,20 +5,10 @@ class Update(
     private val vehicle: Vehicle,
 ): ApplicableToCollection {
     override fun execute(logger: Logger, collection: CollectionOfVehicles){
-        if (collection.size > 0) {
-            if (collection.none { it.id == this.id }) {
-                logger.print("Элементов с соответствующим id не найдено")
-                return
-            }
-            for (elem in collection) {
-                if (elem.id == id) {
-                    collection[collection.indexOf(elem)] = vehicle
-                    logger.print("Элемент успешно обновлён")
-                    return
-                }
-            }
-        } else {
-            logger.print("Коллекция пуста, элемент НЕ был обновлён")
+        when (collection.update(id, vehicle)) {
+            CollectionOfVehicles.UpdateResult.EMPTY -> logger.print("Коллекция пуста, элемент НЕ был обновлён")
+            CollectionOfVehicles.UpdateResult.UPDATED -> logger.print("Элемент успешно обновлён")
+            CollectionOfVehicles.UpdateResult.NOT_FOUND -> logger.print("Элементов с соответствующим id не найдено")
         }
     }
 

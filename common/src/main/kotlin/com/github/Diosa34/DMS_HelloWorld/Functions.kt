@@ -74,8 +74,8 @@ fun instanceCreate(id: String, creationTime: String, type: String, name: String,
         }
     } ?: return@instanceCreate null
 
-    val id: Int = tryGet(id, t, "ID должно быть любым целым числом, кроме ${CollectionOfVehicles.globalCollection.map { it.id }}") {
-        toIntOrNull()?.takeIf { !CollectionOfVehicles.globalCollection.map { it.id }.contains(toIntOrNull())}
+    val id: Int = tryGet(id, t, "ID должно быть любым целым числом, кроме ${CollectionInMemory.collection.map { it.id }}") {
+        toIntOrNull()?.takeIf { !CollectionInMemory.collection.map { it.id }.contains(toIntOrNull())}
     } ?: return@instanceCreate null
 
     val time: ZonedDateTime = tryGet(creationTime, t, "Тег <creationDate> должен содержать правильное имя" +

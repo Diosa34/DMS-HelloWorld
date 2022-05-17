@@ -4,10 +4,8 @@ class CountByType(
     private val type: VehicleType
 ): ApplicableToCollection {
     override fun execute(logger: Logger, collection: CollectionOfVehicles) {
-        val count = collection.count {
-            it.type == this.type
-        }
-        logger.print("Количество средств передвижения типа ${this.type}: $count")
+        logger.print("Количество средств передвижения типа ${this.type}:" +
+                " ${collection.countByType(type)}")
     }
 
     override fun serialize(): ByteArray {

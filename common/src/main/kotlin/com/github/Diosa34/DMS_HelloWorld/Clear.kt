@@ -5,12 +5,8 @@ object Clear : ApplicableToCollection, AbstractDescription {
     override val help: String = "очистить коллекцию"
 
     override fun execute(logger: Logger, collection: CollectionOfVehicles) {
-        if (collection.size > 0) {
-            collection.clear()
-            logger.print("Коллекция очищена")
-        } else {
-            logger.print("Коллекция была пуста")
-        }
+        collection.clear()
+        logger.print("Коллекция очищена")
     }
 
     override fun serialize(): ByteArray {

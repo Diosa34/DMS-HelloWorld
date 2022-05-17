@@ -2,7 +2,7 @@ package com.github.Diosa34.DMS_HelloWorld
 
 fun executeCall(command: BoundCommand, logger: Logger){
     when (command) {
-        is ApplicableToCollection -> command.execute(logger, CollectionOfVehicles.globalCollection)
+        is ApplicableToCollection -> command.execute(logger, SQLAndMemoryCollection())
         is SystemCommand -> command.execute(logger)
         is Help -> command.execute(logger, Add.Description, AddIfMin.Description, Clear,
             CountByType.Description, ExecuteScript.Description, Exit, GroupCountingByType, Help,
