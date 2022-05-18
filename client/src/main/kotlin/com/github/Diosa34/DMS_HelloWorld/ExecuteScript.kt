@@ -7,7 +7,13 @@ class ExecuteScript(
 ): BoundCommand {
     fun execute(logger: Logger, client: Client){
         logger.print("Выполнение скрипта: ${File(path)}")
-        RequestManager.manage(logger, 1, InstanceCreator.CREATE_FROM_FILE, FileStringReader(path), client)
+        RequestManager.manage(
+            logger,
+            1,
+            InstanceCreator.CREATE_FROM_FILE,
+            FileStringReader(path),
+            client
+        )
         HistoryOfExecutingScripts.removeScript()
     }
 

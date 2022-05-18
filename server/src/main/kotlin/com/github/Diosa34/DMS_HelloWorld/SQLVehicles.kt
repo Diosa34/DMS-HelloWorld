@@ -18,6 +18,5 @@ object SQLVehicles: Table() {
 }
 
 object InformationTable: Table() {
-    var count: Column<Int> = integer("count")
     val initDate: Column<LocalDateTime> = datetime("initDate")
 }

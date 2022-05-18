@@ -4,7 +4,6 @@ import java.net.ConnectException
 import java.net.InetAddress
 
 fun main() {
-    CollectionOfVehicles()
     val logger: Logger = ConsoleLogger
     val host: InetAddress = InetAddress.getLocalHost()
     val port = 6789

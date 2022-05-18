@@ -1,9 +1,11 @@
 package com.github.Diosa34.DMS_HelloWorld
 
+import java.lang.IllegalStateException
 import java.net.*
 import java.nio.ByteBuffer
 import java.nio.channels.ServerSocketChannel
 import java.nio.channels.SocketChannel
+import java.sql.SQLException
 
 class Server(
     host: InetAddress,
@@ -40,7 +42,17 @@ class Server(
             return
         }
         println("Hello3")
-        executeCall(command, bufferLogger)
+        try {
+            executeCall(command, bufferLogger)
+        } catch (ex: CollectionException) {
+            bufferLogger.print(ex.message)
+        } catch (ex: SQLException) {
+            bufferLogger.print("Ошибка обращения к базе данных")
+        } catch (ex: IllegalStateException){
+            println("Проблемы с транзакцией")
+            bufferLogger.print("Доступ к базе данных не получен")
+        }
+
         bufferLogger.flush()
         println("Hello4")
     }
