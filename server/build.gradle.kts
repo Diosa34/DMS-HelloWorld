@@ -26,6 +26,7 @@ kotlin {
                 implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
                 implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
                 implementation("com.github.Diosa34:ObjectConverter:master-SNAPSHOT")
+                implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
                 implementation(project(":common"))
                 implementation(project(":client"))
             }

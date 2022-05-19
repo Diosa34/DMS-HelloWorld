@@ -21,7 +21,7 @@ object RequestManager {
                     }
                 }
                 try {
-                    client.send(command.serialize())
+                    client.send(command.serialize().toByteArray())
                     client.receive()
                 } catch (ex: ConnectException) {
                     logger.print("Соединение прервано, перезапустите сервер, затем клиента")
