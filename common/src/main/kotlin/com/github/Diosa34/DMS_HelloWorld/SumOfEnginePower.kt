@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalUnsignedTypes::class)
+
 package com.github.Diosa34.DMS_HelloWorld
 
 object SumOfEnginePower: ApplicableToCollection, AbstractDescription {
@@ -8,7 +10,7 @@ object SumOfEnginePower: ApplicableToCollection, AbstractDescription {
         logger.print("Суммарная мощность двигателей: ${collection.sumOfEnginePower()}")
     }
 
-    override fun serialize(): ByteArray {
+    override fun serialize(): UByteArray {
         return title.serialize()
     }
 }

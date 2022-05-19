@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalUnsignedTypes::class)
+
 package com.github.Diosa34.DMS_HelloWorld
 
 import java.lang.IllegalStateException
@@ -13,13 +15,13 @@ class Server(
     var sock: SocketChannel = SocketChannel.open()
 ) {
     val serv: ServerSocketChannel = ServerSocketChannel.open()
+
     init {
         val addr: SocketAddress = InetSocketAddress(host, port)
         serv.bind(addr)
         this.sock = serv.accept()
     }
 
-    @OptIn(ExperimentalUnsignedTypes::class)
     fun receive() {
         val arr = ByteArray(1024 * 1024)
         val buf = ByteBuffer.wrap(arr)

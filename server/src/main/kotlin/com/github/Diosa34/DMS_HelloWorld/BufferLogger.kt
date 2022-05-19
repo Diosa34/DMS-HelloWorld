@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalUnsignedTypes::class)
+
 package com.github.Diosa34.DMS_HelloWorld
 
 import java.nio.ByteBuffer
@@ -17,6 +19,6 @@ class BufferLogger(
     }
 
     fun flush() {
-        this.sock.write(ByteBuffer.wrap(this.buf.serialize()))
+        this.sock.write(ByteBuffer.wrap(this.buf.serialize().toByteArray()))
     }
 }

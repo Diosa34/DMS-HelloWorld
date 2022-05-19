@@ -1,34 +1,34 @@
-@file:Suppress("EXPERIMENTAL_API_USAGE")
+@file:Suppress("EXPERIMENTAL_API_USAGE", "OPT_IN_USAGE")
 
 package com.github.Diosa34.DMS_HelloWorld
 
 import java.util.*
 
-fun String.serialize(): ByteArray {
-    val str: ByteArray = this.toByteArray(Charsets.UTF_8)
+fun String.serialize(): UByteArray {
+    val str: UByteArray = this.toByteArray(Charsets.UTF_8).toUByteArray()
     return str.size.serialize() + str
 }
 
 @Suppress("NOTHING_TO_INLINE")
-private inline fun numberSerialise(number: ULong, l: Int): ByteArray {
+private inline fun numberSerialise(number: ULong, l: Int): UByteArray {
     @Suppress("NAME_SHADOWING")
     var number = number
-    val bytes = mutableListOf<Byte>()
+    val bytes = mutableListOf<UByte>()
     while (number != 0UL) {
-        bytes.add((number % 256UL).toByte())
+        bytes.add((number % 256UL).toUByte())
         number /= 256UL
     }
-    return ByteArray(l - bytes.size) { 0 } + bytes.reversed()
+    return UByteArray(l - bytes.size) { 0u } + bytes.reversed()
 }
 
 fun Int.serialize() = numberSerialise(this.toUInt().toULong(), 4)
 
 fun Long.serialize() = numberSerialise(this.toULong(), 8)
 
-fun Float.serialize(): ByteArray = this.toRawBits().serialize()
+fun Float.serialize(): UByteArray = this.toRawBits().serialize()
 
-fun Vehicle.serialize(): ByteArray {
-    var bytes: ByteArray = this.id.serialize()
+fun Vehicle.serialize(): UByteArray {
+    var bytes: UByteArray = this.id.serialize()
     bytes += this.name.serialize()
     bytes += this.coordinates.serialize()
     bytes += Date.from(this.creationDate.toInstant()).time.serialize()
@@ -38,8 +38,8 @@ fun Vehicle.serialize(): ByteArray {
     return bytes
 }
 
-fun Coordinates.serialize(): ByteArray {
-    var bytes: ByteArray = this.x.serialize()
+fun Coordinates.serialize(): UByteArray {
+    var bytes: UByteArray = this.x.serialize()
     bytes += this.y.serialize()
     return bytes
 }

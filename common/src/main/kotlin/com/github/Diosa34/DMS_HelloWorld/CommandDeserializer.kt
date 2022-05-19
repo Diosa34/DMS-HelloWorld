@@ -1,7 +1,8 @@
+@file:OptIn(ExperimentalUnsignedTypes::class)
+
 package com.github.Diosa34.DMS_HelloWorld
 
 object CommandDeserializer {
-    @OptIn(ExperimentalUnsignedTypes::class)
     fun deserialize(command: UByteArray): BoundCommand{
         val iterator = command.iterator()
         try {

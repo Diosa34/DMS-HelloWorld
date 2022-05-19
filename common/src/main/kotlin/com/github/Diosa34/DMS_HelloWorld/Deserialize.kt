@@ -1,4 +1,4 @@
-@file:Suppress("EXPERIMENTAL_API_USAGE")
+@file:OptIn(ExperimentalUnsignedTypes::class)
 
 package com.github.Diosa34.DMS_HelloWorld
 
@@ -34,7 +34,7 @@ class IteratorByte(
 fun Iterator<UByte>.deserializeNumber(size: Int): ULong {
     var number: ULong = 0U
     for (i in IteratorByte(this, size)){
-        number += number * 256U + i.toULong()
+        number = number * 256U + i.toULong()
     }
     return number
 }
