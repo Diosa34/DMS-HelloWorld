@@ -28,8 +28,7 @@ fun Long.serialize() = numberSerialise(this.toULong(), 8)
 fun Float.serialize(): UByteArray = this.toRawBits().serialize()
 
 fun Vehicle.serialize(): UByteArray {
-    var bytes: UByteArray = this.id.serialize()
-    bytes += this.name.serialize()
+    var bytes: UByteArray = this.name.serialize()
     bytes += this.coordinates.serialize()
     bytes += Date.from(this.creationDate.toInstant()).time.serialize()
     bytes += this.enginePower.serialize()

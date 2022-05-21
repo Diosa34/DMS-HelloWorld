@@ -34,8 +34,8 @@ fun <T: Any> tryGet(field: String, t: Int, message: String, number: String.() ->
  * Verification the validity of an argument execution сonstructor for creating an instance based on file
  */
 @Suppress("NAME_SHADOWING")
-fun instanceCreate(id: String, creationTime: String, type: String, name: String, x: String, y: String,
-                   enginePower: String, fuel: String, t: Int) : Vehicle? {
+fun instanceCreate(name: String, x: String, y: String,
+                   enginePower: String, type: String, fuel: String, t: Int) : Vehicle? {
 
     // ?. - функция или поле берётся, если слева НЕ null, в противном случае результат выражения null
     // ?: - функция или поле берётся, если слева null, в противном случае берётся левая часть и кастуется к NotNull
@@ -75,34 +75,32 @@ fun instanceCreate(id: String, creationTime: String, type: String, name: String,
         }
     } ?: return@instanceCreate null
 
-    val id: Int = tryGet(id, t, "ID должно быть любым целым числом, кроме ${CollectionInMemory.collection.map { it.id }}") {
-        toIntOrNull()?.takeIf { !CollectionInMemory.collection.map { it.id }.contains(toIntOrNull())}
-    } ?: return@instanceCreate null
-
-    val time: ZonedDateTime = tryGet(creationTime, t, "Тег <creationDate> должен содержать правильное имя" +
-            " часового пояса в формате Continent/Region, например, Europe/Moscow") {
-        var creationTime1 = this
-        if (!creationTime1.startsWith("[")){
-            creationTime1 = creationTime1.substring(creationTime1.indexOf("[")+1,creationTime1.indexOf("]"))
-        } else {
-            creationTime1 = creationTime
-        }
-        try {
-            Instant.now().atZone(ZoneId.of((creationTime1.split(" ")).joinToString ("/")))
-        } catch (ex: DateTimeParseException) {
-            return@tryGet null
-        } catch (ex: ZoneRulesException) {
-            return@tryGet null
-        } catch (ex: DateTimeException) {
-            return@tryGet null
-        }
-    } ?: return@instanceCreate null
+//    val id: Int = tryGet(id, t, "Элемент с таким id уже есть в коллекции") {
+//        toIntOrNull()?.takeIf { !CollectionInMemory.collection.map { it.id }.contains(toIntOrNull())}
+//    } ?: return@instanceCreate null
+//
+//    val time: ZonedDateTime = tryGet(creationTime, t, "Тег <creationDate> должен содержать правильное имя" +
+//            " часового пояса в формате Continent/Region, например, Europe/Moscow") {
+//        var creationTime1 = this
+//        if (!creationTime1.startsWith("[")){
+//            creationTime1 = creationTime1.substring(creationTime1.indexOf("[")+1,creationTime1.indexOf("]"))
+//        } else {
+//            creationTime1 = creationTime
+//        }
+//        try {
+//            Instant.now().atZone(ZoneId.of((creationTime1.split(" ")).joinToString ("/")))
+//        } catch (ex: DateTimeParseException) {
+//            return@tryGet null
+//        } catch (ex: ZoneRulesException) {
+//            return@tryGet null
+//        } catch (ex: DateTimeException) {
+//            return@tryGet null
+//        }
+//    } ?: return@instanceCreate null
 
     return Vehicle(
-        id,
         name,
         Coordinates(x, y),
-        time,
         enginePower,
         type,
         fuel

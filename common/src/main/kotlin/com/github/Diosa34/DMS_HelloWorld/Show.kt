@@ -8,10 +8,13 @@ object Show: ApplicableToCollection, AbstractDescription {
 
     override fun execute(logger: Logger, collection: CollectionOfVehicles) {
         if (collection.iterator().hasNext()) {
-            collection.iterator().next().toString()
+            for (i in collection) {
+                logger.print(i.toString())
+            }
         } else {
             logger.print("Коллекция пуста")
         }
+        collection.print()
     }
 
     override fun serialize(): UByteArray {

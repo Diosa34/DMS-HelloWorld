@@ -3,6 +3,7 @@ package com.github.Diosa34.DMS_HelloWorld
 import java.time.LocalDateTime
 
 interface CollectionOfVehicles: Iterable<Vehicle> {
+    fun print()
     fun add(vehicle: Vehicle)
 
     fun addIfMin(name: String, vehicle: Vehicle): AddIfMinResult

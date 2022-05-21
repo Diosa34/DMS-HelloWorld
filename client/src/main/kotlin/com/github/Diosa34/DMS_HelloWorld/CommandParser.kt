@@ -45,7 +45,7 @@ object CommandParser{
                 CountByType(type)
             }
             "execute_script" -> {
-                val path = if (args.size < 2){
+                val path = if (args.isEmpty()){
                     logger.print("Введите путь к файлу, который хотите прочитать")
                     stringReader.getNextLine()
                 } else {
@@ -68,8 +68,7 @@ object CommandParser{
                     args[0]
                 }
                 val id: Int =
-                    tryGet(changableId, attempts, "Введите одно из чисел" +
-                            " ${CollectionInMemory.collection.map { it.id }}") {
+                    tryGet(changableId, attempts, "Введите число") {
                         toIntOrNull()
                     } ?: throw ParseException()
                 RemoveById(id)
@@ -95,8 +94,7 @@ object CommandParser{
                     args[0]
                 }
                 val id: Int =
-                    tryGet(chanId, attempts, "Введите одно из чисел" +
-                            " ${CollectionInMemory.collection.map { it.id }}") {
+                    tryGet(chanId, attempts, "Введите число") {
                         toIntOrNull()
                     } ?: throw ParseException()
                 Update(id, creator.invoke(stringReader) ?: throw ParseException())

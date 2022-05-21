@@ -14,7 +14,7 @@ import java.util.HashMap;
 @ClassAnnotation("element")
 public class Vehicle implements Convertible, Comparable<String> {
     @FieldAnnotation("id")
-    private final Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    public Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     @FieldAnnotation("name")
     private final String name; //Поле не может быть null, Строка не может быть пустой
     @FieldAnnotation("coordinates")
@@ -34,7 +34,17 @@ public class Vehicle implements Convertible, Comparable<String> {
      * Constructor for creating an instance based on console input
      */
     public Vehicle(String name, Coordinates coordinates, Float enginePower, VehicleType type, FuelType fuelType) {
-        this.id = idGenerator();
+        this.id = null;
+        this.name = name;
+        this.coordinates = coordinates;
+        this.creationDate = ZonedDateTime.now();
+        this.enginePower = enginePower;
+        this.vehicleType = type;
+        this.fuelType = fuelType;
+    }
+
+    public Vehicle(Integer id, String name, Coordinates coordinates, Float enginePower, VehicleType type, FuelType fuelType) {
+        this.id = id;
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = ZonedDateTime.now();
@@ -104,19 +114,6 @@ public class Vehicle implements Convertible, Comparable<String> {
         vehicleForXMLToJava.put("enginePower", "");
         vehicleForXMLToJava.put("vehicleType", "");
         vehicleForXMLToJava.put("fuelType", "");
-    }
-
-    /**
-     * A new ID is created that is one greater than the largest existing one.
-     */
-    public static int idGenerator() {
-        int maxId = 0;
-        for (Vehicle vehicle : CollectionInMemory.collection) {
-            if (vehicle.getId() >= maxId) {
-                maxId = vehicle.getId();
-            }
-        }
-        return maxId + 1;
     }
 
     /**

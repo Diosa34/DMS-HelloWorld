@@ -22,7 +22,7 @@ class Server(
         this.sock = serv.accept()
     }
 
-    fun receive() {
+    fun receive(collection: CollectionOfVehicles) {
         val arr = ByteArray(1024 * 1024)
         val buf = ByteBuffer.wrap(arr)
         println("Hello1")
@@ -45,7 +45,7 @@ class Server(
         }
         println("Hello3")
         try {
-            executeCall(command, bufferLogger)
+            executeCall(command, bufferLogger, collection)
         } catch (ex: CollectionException) {
             bufferLogger.print(ex.message)
         } catch (ex: SQLException) {

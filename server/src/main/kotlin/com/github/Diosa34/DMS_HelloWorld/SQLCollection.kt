@@ -2,16 +2,20 @@ package com.github.Diosa34.DMS_HelloWorld
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.ZoneOffset
 
-open class SQLCollection: CollectionOfVehicles {
+class SQLCollection: CollectionOfVehicles {
+    override fun print(){
+        TODO()
+    }
     override fun add(vehicle: Vehicle) {
-        SQLVehicles.insert (vehicle.sqlClosure)
+        transaction { SQLVehicles.insert (vehicle.sqlClosure) }
     }
 
     override fun addIfMin(name: String, vehicle: Vehicle): CollectionOfVehicles.AddIfMinResult {
-        return if (SQLVehicles.select { SQLStringLen(SQLVehicles.name) lessEq name.length}.empty()){
-            SQLVehicles.insert (vehicle.sqlClosure)
+        return if (transaction { SQLVehicles.select { SQLStringLen(SQLVehicles.name) lessEq name.length} }.empty()){
+            transaction { SQLVehicles.insert (vehicle.sqlClosure) }
             CollectionOfVehicles.AddIfMinResult.SUCCESS
         } else {
             CollectionOfVehicles.AddIfMinResult.LESS_FOUND
@@ -19,26 +23,28 @@ open class SQLCollection: CollectionOfVehicles {
     }
 
     override fun clear() {
-        SQLVehicles.deleteAll()
+        transaction { SQLVehicles.deleteAll() }
     }
 
     override fun countByType(type: VehicleType): Int {
-        return SQLVehicles.select { SQLVehicles.vehicleType eq type }.count().toInt()
+        return transaction { SQLVehicles.select { SQLVehicles.vehicleType eq type } }.count().toInt()
     }
 
     override fun groupCountingByType(): Groups {
-        return Groups(SQLVehicles.select { SQLVehicles.vehicleType eq VehicleType.CAR }.count().toInt(),
-            SQLVehicles.select {SQLVehicles.vehicleType eq VehicleType.SUBMARINE }.count().toInt(),
-            SQLVehicles.select {SQLVehicles.vehicleType eq VehicleType.SHIP }.count().toInt())
+        return Groups(
+            transaction { SQLVehicles.select { SQLVehicles.vehicleType eq VehicleType.CAR } }.count().toInt(),
+            transaction { SQLVehicles.select {SQLVehicles.vehicleType eq VehicleType.SUBMARINE } }.count().toInt(),
+            transaction { SQLVehicles.select {SQLVehicles.vehicleType eq VehicleType.SHIP } }.count().toInt())
     }
 
     override fun info(): CollectionOfVehicles.Information {
-        return CollectionOfVehicles.Information(SQLVehicles.selectAll().count().toInt(),
-            InformationTable.selectAll().map {it[InformationTable.initDate]}[0])
+        return CollectionOfVehicles.Information(
+            transaction { SQLVehicles.selectAll().count().toInt()},
+            transaction { InformationTable.selectAll().map {it[InformationTable.initDate]}} [0])
     }
 
     override fun removeById(id: Int): CollectionOfVehicles.RemoveByIdResult {
-        val deletedCount = SQLVehicles.deleteWhere {SQLVehicles.id eq id }
+        val deletedCount = transaction { SQLVehicles.deleteWhere {SQLVehicles.id eq id } }
         return if (deletedCount > 0) {
             CollectionOfVehicles.RemoveByIdResult.DELETED
         } else {
@@ -47,12 +53,12 @@ open class SQLCollection: CollectionOfVehicles {
     }
 
     override fun removeFirst(): Boolean {
-        val number = SQLVehicles.deleteWhere(1){TrueBuilder}
+        val number = transaction { SQLVehicles.deleteWhere(1){TrueBuilder} }
         return number > 0
     }
 
     override fun removeLower(name: String): CollectionOfVehicles.RemoveLowerResult {
-        val number = SQLVehicles.deleteWhere { SQLStringLen(SQLVehicles.name) less name.length }
+        val number = transaction { SQLVehicles.deleteWhere { SQLStringLen(SQLVehicles.name) less name.length } }
         return if (number > 0) {
             CollectionOfVehicles.RemoveLowerResult.DELETED
         } else {
@@ -60,18 +66,19 @@ open class SQLCollection: CollectionOfVehicles {
         }
     }
 
+    // возможна ошибка транзакции внутри лямбды
     override fun iterator(): Iterator<Vehicle> {
-        return SQLVehicles.selectAll().map{ r ->
-            SQLVehicles.run{ Vehicle(r[this.id], r[this.name], Coordinates(r[this.x], r[this.y]),
-                r[this.creationDate].atZone(ZoneOffset.UTC), r[this.enginePower], r[this.vehicleType], r[this.fuelType]) }}.iterator()
+        return transaction { SQLVehicles.selectAll().map{ r ->
+            SQLVehicles.run{ Vehicle(r[id], r[name], Coordinates(r[x], r[y]),
+                r[creationDate].atZone(ZoneOffset.UTC), r[enginePower], r[vehicleType], r[fuelType]) }}.iterator() }
     }
 
     override fun sumOfEnginePower(): Float {
-        return SQLVehicles.selectAll().map{it[SQLVehicles.enginePower]}.sum()
+        return transaction { SQLVehicles.selectAll().map{it[SQLVehicles.enginePower]}.sum() }
     }
 
     override fun update(id: Int, vehicle: Vehicle): CollectionOfVehicles.UpdateResult {
-        return if (SQLVehicles.update({ SQLVehicles.id eq vehicle.id }, body = vehicle.sqlClosure) > 0) {
+        return if (transaction { SQLVehicles.update({ SQLVehicles.id eq id }, body = vehicle.sqlClosure) > 0 }) {
             CollectionOfVehicles.UpdateResult.UPDATED
         } else {
             CollectionOfVehicles.UpdateResult.NOT_FOUND

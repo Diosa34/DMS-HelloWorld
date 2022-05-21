@@ -20,17 +20,19 @@ object RequestManager {
                         return
                     }
                 }
-                try {
-                    client.send(command.serialize().toByteArray())
-                    client.receive()
-                } catch (ex: ConnectException) {
-                    logger.print("Соединение прервано, перезапустите сервер, затем клиента")
-                    return
-                } catch (ex: SocketException) {
-                    logger.print("Соединение прервано, перезапустите сервер, затем клиента")
-                    return
+                if (line != "execute_script"){
+                    try {
+                        client.send(command.serialize().toByteArray())
+                        client.receive()
+                    } catch (ex: ConnectException) {
+                        logger.print("Соединение прервано, перезапустите сервер, затем клиента")
+                        return
+                    } catch (ex: SocketException) {
+                        logger.print("Соединение прервано, перезапустите сервер, затем клиента, ошибка сокета")
+                        return
+                    }
+                    logger.print(client.getArr().toUByteArray().iterator().deserializeString())
                 }
-                logger.print(client.getArr().toUByteArray().iterator().deserializeString())
             } catch (e: UnexpectedCommandException) {
                 logger.print(UnexpectedCommandException.message)
             } catch (e: ParseException) {

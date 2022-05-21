@@ -27,6 +27,7 @@ kotlin {
                 implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
                 implementation("com.github.Diosa34:ObjectConverter:master-SNAPSHOT")
                 implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
+                implementation("org.postgresql:postgresql:42.2.10")
                 implementation(project(":common"))
                 implementation(project(":client"))
             }

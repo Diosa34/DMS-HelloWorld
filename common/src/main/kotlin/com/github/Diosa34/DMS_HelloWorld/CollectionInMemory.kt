@@ -4,12 +4,35 @@ import java.time.LocalDateTime
 import java.util.*
 
 
-object CollectionInMemory: CollectionOfVehicles {
-    @JvmField
-    val collection: LinkedList<Vehicle> = LinkedList()
+class CollectionInMemory: CollectionOfVehicles {
+
+    private val collection: LinkedList<Vehicle> = LinkedList()
     private val initDate: LocalDateTime = LocalDateTime.now()
-    
+    private var maxId = 0
+
+    override fun print(){
+        println(this.collection)
+    }
+    /**
+     * A new ID is created that is one greater than the largest existing one.
+     */
+    private fun setId(vehicle: Vehicle){
+        vehicle.id = maxId + 1
+    }
+
+    private fun decreaseId(id: Int) {
+        if (id == this.maxId) {
+            this.maxId -= 1
+        }
+    }
+
     override fun add(vehicle: Vehicle) {
+        if (vehicle.id == null) {
+            setId(vehicle)
+            this.maxId += 1
+        } else if (vehicle.id > this.maxId) {
+            this.maxId = vehicle.id
+        }
         this.collection.add(vehicle)
     }
 
@@ -30,6 +53,7 @@ object CollectionInMemory: CollectionOfVehicles {
 
     override fun clear() {
         this.collection.clear()
+        maxId = 0
     }
 
     override fun countByType(type: VehicleType): Int {
@@ -54,6 +78,7 @@ object CollectionInMemory: CollectionOfVehicles {
             return CollectionOfVehicles.RemoveByIdResult.EMPTY
         } else if (collection.removeIf {
                     it.id == id }) {
+            decreaseId(id)
             return CollectionOfVehicles.RemoveByIdResult.DELETED
         }
         return CollectionOfVehicles.RemoveByIdResult.NOT_FOUND
@@ -61,6 +86,7 @@ object CollectionInMemory: CollectionOfVehicles {
 
     override fun removeFirst(): Boolean {
         return if (this.collection.size > 0) {
+            decreaseId(this.collection.first.id)
             this.collection.removeFirst()
             true
         } else {
@@ -71,9 +97,10 @@ object CollectionInMemory: CollectionOfVehicles {
     override fun removeLower(name: String): CollectionOfVehicles.RemoveLowerResult {
         return if (this.collection.size != 0) {
             if (this.collection.any { it < name }) {
-                this.collection.removeIf { elem ->
+                this.collection.filter { elem ->
                     elem < name
-                }
+                }.forEach { decreaseId(it.id)
+                this.collection.remove(it)}
                 CollectionOfVehicles.RemoveLowerResult.DELETED
             } else {
                 CollectionOfVehicles.RemoveLowerResult.LESS_NOT_FOUND
@@ -102,6 +129,7 @@ object CollectionInMemory: CollectionOfVehicles {
             } else {
                 for (elem in collection) {
                     if (elem.id == id) {
+                        vehicle.id = id
                         collection[collection.indexOf(elem)] = vehicle
                     }
                 }
