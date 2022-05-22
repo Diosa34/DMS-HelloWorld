@@ -18,12 +18,14 @@ class SQLAndMemoryCollection: CollectionOfVehicles {
 
     override fun add(vehicle: Vehicle) {
         this.sqlCollection.add(vehicle)
+        vehicle.id = this.sqlCollection.selectMaxId()
         this.collectionInMemory.add(vehicle)
     }
 
     override fun addIfMin(name: String, vehicle: Vehicle): CollectionOfVehicles.AddIfMinResult {
         val sqlResult = this.sqlCollection.addIfMin(name, vehicle)
         val sqlSuccess = sqlResult.isSuccess
+        vehicle.id = this.sqlCollection.selectMaxId()
         val memoryResult = this.collectionInMemory.addIfMin(name, vehicle)
         val memorySuccess = memoryResult.isSuccess
         if (sqlSuccess == memorySuccess) {
@@ -97,6 +99,7 @@ class SQLAndMemoryCollection: CollectionOfVehicles {
     override fun update(id: Int, vehicle: Vehicle): CollectionOfVehicles.UpdateResult {
         val sqlResult = this.sqlCollection.update(id, vehicle)
         val sqlSuccess = sqlResult.isSuccess
+        vehicle.id = id
         val memoryResult = this.collectionInMemory.update(id, vehicle)
         val memorySuccess = memoryResult.isSuccess
         if (sqlSuccess == memorySuccess) {

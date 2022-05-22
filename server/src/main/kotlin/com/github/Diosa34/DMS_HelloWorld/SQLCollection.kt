@@ -85,6 +85,12 @@ class SQLCollection: CollectionOfVehicles {
         }
     }
 
+
+    fun selectMaxId(): Int? {
+        val maxId = SQLVehicles.id.max()
+        return transaction { SQLVehicles.slice(maxId).selectAll().map{it[maxId]}.last() }
+    }
+
     private val Vehicle.sqlClosure: SQLVehicles.(UpdateBuilder<*>) -> Unit
         get() = {
             it[name] = this@sqlClosure.name

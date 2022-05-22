@@ -28,8 +28,6 @@ public class Vehicle implements Convertible, Comparable<String> {
     @FieldAnnotation("fuelType")
     private final FuelType fuelType; //Поле может быть null
 
-    private static final HashMap<String, String> vehicleForXMLToJava = new HashMap<>();
-
     /**
      * Constructor for creating an instance based on console input
      */
@@ -100,20 +98,6 @@ public class Vehicle implements Convertible, Comparable<String> {
 
     public FuelType getFuelType() {
         return fuelType;
-    }
-
-    public static HashMap<String, String> getVehicleForXMLToJava() {
-        return vehicleForXMLToJava;
-    }
-
-    public static void initializeVehicleForXMLToJava() {
-        vehicleForXMLToJava.put("id", "");
-        vehicleForXMLToJava.put("name", "");
-        vehicleForXMLToJava.put("coordinates", "");
-        vehicleForXMLToJava.put("creationDate", "");
-        vehicleForXMLToJava.put("enginePower", "");
-        vehicleForXMLToJava.put("vehicleType", "");
-        vehicleForXMLToJava.put("fuelType", "");
     }
 
     /**
