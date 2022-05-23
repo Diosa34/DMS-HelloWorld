@@ -14,7 +14,7 @@ class SQLCollection: CollectionOfVehicles {
     }
 
     override fun addIfMin(name: String, vehicle: Vehicle): CollectionOfVehicles.AddIfMinResult {
-        return if (transaction { SQLVehicles.select { SQLStringLen(SQLVehicles.name) lessEq name.length} }.empty()){
+        return if (transaction { SQLVehicles.select { SQLStringLen(SQLVehicles.name) lessEq name.length}.empty() }){
             transaction { SQLVehicles.insert (vehicle.sqlClosure) }
             CollectionOfVehicles.AddIfMinResult.SUCCESS
         } else {
@@ -53,7 +53,10 @@ class SQLCollection: CollectionOfVehicles {
     }
 
     override fun removeFirst(): Boolean {
-        val number = transaction { SQLVehicles.deleteWhere(1){TrueBuilder} }
+        val minId = SQLVehicles.id.min()
+        val id = transaction { SQLVehicles.slice(minId).selectAll().map{SQLVehicles.id}.first() }
+        val number = transaction {
+            SQLVehicles.deleteWhere{SQLVehicles.id eq id } }
         return number > 0
     }
 

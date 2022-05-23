@@ -5,7 +5,8 @@ package com.github.Diosa34.DMS_HelloWorld
 import java.io.File
 
 class ExecuteScript(
-    private val path: String
+    private val path: String,
+    private val log: java.util.logging.Logger
 ): BoundCommand {
     fun execute(logger: Logger, client: Client){
         logger.print("Выполнение скрипта: ${File(path)}")
@@ -14,8 +15,7 @@ class ExecuteScript(
             1,
             InstanceCreator.CREATE_FROM_FILE,
             FileStringReader(path),
-            client
-        )
+            client, this.log)
         HistoryOfExecutingScripts.removeScript()
     }
 

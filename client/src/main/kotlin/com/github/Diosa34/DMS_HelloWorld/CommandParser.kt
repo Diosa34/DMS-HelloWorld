@@ -1,5 +1,6 @@
 package com.github.Diosa34.DMS_HelloWorld
 
+import java.io.FileNotFoundException
 import kotlin.jvm.Throws
 
 /**
@@ -11,7 +12,8 @@ object CommandParser{
      */
     @JvmStatic
     @Throws(UnexpectedCommandException::class, ParseException::class)
-    fun parse(logger: Logger, str: String, attempts: Int, creator: InstanceCreator, stringReader: AbstractStringReader): BoundCommand {
+    fun parse(logger: Logger, str: String, attempts: Int, creator: InstanceCreator, stringReader: AbstractStringReader,
+     log: java.util.logging.Logger): BoundCommand {
         val request = str.trim().split(Regex("""\s+"""))
         if (request.isEmpty()){
             throw UnexpectedCommandException()
@@ -45,16 +47,22 @@ object CommandParser{
                 CountByType(type)
             }
             "execute_script" -> {
-                val path = if (args.isEmpty()){
+                val path = if (args.isEmpty()) {
                     logger.print("Введите путь к файлу, который хотите прочитать")
                     stringReader.getNextLine()
                 } else {
                     args[0]
                 }
-                if (FileVerification.fullVerification(path)){
+                try {
+                if (FileVerification.fullVerification(path)) {
                     HistoryOfExecutingScripts.addScript(logger, path)
                 }
-                ExecuteScript(path)
+                } catch (ex: FileNotFoundException) {
+                    println(ex.message)
+                } catch (ex: FileVerificationException) {
+                    println(ex.message)
+                }
+                ExecuteScript(path, log)
             }
             "exit" -> Exit
             "group_counting_by_type" -> GroupCountingByType

@@ -1,11 +1,8 @@
 package com.github.Diosa34.DMS_HelloWorld;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * Class for file link verifications
@@ -13,19 +10,6 @@ import java.nio.file.Paths;
 public class FileVerification {
 
     private FileVerification(){}
-    /**
-     * Read access verification
-     */
-    private static boolean readPermissionCheck(Path path) {
-        return Files.isReadable(path);
-    }
-
-    /**
-     * Write access verification
-     */
-    private static boolean writePermissionCheck(Path path) {
-        return Files.isWritable(path);
-    }
 
     /**
      * Execute access verification
@@ -38,40 +22,26 @@ public class FileVerification {
      * Existence verification
      */
     private static boolean existenceCheck(String filename) {
-        return Files.exists(new File(filename).toPath());
+        return Files.exists(Path.of(filename));
     }
 
     /**
      * Is it directory verification
      */
-    private static boolean isDirectoryCheck(String filename){return Files.isDirectory(new File(filename).toPath());}
-
-    /**
-     * Link Identity verification
-     */
-    public static boolean isSameLinks(Path filePath) throws IOException, SameLinksException {
-        for (Path path : HistoryOfExecutingScripts.CollectionOfFiles) {
-            if (Files.isSameFile(filePath, path)) {
-                throw new SameLinksException();
-            }
-        }
-        return false;
-    }
+    private static boolean isDirectoryCheck(String filename){return Files.isDirectory(Path.of(filename));}
 
     /**
      * Verification the possibility of creating a file path and permissions
      */
-    public static boolean fullVerification(String filename) {
+    public static boolean fullVerification(String filename) throws FileNotFoundException, FileVerificationException {
         if (filename == null) {
-            throw new NullPointerException("Отсутствует путь к файлу");
+            throw new FileNotFoundException("Отсутствует путь к файлу");
         } else if (!FileVerification.existenceCheck(filename)){
-            throw new SecurityException("Файл не существует");
+            throw new FileVerificationException("Файл не существует");
         } else if (isDirectoryCheck(filename)){
-            throw new SecurityException("Указанный файл является директорией");
-        } else if (!FileVerification.readPermissionCheck(new File(filename).toPath()) ||
-                    !FileVerification.writePermissionCheck(new File(filename).toPath())
-            || !FileVerification.executePermissionCheck(new File(filename).toPath())) {
-                throw new SecurityException("Недостаточно прав доступа к файлу");
+            throw new FileVerificationException("Указанный файл является директорией");
+        } else if (!FileVerification.executePermissionCheck(Path.of(filename))) {
+                throw new FileVerificationException("Недостаточно прав доступа к файлу");
         }
         return true;
     }

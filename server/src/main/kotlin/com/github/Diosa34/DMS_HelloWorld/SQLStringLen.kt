@@ -6,7 +6,7 @@ import org.jetbrains.exposed.sql.Function
 class SQLStringLen(
     private val expr: Expression<String>
 ): Function<String>(TextColumnType()){
-    override fun toQueryBuilder(queryBuilder: QueryBuilder) = queryBuilder{append("LEN(", this@SQLStringLen.expr, ")")}
+    override fun toQueryBuilder(queryBuilder: QueryBuilder) = queryBuilder{append("LENGTH(", this@SQLStringLen.expr, ")")}
 }
 
 object TrueBuilder: Op<Boolean>(){
