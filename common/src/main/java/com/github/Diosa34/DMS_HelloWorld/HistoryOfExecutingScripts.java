@@ -1,5 +1,7 @@
 package com.github.Diosa34.DMS_HelloWorld;
 
+import com.github.Diosa34.DMS_HelloWorld.absctactions.Logger;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,8 +16,8 @@ public class HistoryOfExecutingScripts extends LinkedList<Path> {
 
     public static void addScript(Logger logger, String filepath) throws IOException {
         try {
-            if (!isSameLinks(Path.of(filepath))) {
-                collectionOfFiles.add(Path.of(filepath));
+            if (!isSameLinks(new File(filepath).toPath())) {
+                collectionOfFiles.add(new File(filepath).toPath());
             }
         } catch(SameLinksException e){
             logger.print(SameLinksException.message);

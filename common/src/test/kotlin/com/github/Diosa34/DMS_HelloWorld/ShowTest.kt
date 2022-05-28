@@ -1,5 +1,7 @@
 package com.github.Diosa34.DMS_HelloWorld
 
+import com.github.Diosa34.DMS_HelloWorld.serialize.deserializeInt
+import com.github.Diosa34.DMS_HelloWorld.serialize.serialize
 import org.junit.Test
 import kotlin.test.assertContentEquals
 

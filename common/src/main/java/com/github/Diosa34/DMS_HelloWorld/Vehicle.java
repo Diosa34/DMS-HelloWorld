@@ -1,12 +1,13 @@
 package com.github.Diosa34.DMS_HelloWorld;
 
+import com.github.Diosa34.DMS_HelloWorld.collection.FuelType;
+import com.github.Diosa34.DMS_HelloWorld.collection.VehicleType;
 import com.github.Diosa34.ObjectConverter.ClassAnnotation;
 import com.github.Diosa34.ObjectConverter.Convertible;
 import com.github.Diosa34.ObjectConverter.FieldAnnotation;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.ZonedDateTime;
-import java.util.HashMap;
 
 /**
  * Description of the entity, objects in the com.github.Diosa34.DMS_HelloWorld.collection

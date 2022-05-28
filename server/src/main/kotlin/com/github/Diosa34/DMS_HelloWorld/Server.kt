@@ -2,8 +2,13 @@
 
 package com.github.Diosa34.DMS_HelloWorld
 
-import java.lang.IllegalStateException
+import com.github.Diosa34.DMS_HelloWorld.absctactions.BoundCommand
+import com.github.Diosa34.DMS_HelloWorld.absctactions.CollectionOfVehicles
+import com.github.Diosa34.DMS_HelloWorld.exceptions.CollectionException
+import com.github.Diosa34.DMS_HelloWorld.exceptions.DeserializeException
+import com.github.Diosa34.DMS_HelloWorld.serialize.CommandDeserializer
 import java.net.*
+import java.nio.Buffer
 import java.nio.ByteBuffer
 import java.nio.channels.ServerSocketChannel
 import java.nio.channels.SocketChannel
@@ -33,7 +38,7 @@ class Server(
         val buf = ByteBuffer.wrap(arr)
         this.sock.read(buf)
         this.log.info("Получен новый запрос от клиента")
-        buf.flip()
+        (buf as Buffer).flip()
         if (arr.contentEquals(ByteArray(1024 * 1024))) {
             this.serv.close()
             throw ConnectException()

@@ -11,7 +11,7 @@ object SQLManager {
     fun main(collection: SQLAndMemoryCollection, log: Logger) {
         val property = Properties()
 
-        val cFile = "config.properties"
+        val cFile = "./config.properties"
         val fis = FileInputStream(cFile)
         property.load(fis)
         val host = property.getProperty("db.host")

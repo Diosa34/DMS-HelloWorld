@@ -1,10 +1,16 @@
 package com.github.Diosa34.DMS_HelloWorld
 
-import java.io.FileNotFoundException
+import com.github.Diosa34.DMS_HelloWorld.absctactions.AbstractStringReader
+import com.github.Diosa34.DMS_HelloWorld.absctactions.BoundCommand
+import com.github.Diosa34.DMS_HelloWorld.absctactions.Logger
+import com.github.Diosa34.DMS_HelloWorld.collection.InstanceCreator
+import com.github.Diosa34.DMS_HelloWorld.commands.Exit
+import com.github.Diosa34.DMS_HelloWorld.exceptions.ParseException
+import com.github.Diosa34.DMS_HelloWorld.exceptions.UnexpectedCommandException
+import com.github.Diosa34.DMS_HelloWorld.serialize.deserializeString
 import java.net.ConnectException
 import java.net.SocketException
 import java.util.logging.Level
-import java.util.logging.LogManager
 import kotlin.Throws
 
 object RequestManager {
@@ -12,7 +18,7 @@ object RequestManager {
     @JvmStatic
     @Throws(UnexpectedCommandException::class, ParseException::class)
     fun manage(logger: Logger, attempts: Int, creator: InstanceCreator?, stringReader: AbstractStringReader,
-    client: Client, log: java.util.logging.Logger){
+               client: Client, log: java.util.logging.Logger){
         for (line in stringReader) {
             try {
                 val command: BoundCommand = CommandParser.parse(logger, line, attempts, creator!!, stringReader, log)

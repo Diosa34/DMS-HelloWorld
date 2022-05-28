@@ -1,5 +1,8 @@
 package com.github.Diosa34.DMS_HelloWorld
 
+import com.github.Diosa34.DMS_HelloWorld.absctactions.CollectionOfVehicles
+import com.github.Diosa34.DMS_HelloWorld.collection.Groups
+import com.github.Diosa34.DMS_HelloWorld.collection.VehicleType
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import org.jetbrains.exposed.sql.transactions.transaction

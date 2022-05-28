@@ -2,6 +2,9 @@
 
 package com.github.Diosa34.DMS_HelloWorld
 
+import com.github.Diosa34.DMS_HelloWorld.serialize.deserializeFloat
+import com.github.Diosa34.DMS_HelloWorld.serialize.deserializeInt
+import com.github.Diosa34.DMS_HelloWorld.serialize.serialize
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 

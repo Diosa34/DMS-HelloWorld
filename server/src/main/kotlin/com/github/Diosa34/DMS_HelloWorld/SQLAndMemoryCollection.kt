@@ -1,5 +1,11 @@
 package com.github.Diosa34.DMS_HelloWorld
 
+import com.github.Diosa34.DMS_HelloWorld.absctactions.CollectionOfVehicles
+import com.github.Diosa34.DMS_HelloWorld.collection.CollectionInMemory
+import com.github.Diosa34.DMS_HelloWorld.collection.Groups
+import com.github.Diosa34.DMS_HelloWorld.collection.VehicleType
+import com.github.Diosa34.DMS_HelloWorld.exceptions.CollectionException
+
 class SQLAndMemoryCollection: CollectionOfVehicles {
     private val collectionInMemory = CollectionInMemory()
     private val sqlCollection = SQLCollection()

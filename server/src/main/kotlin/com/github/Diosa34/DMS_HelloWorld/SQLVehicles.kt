@@ -1,5 +1,7 @@
 package com.github.Diosa34.DMS_HelloWorld
 
+import com.github.Diosa34.DMS_HelloWorld.collection.FuelType
+import com.github.Diosa34.DMS_HelloWorld.collection.VehicleType
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.datetime

@@ -6,43 +6,51 @@ import java.io.FileNotFoundException
 import java.io.IOException
 import java.lang.System.getenv
 import java.net.InetAddress
+import java.net.UnknownHostException
 import java.util.*
 import java.util.logging.Level
 import java.util.logging.LogManager
 import java.util.logging.Logger
 
 fun main() {
-    val property = Properties()
-    val cFile = "server.properties"
-    val fis = FileInputStream(cFile)
-    property.load(fis)
-
-
-    val host = property.getProperty("srv.host").map{InetAddress.getByName(it.toString()) ?:
-    throw IOException("Хост некорректен")}[0]
-    val port = property.getProperty("srv.port").toIntOrNull() ?: throw IOException("Порт не получен")
-
-    val collection = SQLAndMemoryCollection()
-
-    val log = Logger.getLogger("ServerLogger")
     try {
-        LogManager.getLogManager().readConfiguration(FileInputStream("logging.properties"))
-        log.info("Начало работы серверного приложения")
+//        val property = Properties()
+//        val cFile = "server\\src\\main\\resources\\server.properties"
+//        val fis = FileInputStream(cFile)
+//        property.load(fis)
 
-    } catch (e: IOException) {
-        println("Could not setup logger configuration: $e")
-    } catch (ex: ClassNotFoundException) {
-        println("Logger not configured")
-    }
 
-    try {
-        SQLManager.main(collection, log)
-    } catch(ex: PSQLException) {
-        log.log(Level.WARNING, "PSQLException ", ex)
+        val host = InetAddress.getLocalHost()
+        val port = 5894
+
+        val collection = SQLAndMemoryCollection()
+
+        val log = Logger.getLogger("ServerLogger")
+        try {
+            LogManager.getLogManager().readConfiguration(FileInputStream("./servLog.properties"))
+            log.info("Начало работы серверного приложения")
+
+        } catch (e: IOException) {
+            println("Could not setup logger configuration: $e")
+        } catch (ex: ClassNotFoundException) {
+            println("Logger not configured")
+        }
+
+        try {
+            SQLManager.main(collection, log)
+        } catch (ex: PSQLException) {
+            log.log(Level.WARNING, "PSQLException ", ex)
+        } catch (ex: FileNotFoundException) {
+            log.log(Level.WARNING, "FileNotFoundException: ", ex)
+        }
+
+        ServerManager.manager(host, port, collection, log)
     } catch (ex: FileNotFoundException) {
-        log.log(Level.WARNING, "FileNotFoundException: ", ex)
+        println("Конфигурационные файлы не найдены")
+        return
+    } catch (ex: UnknownHostException) {
+        println(ex.message)
+        return
     }
-
-    ServerManager.manager(host, port, collection, log)
 }
 

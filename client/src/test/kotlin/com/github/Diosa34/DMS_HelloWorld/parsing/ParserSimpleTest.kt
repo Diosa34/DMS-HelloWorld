@@ -1,6 +1,6 @@
 //package com.github.Diosa34.DMS_HelloWorld.parsing
 //
-//import com.github.Diosa34.DMS_HelloWorld.BoundCommand
+//import com.github.Diosa34.DMS_HelloWorld.absctactions.BoundCommand
 //import kotlin.test.Test
 //import kotlin.test.assertEquals
 //

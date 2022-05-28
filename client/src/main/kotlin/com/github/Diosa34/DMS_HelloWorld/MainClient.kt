@@ -1,23 +1,19 @@
 package com.github.Diosa34.DMS_HelloWorld
 
+import com.github.Diosa34.DMS_HelloWorld.absctactions.Logger
+import com.github.Diosa34.DMS_HelloWorld.collection.InstanceCreator
+import com.github.Diosa34.DMS_HelloWorld.io.ConsoleLogger
+import com.github.Diosa34.DMS_HelloWorld.io.ConsoleStringReader
 import java.io.FileInputStream
 import java.io.IOException
 import java.net.ConnectException
 import java.net.InetAddress
-import java.util.*
 import java.util.logging.Level
 import java.util.logging.LogManager
 
 fun main() {
-    val property = Properties()
-    val cFile = "client.properties"
-    val fis = FileInputStream(cFile)
-    property.load(fis)
-
-
-    val host = property.getProperty("cl.host").map{InetAddress.getByName(it.toString()) ?:
-    throw IOException("Хост некорректен")}[0]
-    val port = property.getProperty("cl.port").toIntOrNull() ?: throw IOException("Порт не получен")
+    val host = InetAddress.getLocalHost()
+    val port = 5894
 
     val logger: Logger = ConsoleLogger
     val client: Client
@@ -25,8 +21,7 @@ fun main() {
     val log: java.util.logging.Logger = java.util.logging.Logger.getLogger("ClientLogger")
     try {
         LogManager.getLogManager().readConfiguration(
-            FileInputStream("C:\\Users\\Diosa\\IdeaProjects" +
-                "\\Laboratory5\\client\\src\\main\\resources\\logging.properties")
+            FileInputStream("./clientLog.properties")
         )
         log.info("Начало работы клиентского приложения")
 
