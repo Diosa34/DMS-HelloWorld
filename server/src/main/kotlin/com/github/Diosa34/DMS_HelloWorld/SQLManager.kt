@@ -24,6 +24,7 @@ object SQLManager {
         transaction {
             SchemaUtils.create(SQLVehicles)
             SchemaUtils.create(InformationTable)
+            SchemaUtils.create(Users)
 
             for (i in collection.getSqlCollection()){
                 collection.getCollectionInMemory().add(i)

@@ -12,14 +12,13 @@ class SQLCollection: CollectionOfVehicles {
     override fun print(){
         TODO()
     }
-    override fun add(vehicle: Vehicle) {
-        transaction { SQLVehicles.insert (vehicle.sqlClosure) }
+    override fun add(vehicle: Vehicle): Int {
+        transaction { SQLVehicles.insert (vehicle.sqlClosure) get SQLVehicles.id }
     }
 
     override fun addIfMin(name: String, vehicle: Vehicle): CollectionOfVehicles.AddIfMinResult {
         return if (transaction { SQLVehicles.select { SQLStringLen(SQLVehicles.name) lessEq name.length}.empty() }){
-            transaction { SQLVehicles.insert (vehicle.sqlClosure) }
-            CollectionOfVehicles.AddIfMinResult.SUCCESS
+            CollectionOfVehicles.AddIfMinResult(true, add(vehicle).SUCCESS)
         } else {
             CollectionOfVehicles.AddIfMinResult.LESS_FOUND
         }
@@ -75,8 +74,10 @@ class SQLCollection: CollectionOfVehicles {
     // возможна ошибка транзакции внутри лямбды
     override fun iterator(): Iterator<Vehicle> {
         return transaction { SQLVehicles.selectAll().map{ r ->
-            SQLVehicles.run{ Vehicle(r[id], r[name], Coordinates(r[x], r[y]),
-                r[creationDate].atZone(ZoneOffset.UTC), r[enginePower], r[vehicleType], r[fuelType]) }}.iterator() }
+            SQLVehicles.run{ Vehicle(
+                r[id], r[name], Coordinates(r[x], r[y]),
+                r[creationDate].atZone(ZoneOffset.UTC), r[enginePower], r[vehicleType], r[fuelType], r[author]
+            ) }}.iterator() }
     }
 
     override fun sumOfEnginePower(): Float {
@@ -90,7 +91,6 @@ class SQLCollection: CollectionOfVehicles {
             CollectionOfVehicles.UpdateResult.NOT_FOUND
         }
     }
-
 
     fun selectMaxId(): Int? {
         val maxId = SQLVehicles.id.max()
@@ -106,5 +106,6 @@ class SQLCollection: CollectionOfVehicles {
             it[enginePower] = this@sqlClosure.enginePower
             it[vehicleType] = this@sqlClosure.vehicleType
             it[fuelType] = this@sqlClosure.fuelType
+            it[author] = this@sqlClosure.author
         }
 }

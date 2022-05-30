@@ -2,8 +2,7 @@ package com.github.Diosa34.DMS_HelloWorld.exceptions
 
 import java.lang.Exception
 
-class ParseException : Exception(){
-    companion object {
-        const val message: String = "Аргументы для команды не были получены, введите команду заново."
-    }
+class ParseException(
+    override val message: String = "Аргументы не были получены"
+) : Exception(){
 }

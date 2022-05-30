@@ -25,6 +25,7 @@ class Server(
     private val log: Logger
     val serv: ServerSocketChannel = ServerSocketChannel.open()
 
+
     init {
         this.log = log
         val addr: SocketAddress = InetSocketAddress(host, port)
@@ -33,7 +34,7 @@ class Server(
         this.log.info("Установлено новое подключение")
     }
 
-    fun receive(collection: CollectionOfVehicles) {
+    fun receive(collection: CollectionOfVehicles, usersCollection: SQLUsersCollection) {
         val arr = ByteArray(1024 * 1024)
         val buf = ByteBuffer.wrap(arr)
         this.sock.read(buf)
@@ -53,7 +54,7 @@ class Server(
             return
         }
         try {
-            executeCall(command, bufferLogger, collection)
+            executeCall(command, bufferLogger, collection, usersCollection)
         } catch (ex: CollectionException) {
             bufferLogger.print(ex.message)
         } catch (ex: SQLException) {

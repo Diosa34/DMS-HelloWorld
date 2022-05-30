@@ -3,7 +3,7 @@ package com.github.Diosa34.DMS_HelloWorld
 import com.github.Diosa34.DMS_HelloWorld.absctactions.*
 import com.github.Diosa34.DMS_HelloWorld.commands.*
 
-fun executeCall(command: BoundCommand, logger: Logger, collection: CollectionOfVehicles){
+fun executeCall(command: BoundCommand, logger: Logger, collection: CollectionOfVehicles, usersCollection: SQLUsersCollection){
     when (command) {
         is ApplicableToCollection ->
             command.execute(logger, collection)
@@ -12,5 +12,6 @@ fun executeCall(command: BoundCommand, logger: Logger, collection: CollectionOfV
             CountByType.Description, ExecuteScript.Description, Exit, GroupCountingByType, Help,
             Info, RemoveById.Description, RemoveFirst, RemoveLower.Description, Show, SumOfEnginePower,
             Update.Description)
+        is AuthenticationCommand -> command.execute(logger, usersCollection)
     }
 }

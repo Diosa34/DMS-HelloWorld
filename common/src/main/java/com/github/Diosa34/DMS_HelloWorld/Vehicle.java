@@ -2,6 +2,7 @@ package com.github.Diosa34.DMS_HelloWorld;
 
 import com.github.Diosa34.DMS_HelloWorld.collection.FuelType;
 import com.github.Diosa34.DMS_HelloWorld.collection.VehicleType;
+import com.github.Diosa34.DMS_HelloWorld.users.User;
 import com.github.Diosa34.ObjectConverter.ClassAnnotation;
 import com.github.Diosa34.ObjectConverter.Convertible;
 import com.github.Diosa34.ObjectConverter.FieldAnnotation;
@@ -28,11 +29,13 @@ public class Vehicle implements Convertible, Comparable<String> {
     private final VehicleType vehicleType; //Поле не может быть null
     @FieldAnnotation("fuelType")
     private final FuelType fuelType; //Поле может быть null
+    private final String username;
 
     /**
      * Constructor for creating an instance based on console input
      */
-    public Vehicle(String name, Coordinates coordinates, Float enginePower, VehicleType type, FuelType fuelType) {
+    public Vehicle(String name, Coordinates coordinates, Float enginePower, VehicleType type, FuelType fuelType, String username) {
+        this.username = username;
         this.id = null;
         this.name = name;
         this.coordinates = coordinates;
@@ -42,10 +45,11 @@ public class Vehicle implements Convertible, Comparable<String> {
         this.fuelType = fuelType;
     }
 
-    public Vehicle(Integer id, String name, Coordinates coordinates, Float enginePower, VehicleType type, FuelType fuelType) {
+    public Vehicle(Integer id, String name, Coordinates coordinates, Float enginePower, VehicleType type, FuelType fuelType, String username) {
         this.id = id;
         this.name = name;
         this.coordinates = coordinates;
+        this.username = username;
         this.creationDate = ZonedDateTime.now();
         this.enginePower = enginePower;
         this.vehicleType = type;
@@ -55,7 +59,7 @@ public class Vehicle implements Convertible, Comparable<String> {
     /**
      * Constructor for creating an instance based on file
      */
-    public Vehicle(Integer id, String name, Coordinates coordinates, ZonedDateTime creationDate, Float enginePower, VehicleType type, FuelType fuelType) {
+    public Vehicle(Integer id, String name, Coordinates coordinates, ZonedDateTime creationDate, Float enginePower, VehicleType type, FuelType fuelType, String author) {
         this.id = id;
         this.name = name;
         this.coordinates = coordinates;
@@ -63,6 +67,7 @@ public class Vehicle implements Convertible, Comparable<String> {
         this.enginePower = enginePower;
         this.vehicleType = type;
         this.fuelType = fuelType;
+        this.username = author;
     }
 
 
@@ -101,6 +106,7 @@ public class Vehicle implements Convertible, Comparable<String> {
         return fuelType;
     }
 
+    public String getUserName() { return this.username; }
     /**
      * Comparison of vehicle names
      */

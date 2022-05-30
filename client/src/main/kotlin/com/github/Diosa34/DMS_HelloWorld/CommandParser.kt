@@ -29,6 +29,18 @@ object CommandParser{
         }
         val args = request.slice(1 until request.size).toTypedArray()
         val command: BoundCommand = when (request[0]) {
+            "registry",  -> {
+                val data = identification(logger, stringReader, attempts)
+                logger.print("Введите пароль ещё раз для подтверждения")
+                val secondPassword = tryGet(stringReader.getNextLine(), attempts, "Пароли не совпадают," +
+                        " повторите пароль ещё раз")
+                { takeIf { it == data.second } } ?: throw ParseException("Совпадение паролей не достигнуто")
+                Register(data.first, secondPassword)
+            }
+            "log_in" -> {
+                val data = identification(logger, stringReader, attempts)
+                LogIn(data.first, data.second)
+            }
             "add" -> {
                 Add(creator.invoke(stringReader) ?: throw ParseException())
             }
@@ -120,4 +132,14 @@ object CommandParser{
         }
         return command
     }
+}
+
+fun identification(logger: Logger, stringReader: AbstractStringReader, attempts: Int): Pair<String, String>{
+    logger.print("Введите логин")
+    val login =  tryGet(stringReader.getNextLine(), attempts, "Логин не может быть пустой строкой")
+    { takeIf { isNotBlank() } } ?: throw ParseException("Логин не был получен")
+    logger.print("Введите пароль")
+    val password = tryGet(stringReader.getNextLine(), attempts, "Пароль не может быть пустой строкой")
+    { takeIf { isNotBlank() } } ?: throw ParseException("Пароль не был получен")
+    return Pair(login, password)
 }

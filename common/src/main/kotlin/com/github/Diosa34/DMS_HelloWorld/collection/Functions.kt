@@ -100,7 +100,8 @@ fun instanceCreate(name: String, x: String, y: String,
         Coordinates(x, y),
         enginePower,
         type,
-        fuel
+        fuel,
+        author
     )
 }
 
@@ -144,6 +145,7 @@ fun instanceCreate(logger: Logger, attempts: Int) : Vehicle? {
         Coordinates(x, y),
         enginePower,
         type,
-        fuel
+        fuel,
+        author
     )
 }

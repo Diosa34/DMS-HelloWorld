@@ -24,6 +24,7 @@ fun main() {
         val port = 5894
 
         val collection = SQLAndMemoryCollection()
+        val usersCollection = SQLUsersCollection()
 
         val log = Logger.getLogger("ServerLogger")
         try {
@@ -44,7 +45,7 @@ fun main() {
             log.log(Level.WARNING, "FileNotFoundException: ", ex)
         }
 
-        ServerManager.manager(host, port, collection, log)
+        ServerManager.manager(host, port, collection, usersCollection, log)
     } catch (ex: FileNotFoundException) {
         println("Конфигурационные файлы не найдены")
         return

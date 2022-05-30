@@ -32,11 +32,12 @@ interface CollectionOfVehicles: Iterable<Vehicle> {
     fun update(id: Int, vehicle: Vehicle): UpdateResult
 
     enum class AddIfMinResult(
-        val isSuccess: Boolean
+        val isSuccess: Boolean,
+        val id: Int
     ) {
-        EMPTY(true),
-        SUCCESS(true),
-        LESS_FOUND(false);
+        EMPTY(true, 0),
+        SUCCESS(true, 0),
+        LESS_FOUND(false, 0);
     }
 
     enum class RemoveByIdResult(

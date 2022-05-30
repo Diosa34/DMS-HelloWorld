@@ -1,5 +1,6 @@
 package com.github.Diosa34.DMS_HelloWorld
 
+import com.github.Diosa34.DMS_HelloWorld.SQLVehicles.check
 import com.github.Diosa34.DMS_HelloWorld.collection.FuelType
 import com.github.Diosa34.DMS_HelloWorld.collection.VehicleType
 import org.jetbrains.exposed.sql.Column
@@ -17,8 +18,14 @@ object SQLVehicles: Table() {
     var enginePower: Column<Float> = float("enginePower").check { it greater 0 } //Поле не может быть null, Значение поля должно быть больше 0
     var vehicleType: Column<VehicleType> = enumeration("vehicleType") //Поле не может быть null
     var fuelType: Column<FuelType> = enumeration("fuelType") //Поле может быть null
+    val author: Column<String> = varchar("author", 50).check { it neq "" }
 }
 
 object InformationTable: Table() {
     val initDate: Column<LocalDateTime> = datetime("initDate")
+}
+
+object Users: Table() {
+    val login: Column<String> = varchar("user", 50).uniqueIndex().check { it neq "" }
+    val password: Column<String> = varchar("password", 50).uniqueIndex().check { it neq "" }
 }

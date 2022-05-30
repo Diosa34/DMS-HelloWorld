@@ -9,13 +9,13 @@ import java.util.logging.Level
 import java.util.logging.Logger
 
 object ServerManager {
-    fun manager(host: InetAddress, port: Int, collection: CollectionOfVehicles, log: Logger) {
+    fun manager(host: InetAddress, port: Int, collection: CollectionOfVehicles, usersCollection: SQLUsersCollection, log: Logger) {
         try {
             while (true) {
                 val server = Server(host, port, log)
                 try {
                     while (true) {
-                        server.receive(collection)
+                        server.receive(collection, usersCollection)
                     }
                 } catch (ex: ConnectException) {
                     log.info("Завершена работа клиентского приложения")

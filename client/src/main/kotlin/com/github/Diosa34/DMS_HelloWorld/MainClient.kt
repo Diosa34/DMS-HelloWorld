@@ -39,7 +39,9 @@ fun main() {
         return
     }
 
-    logger.print("Информация о командах доступна по команде 'help'")
+//    logger.print("Информация о командах доступна по команде 'help'")
+
+    val authentication: ArrayList<String>
 
     RequestManager.manage(logger, 3, InstanceCreator.CREATE_WITH_INPUT, ConsoleStringReader, client, log)
 }

@@ -49,7 +49,7 @@ object RequestManager {
             } catch (e: UnexpectedCommandException) {
                 logger.print(UnexpectedCommandException.message)
             } catch (e: ParseException) {
-                logger.print(ParseException.message)
+                logger.print(e.message)
             }
         }
     }

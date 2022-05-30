@@ -79,6 +79,7 @@ fun Iterator<UByte>.deserializeVehicle(): Vehicle {
     val enginePower: Float = this.deserializeFloat()
     val vehicleType: VehicleType = this.deserializeVehicleType()
     val fuelType: FuelType = FuelType.stringToType[this.deserializeString()]!!
+    val username: String = this.deserializeString()
     // добавить проверку типов
-    return Vehicle(name, coordinates, enginePower, vehicleType, fuelType)
+    return Vehicle(name, coordinates, enginePower, vehicleType, fuelType, username)
 }
