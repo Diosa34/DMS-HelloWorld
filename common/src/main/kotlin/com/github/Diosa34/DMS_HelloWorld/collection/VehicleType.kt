@@ -2,21 +2,17 @@
 
 package com.github.Diosa34.DMS_HelloWorld.collection
 
-import com.github.Diosa34.DMS_HelloWorld.serialize.serialize
+import kotlinx.serialization.Serializable
 
 private var countOfInstances = 0
 
+@Serializable
 enum class VehicleType {
     CAR,
     SUBMARINE,
     SHIP;
 
     var index: Int = countOfInstances++
-
-    fun serialize(): UByteArray{
-        val bytes: UByteArray = typeToString[this]!!.serialize()
-        return bytes
-    }
 
     companion object{
         @JvmStatic

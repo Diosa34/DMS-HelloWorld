@@ -1,15 +1,17 @@
 package com.github.Diosa34.DMS_HelloWorld.absctactions
 
 import com.github.Diosa34.DMS_HelloWorld.collection.Groups
-import com.github.Diosa34.DMS_HelloWorld.Vehicle
+import com.github.Diosa34.DMS_HelloWorld.collection.Vehicle
 import com.github.Diosa34.DMS_HelloWorld.collection.VehicleType
+import com.github.Diosa34.DMS_HelloWorld.users.User
+import kotlinx.datetime.Instant
 import java.time.LocalDateTime
 
 interface CollectionOfVehicles: Iterable<Vehicle> {
     fun print()
-    fun add(vehicle: Vehicle)
+    fun add(vehicle: Vehicle, user: User): Int
 
-    fun addIfMin(name: String, vehicle: Vehicle): AddIfMinResult
+    fun addIfMin(name: String, vehicle: Vehicle, user: User): Pair<AddIfMinResult, Int?>
 
     fun clear()
 
@@ -29,15 +31,14 @@ interface CollectionOfVehicles: Iterable<Vehicle> {
 
     fun sumOfEnginePower(): Float
 
-    fun update(id: Int, vehicle: Vehicle): UpdateResult
+    fun update(id: Int, vehicle: Vehicle, user: User): UpdateResult
 
     enum class AddIfMinResult(
         val isSuccess: Boolean,
-        val id: Int
     ) {
-        EMPTY(true, 0),
-        SUCCESS(true, 0),
-        LESS_FOUND(false, 0);
+        EMPTY(true),
+        SUCCESS(true),
+        LESS_FOUND(false);
     }
 
     enum class RemoveByIdResult(
@@ -66,7 +67,7 @@ interface CollectionOfVehicles: Iterable<Vehicle> {
 
     class Information(
         val elemCount: Int = 0,
-        val initDate: LocalDateTime
+        val initDate: Instant
     ) {
         val typeOfCollection = "Средства передвижения"
     }

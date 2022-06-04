@@ -2,12 +2,13 @@
 
 package com.github.Diosa34.DMS_HelloWorld.absctactions
 
-import java.io.Serializable
+import com.github.Diosa34.DMS_HelloWorld.serialize.InterfaceSerializer
+import kotlinx.serialization.Serializable
 
 /**
  * Entity describing the command
  */
-interface BoundCommand: Serializable {
-    fun serialize(): UByteArray
+@Serializable(InterfaceSerializer::class)
+interface BoundCommand {
 }
 

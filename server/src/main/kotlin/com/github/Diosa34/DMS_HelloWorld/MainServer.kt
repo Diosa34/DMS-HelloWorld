@@ -21,20 +21,24 @@ fun main() {
 
 
         val host = InetAddress.getLocalHost()
-        val port = 5894
+        val port = 5489
 
         val collection = SQLAndMemoryCollection()
         val usersCollection = SQLUsersCollection()
 
         val log = Logger.getLogger("ServerLogger")
         try {
-            LogManager.getLogManager().readConfiguration(FileInputStream("./servLog.properties"))
+//            LogManager.getLogManager().readConfiguration(FileInputStream("./servLog.properties"))
+            LogManager.getLogManager().readConfiguration(FileInputStream("C:\\Users\\Diosa\\IdeaProjects\\" +
+                    "Laboratory5\\server\\src\\main\\resources\\servLog.properties"))
             log.info("Начало работы серверного приложения")
 
         } catch (e: IOException) {
             println("Could not setup logger configuration: $e")
         } catch (ex: ClassNotFoundException) {
             println("Logger not configured")
+        } catch (ex: FileNotFoundException){
+            println("Config file not found")
         }
 
         try {

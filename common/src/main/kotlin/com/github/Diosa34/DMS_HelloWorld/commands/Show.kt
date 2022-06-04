@@ -6,13 +6,15 @@ import com.github.Diosa34.DMS_HelloWorld.absctactions.AbstractDescription
 import com.github.Diosa34.DMS_HelloWorld.absctactions.ApplicableToCollection
 import com.github.Diosa34.DMS_HelloWorld.absctactions.CollectionOfVehicles
 import com.github.Diosa34.DMS_HelloWorld.absctactions.Logger
-import com.github.Diosa34.DMS_HelloWorld.serialize.serialize
+import com.github.Diosa34.DMS_HelloWorld.users.User
+import kotlinx.serialization.Serializable
 
+@Serializable
 object Show: ApplicableToCollection, AbstractDescription {
      override val title: String = "show"
      override val help: String = "вывести все элементы коллекции"
 
-    override fun execute(logger: Logger, collection: CollectionOfVehicles) {
+    override fun execute(logger: Logger, collection: CollectionOfVehicles, user: User) {
         if (collection.iterator().hasNext()) {
             for (i in collection) {
                 logger.print(i.toString())
@@ -21,9 +23,5 @@ object Show: ApplicableToCollection, AbstractDescription {
             logger.print("Коллекция пуста")
         }
         collection.print()
-    }
-
-    override fun serialize(): UByteArray {
-        return title.serialize()
     }
 }

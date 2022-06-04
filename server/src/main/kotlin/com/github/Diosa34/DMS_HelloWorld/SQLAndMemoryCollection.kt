@@ -3,8 +3,10 @@ package com.github.Diosa34.DMS_HelloWorld
 import com.github.Diosa34.DMS_HelloWorld.absctactions.CollectionOfVehicles
 import com.github.Diosa34.DMS_HelloWorld.collection.CollectionInMemory
 import com.github.Diosa34.DMS_HelloWorld.collection.Groups
+import com.github.Diosa34.DMS_HelloWorld.collection.Vehicle
 import com.github.Diosa34.DMS_HelloWorld.collection.VehicleType
 import com.github.Diosa34.DMS_HelloWorld.exceptions.CollectionException
+import com.github.Diosa34.DMS_HelloWorld.users.User
 
 class SQLAndMemoryCollection: CollectionOfVehicles {
     private val collectionInMemory = CollectionInMemory()
@@ -22,18 +24,19 @@ class SQLAndMemoryCollection: CollectionOfVehicles {
         collectionInMemory.print()
     }
 
-    override fun add(vehicle: Vehicle) {
-        this.sqlCollection.add(vehicle)
-        vehicle.id = this.sqlCollection.selectMaxId()
-        this.collectionInMemory.add(vehicle)
+    override fun add(vehicle: Vehicle, user: User): Int {
+        val id = this.sqlCollection.add(vehicle, user)
+        vehicle.id = id
+        this.collectionInMemory.add(vehicle, user)
+        return id
     }
 
-    override fun addIfMin(name: String, vehicle: Vehicle): CollectionOfVehicles.AddIfMinResult {
-        val sqlResult = this.sqlCollection.addIfMin(name, vehicle)
-        val sqlSuccess = sqlResult.isSuccess
-        vehicle.id = this.sqlCollection.selectMaxId()
-        val memoryResult = this.collectionInMemory.addIfMin(name, vehicle)
-        val memorySuccess = memoryResult.isSuccess
+    override fun addIfMin(name: String, vehicle: Vehicle, user: User): Pair<CollectionOfVehicles.AddIfMinResult, Int?> {
+        val sqlResult = this.sqlCollection.addIfMin(name, vehicle, user)
+        val sqlSuccess = sqlResult.first.isSuccess
+        vehicle.id = sqlResult.second
+        val memoryResult = this.collectionInMemory.addIfMin(name, vehicle, user)
+        val memorySuccess = memoryResult.first.isSuccess
         if (sqlSuccess == memorySuccess) {
             return memoryResult
         } else {
@@ -102,11 +105,11 @@ class SQLAndMemoryCollection: CollectionOfVehicles {
         return this.collectionInMemory.sumOfEnginePower()
     }
 
-    override fun update(id: Int, vehicle: Vehicle): CollectionOfVehicles.UpdateResult {
-        val sqlResult = this.sqlCollection.update(id, vehicle)
+    override fun update(id: Int, vehicle: Vehicle, user: User): CollectionOfVehicles.UpdateResult {
+        val sqlResult = this.sqlCollection.update(id, vehicle, user)
         val sqlSuccess = sqlResult.isSuccess
         vehicle.id = id
-        val memoryResult = this.collectionInMemory.update(id, vehicle)
+        val memoryResult = this.collectionInMemory.update(id, vehicle, user)
         val memorySuccess = memoryResult.isSuccess
         if (sqlSuccess == memorySuccess) {
             return memoryResult

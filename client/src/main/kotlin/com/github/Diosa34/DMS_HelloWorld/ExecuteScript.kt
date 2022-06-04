@@ -5,30 +5,32 @@ package com.github.Diosa34.DMS_HelloWorld
 import com.github.Diosa34.DMS_HelloWorld.absctactions.AbstractDescription
 import com.github.Diosa34.DMS_HelloWorld.absctactions.BoundCommand
 import com.github.Diosa34.DMS_HelloWorld.absctactions.Logger
-import com.github.Diosa34.DMS_HelloWorld.collection.InstanceCreator
 import com.github.Diosa34.DMS_HelloWorld.io.FileStringReader
-import com.github.Diosa34.DMS_HelloWorld.serialize.serialize
+import kotlinx.serialization.Serializable
 import java.io.File
+import java.io.FileNotFoundException
 
+@Serializable
 class ExecuteScript(
-    private val path: String,
-    private val log: java.util.logging.Logger
+    private val path: String
 ): BoundCommand {
     fun execute(logger: Logger, client: Client){
+        try {
+            if (FileVerification.fullVerification(path)) {
+                HistoryOfExecutingScripts.addScript(logger, path)
+            }
+        } catch (ex: FileNotFoundException) {
+            println(ex.message)
+        } catch (ex: FileVerificationException) {
+            println(ex.message)
+        }
         logger.print("Выполнение скрипта: ${File(path)}")
         RequestManager.manage(
             logger,
             1,
-            InstanceCreator.CREATE_FROM_FILE,
             FileStringReader(path),
-            client, this.log)
+            client)
         HistoryOfExecutingScripts.removeScript()
-    }
-
-    override fun serialize(): UByteArray{
-        var bytes: UByteArray = title.serialize()
-        bytes += this.path.serialize()
-        return bytes
     }
 
     companion object Description: AbstractDescription {

@@ -1,27 +1,20 @@
-@file:OptIn(ExperimentalUnsignedTypes::class, ExperimentalUnsignedTypes::class)
-
 package com.github.Diosa34.DMS_HelloWorld.commands
 
-import com.github.Diosa34.DMS_HelloWorld.*
 import com.github.Diosa34.DMS_HelloWorld.absctactions.AbstractDescription
 import com.github.Diosa34.DMS_HelloWorld.absctactions.ApplicableToCollection
 import com.github.Diosa34.DMS_HelloWorld.absctactions.CollectionOfVehicles
 import com.github.Diosa34.DMS_HelloWorld.absctactions.Logger
-import com.github.Diosa34.DMS_HelloWorld.serialize.serialize
-import java.io.Serializable
+import com.github.Diosa34.DMS_HelloWorld.collection.Vehicle
+import com.github.Diosa34.DMS_HelloWorld.users.User
+import kotlinx.serialization.Serializable
 
+@Serializable
 class Add(
     private val vehicle: Vehicle
-): ApplicableToCollection, Serializable {
-    override fun execute(logger: Logger, collection: CollectionOfVehicles) {
-        collection.add(vehicle)
+): ApplicableToCollection {
+    override fun execute(logger: Logger, collection: CollectionOfVehicles, user: User) {
+        collection.add(vehicle, user)
         logger.print("Элемент успешно добавлен в коллекцию")
-    }
-
-    override fun serialize(): UByteArray{
-        var bytes: UByteArray = title.serialize()
-        bytes += this.vehicle.serialize()
-        return bytes
     }
 
     companion object Description: AbstractDescription {

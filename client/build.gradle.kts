@@ -1,6 +1,7 @@
 plugins {
     application
     kotlin("jvm")
+    kotlin("plugin.serialization")
 }
 
 repositories {
@@ -21,6 +22,8 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-jdk8"))
                 implementation("com.github.Diosa34:ObjectConverter:master-SNAPSHOT")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
                 implementation(project(":common"))
             }
         }

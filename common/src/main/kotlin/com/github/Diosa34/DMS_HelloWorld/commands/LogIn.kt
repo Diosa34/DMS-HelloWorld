@@ -1,22 +1,26 @@
 package com.github.Diosa34.DMS_HelloWorld.commands
 
 import com.github.Diosa34.DMS_HelloWorld.absctactions.*
-import com.github.Diosa34.DMS_HelloWorld.serialize.serialize
+import com.github.Diosa34.DMS_HelloWorld.io.BufferLogger
+import com.github.Diosa34.DMS_HelloWorld.serialize.GeneralEncoder
+import com.github.Diosa34.DMS_HelloWorld.users.User
+import kotlinx.serialization.Serializable
+import java.sql.SQLException
 
+@Serializable
 class LogIn(
     private val login: String,
     private val password: String
 ): AuthenticationCommand {
-    override fun execute(logger: Logger, userCollection: CollectionOfUsers) {
-//        logger.print(userCollection.getLogin(login, password))
-    }
-
-    @OptIn(ExperimentalUnsignedTypes::class)
-    override fun serialize(): UByteArray {
-        var bytes: UByteArray = title.serialize()
-        bytes += this.login.serialize()
-        bytes += this.password.serialize()
-        return bytes
+    override fun execute(logger: BufferLogger, userCollection: CollectionOfUsers) {
+        val userArr = ByteArray(1024*1024)
+        try {
+            User.serializer().serialize(GeneralEncoder(userArr.toUByteArray()), userCollection.getUser(this.login, this.password))
+            logger.userToArr(userArr)
+            logger.print("Пользователь $login успешно авторизован")
+        } catch (ex: SQLException) {
+            logger.print("Ошибка при авторизации")
+        }
     }
 
     companion object Description: AbstractDescription {

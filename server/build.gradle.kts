@@ -1,6 +1,7 @@
 plugins {
     application
     kotlin("jvm")
+    kotlin("plugin.serialization")
 }
 
 val exposedVersion: String by project
@@ -26,8 +27,10 @@ kotlin {
                 implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
                 implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
                 implementation("com.github.Diosa34:ObjectConverter:master-SNAPSHOT")
-                implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
+                implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposedVersion")
                 implementation("org.postgresql:postgresql:42.2.10")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
                 implementation(project(":common"))
                 implementation(project(":client"))
             }

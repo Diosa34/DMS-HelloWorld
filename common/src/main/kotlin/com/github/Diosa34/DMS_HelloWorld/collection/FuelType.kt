@@ -2,20 +2,17 @@
 
 package com.github.Diosa34.DMS_HelloWorld.collection
 
-import com.github.Diosa34.DMS_HelloWorld.serialize.serialize
+import kotlinx.serialization.Serializable
 
 private var countOfInstances = 0
 
+@Serializable
 enum class FuelType {
     GASOLINE,
     DIESEL,
     NUCLEAR;
 
     var index: Int = countOfInstances++
-
-    fun serialize(): UByteArray {
-        return typeToString[this]!!.serialize()
-    }
 
     companion object{
         @JvmStatic

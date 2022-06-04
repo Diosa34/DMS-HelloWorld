@@ -6,18 +6,16 @@ import com.github.Diosa34.DMS_HelloWorld.absctactions.AbstractDescription
 import com.github.Diosa34.DMS_HelloWorld.absctactions.ApplicableToCollection
 import com.github.Diosa34.DMS_HelloWorld.absctactions.CollectionOfVehicles
 import com.github.Diosa34.DMS_HelloWorld.absctactions.Logger
-import com.github.Diosa34.DMS_HelloWorld.serialize.serialize
+import com.github.Diosa34.DMS_HelloWorld.users.User
+import kotlinx.serialization.Serializable
 
+@Serializable
 object Clear : ApplicableToCollection, AbstractDescription {
     override val title: String = "clear"
     override val help: String = "очистить коллекцию"
 
-    override fun execute(logger: Logger, collection: CollectionOfVehicles) {
+    override fun execute(logger: Logger, collection: CollectionOfVehicles, user: User) {
         collection.clear()
         logger.print("Коллекция очищена")
-    }
-
-    override fun serialize(): UByteArray {
-        return title.serialize()
     }
 }

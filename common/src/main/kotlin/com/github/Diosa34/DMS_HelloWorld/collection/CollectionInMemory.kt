@@ -1,7 +1,9 @@
 package com.github.Diosa34.DMS_HelloWorld.collection
 
-import com.github.Diosa34.DMS_HelloWorld.Vehicle
 import com.github.Diosa34.DMS_HelloWorld.absctactions.CollectionOfVehicles
+import com.github.Diosa34.DMS_HelloWorld.users.User
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import java.time.LocalDateTime
 import java.util.*
 
@@ -9,28 +11,31 @@ import java.util.*
 class CollectionInMemory : CollectionOfVehicles {
 
     private val collection: LinkedList<Vehicle> = LinkedList()
-    private val initDate: LocalDateTime = LocalDateTime.now()
+    private val initDate: Instant = Clock.System.now()
 
     override fun print() {
         println(this.collection)
     }
 
-    override fun add(vehicle: Vehicle) {
+    fun copyFromDB(vehicle: Vehicle){
         this.collection.add(vehicle)
     }
 
-    override fun addIfMin(name: String, vehicle: Vehicle): CollectionOfVehicles.AddIfMinResult {
+    override fun add(vehicle: Vehicle, user: User): Int {
+        this.collection.add(vehicle)
+        return vehicle.id ?: throw NullPointerException()
+    }
+
+    override fun addIfMin(name: String, vehicle: Vehicle, user: User): Pair<CollectionOfVehicles.AddIfMinResult, Int?> {
         return if (this.collection.size != 0) {
             val minElem = this.collection.sortedWith(compareBy { it.name.length })[0]
             if (minElem.compareTo(name) > 0) {
-                this.collection.add(vehicle)
-                CollectionOfVehicles.AddIfMinResult.SUCCESS
+                Pair(CollectionOfVehicles.AddIfMinResult.SUCCESS, add(vehicle, user))
             } else {
-                CollectionOfVehicles.AddIfMinResult.LESS_FOUND
+                Pair(CollectionOfVehicles.AddIfMinResult.LESS_FOUND, null)
             }
         } else {
-            this.collection.add(vehicle)
-            CollectionOfVehicles.AddIfMinResult.EMPTY
+            Pair(CollectionOfVehicles.AddIfMinResult.EMPTY, add(vehicle, user))
         }
     }
 
@@ -102,7 +107,7 @@ class CollectionInMemory : CollectionOfVehicles {
         return summa
     }
 
-    override fun update(id: Int, vehicle: Vehicle): CollectionOfVehicles.UpdateResult {
+    override fun update(id: Int, vehicle: Vehicle, user: User): CollectionOfVehicles.UpdateResult {
         return if (this.collection.size > 0) {
             if (this.collection.none { it.id == id }) {
                 CollectionOfVehicles.UpdateResult.NOT_FOUND

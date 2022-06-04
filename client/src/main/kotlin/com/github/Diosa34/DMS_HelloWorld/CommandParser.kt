@@ -3,13 +3,14 @@ package com.github.Diosa34.DMS_HelloWorld
 import com.github.Diosa34.DMS_HelloWorld.absctactions.AbstractStringReader
 import com.github.Diosa34.DMS_HelloWorld.absctactions.BoundCommand
 import com.github.Diosa34.DMS_HelloWorld.absctactions.Logger
-import com.github.Diosa34.DMS_HelloWorld.collection.InstanceCreator
-import com.github.Diosa34.DMS_HelloWorld.collection.VehicleType
-import com.github.Diosa34.DMS_HelloWorld.collection.tryGet
 import com.github.Diosa34.DMS_HelloWorld.commands.*
 import com.github.Diosa34.DMS_HelloWorld.exceptions.ParseException
 import com.github.Diosa34.DMS_HelloWorld.exceptions.UnexpectedCommandException
-import java.io.FileNotFoundException
+import com.github.Diosa34.DMS_HelloWorld.io.FileStringReader
+import com.github.Diosa34.DMS_HelloWorld.serialize.CompositeConsoleDecoderDelegate
+import com.github.Diosa34.DMS_HelloWorld.serialize.CompositeFileDecoderDelegate
+import com.github.Diosa34.DMS_HelloWorld.serialize.GeneralDecoder
+import kotlinx.serialization.encoding.CompositeDecoder
 import kotlin.jvm.Throws
 
 /**
@@ -21,125 +22,37 @@ object CommandParser{
      */
     @JvmStatic
     @Throws(UnexpectedCommandException::class, ParseException::class)
-    fun parse(logger: Logger, str: String, attempts: Int, creator: InstanceCreator, stringReader: AbstractStringReader,
-              log: java.util.logging.Logger): BoundCommand {
+    fun parse(logger: Logger, str: String, attempts: Int, stringReader: AbstractStringReader): BoundCommand {
         val request = str.trim().split(Regex("""\s+"""))
         if (request.isEmpty()){
             throw UnexpectedCommandException()
         }
-        val args = request.slice(1 until request.size).toTypedArray()
+
+        var decoder: CompositeDecoder = CompositeConsoleDecoderDelegate(logger, attempts, stringReader)
+        if (stringReader is FileStringReader) {
+            decoder = CompositeFileDecoderDelegate(logger, attempts, stringReader)
+        }
+
         val command: BoundCommand = when (request[0]) {
-            "registry",  -> {
-                val data = identification(logger, stringReader, attempts)
-                logger.print("Введите пароль ещё раз для подтверждения")
-                val secondPassword = tryGet(stringReader.getNextLine(), attempts, "Пароли не совпадают," +
-                        " повторите пароль ещё раз")
-                { takeIf { it == data.second } } ?: throw ParseException("Совпадение паролей не достигнуто")
-                Register(data.first, secondPassword)
-            }
-            "log_in" -> {
-                val data = identification(logger, stringReader, attempts)
-                LogIn(data.first, data.second)
-            }
-            "add" -> {
-                Add(creator.invoke(stringReader) ?: throw ParseException())
-            }
-            "add_if_min" -> {
-                logger.print("Введите марку средства передвижения")
-                val name = tryGet(stringReader.getNextLine(), attempts, "Имя не может быть пустой строкой")
-                { takeIf { isNotBlank() } } ?: throw ParseException()
-                AddIfMin(name, creator.invoke(stringReader) ?: throw ParseException())
-            }
-            "clear" -> Clear
-            "count_by_type" -> {
-                val changableId = if (args.isEmpty()){
-                    logger.print("Введите номер соответствующего типа средства передвижения из предложенных")
-                    logger.print(VehicleType.getTypes().toString())
-                    stringReader.getNextLine()
-                } else {
-                    args[0]
-                }
-                // ?. - функция или поле берётся, если слева не null, в противном случае результат выражения null
-                val type: VehicleType =
-                    tryGet(changableId, attempts, "Введите номер соответствующего типа средства" +
-                            " передвижения из предложенных") {
-                        toIntOrNull()?.let(VehicleType.Companion::getVehicle)
-                    } ?: throw ParseException()
-                CountByType(type)
-            }
-            "execute_script" -> {
-                val path = if (args.isEmpty()) {
-                    logger.print("Введите путь к файлу, который хотите прочитать")
-                    stringReader.getNextLine()
-                } else {
-                    args[0]
-                }
-                try {
-                if (FileVerification.fullVerification(path)) {
-                    HistoryOfExecutingScripts.addScript(logger, path)
-                }
-                } catch (ex: FileNotFoundException) {
-                    println(ex.message)
-                } catch (ex: FileVerificationException) {
-                    println(ex.message)
-                }
-                ExecuteScript(path, log)
-            }
-            "exit" -> Exit
-            "group_counting_by_type" -> GroupCountingByType
-            "help" -> Help
-            "info" -> Info
-            "remove_by_id" -> {
-                val changableId = if (args.size < 2){
-                    logger.print("Введите id элемента, который хотите удалить")
-                    stringReader.getNextLine()
-                } else {
-                    args[0]
-                }
-                val id: Int =
-                    tryGet(changableId, attempts, "Введите число") {
-                        toIntOrNull()
-                    } ?: throw ParseException()
-                RemoveById(id)
-            }
-            "remove_first" -> RemoveFirst
-            "remove_lower" -> {
-                logger.print("Введите название средства передвижения")
-                val name = tryGet(
-                    stringReader.getNextLine(),
-                    attempts,
-                    "Имя не может быть пустой строкой"
-                ) { takeIf { isNotBlank() } }
-                    ?: throw ParseException()
-                RemoveLower(name)
-            }
-            "show" -> Show
-            "sum_of_engine_power" -> SumOfEnginePower
-            "update" -> {
-                val chanId = if (args.isEmpty()){
-                    logger.print("Введите id элемента, который хотите обновить")
-                    stringReader.getNextLine()
-                } else {
-                    args[0]
-                }
-                val id: Int =
-                    tryGet(chanId, attempts, "Введите число") {
-                        toIntOrNull()
-                    } ?: throw ParseException()
-                Update(id, creator.invoke(stringReader) ?: throw ParseException())
-            }
+            "registry" -> Register.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
+            "log_in" -> LogIn.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
+            "add" -> Add.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
+            "add_if_min" -> AddIfMin.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
+            "clear" -> Clear.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
+            "count_by_type" -> CountByType.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
+            "execute_script" -> ExecuteScript.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
+            "exit" -> Exit.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
+            "group_counting_by_type" -> GroupCountingByType.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
+            "help" -> Help.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
+            "info" -> Info.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
+            "remove_by_id" -> RemoveById.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
+            "remove_first" -> RemoveFirst.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
+            "remove_lower" -> RemoveLower.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
+            "show" -> Show.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
+            "sum_of_engine_power" -> SumOfEnginePower.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
+            "update" -> Update.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
             else -> throw UnexpectedCommandException()
         }
         return command
     }
-}
-
-fun identification(logger: Logger, stringReader: AbstractStringReader, attempts: Int): Pair<String, String>{
-    logger.print("Введите логин")
-    val login =  tryGet(stringReader.getNextLine(), attempts, "Логин не может быть пустой строкой")
-    { takeIf { isNotBlank() } } ?: throw ParseException("Логин не был получен")
-    logger.print("Введите пароль")
-    val password = tryGet(stringReader.getNextLine(), attempts, "Пароль не может быть пустой строкой")
-    { takeIf { isNotBlank() } } ?: throw ParseException("Пароль не был получен")
-    return Pair(login, password)
 }
