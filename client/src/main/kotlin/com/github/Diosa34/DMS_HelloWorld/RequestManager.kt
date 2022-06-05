@@ -6,11 +6,10 @@ import com.github.Diosa34.DMS_HelloWorld.absctactions.Logger
 import com.github.Diosa34.DMS_HelloWorld.commands.Exit
 import com.github.Diosa34.DMS_HelloWorld.exceptions.ParseException
 import com.github.Diosa34.DMS_HelloWorld.exceptions.UnexpectedCommandException
-import com.github.Diosa34.DMS_HelloWorld.serialize.GeneralEncoder
-import com.github.Diosa34.DMS_HelloWorld.serialize.GeneralServerDecoder
-import com.github.Diosa34.DMS_HelloWorld.serialize.InterfaceSerializer
-import com.github.Diosa34.DMS_HelloWorld.serialize.deserializeString
+import com.github.Diosa34.DMS_HelloWorld.serialize.*
 import com.github.Diosa34.DMS_HelloWorld.users.User
+import io.github.landgrafhomyak.itmo.dms_lab.io.Client2ServerEncoder
+import io.github.landgrafhomyak.itmo.dms_lab.io.Server2ClientDecoder
 import java.net.ConnectException
 import java.net.SocketException
 import kotlin.Throws
@@ -32,19 +31,16 @@ object RequestManager {
                     }
                 }
                 if (line != "execute_script"){
-                    val commandArr = ByteArray(1024*1024)
-                    val userArr = ByteArray(1024*1024)
+                    val requestArr = mutableListOf<UByteArray>()
                     try {
-                        if (user != null || line == "register" || line == "log_in"){
-                            InterfaceSerializer.serialize(GeneralEncoder(commandArr.toUByteArray()), command)
-                            client.send(commandArr)
-                        } else {
+                        var request = Request(command)
+                        if (line != "registry" && line != "log_in" && user != null){
+                            request = Request(command, user)
+                        } else if (line != "registry" && line != "log_in" && user == null) {
                             throw NotAuthorized("Перед началом работы необходимо авторизоваться")
                         }
-                        if (line != "register" && line != "log_in" && user != null){
-                            User.serializer().serialize(GeneralEncoder(userArr.toUByteArray()), user)
-                            client.send(userArr)
-                        }
+                        Request.serializer().serialize(Client2ServerEncoder(requestArr), request)
+                        client.send(requestArr.flatten().toUByteArray().toByteArray())
                         client.receive()
                     } catch (ex: ConnectException) {
                         logger.print("Соединение прервано, перезапустите сервер, затем клиента")
@@ -53,11 +49,11 @@ object RequestManager {
                         logger.print("Соединение прервано, перезапустите сервер, затем клиента, ошибка сокета")
                         return
                     }
-                    val ansIterator = client.getArr().toUByteArray().iterator()
-                    if (line == "log_in") {
-                        user = User.serializer().deserialize(GeneralServerDecoder(client.getArr(), 1, logger, ansIterator))
+                    if (line != "help" || line != "info" || line != "show") {
+                        val answer = OneLineAnswer.serializer().deserialize(Server2ClientDecoder(client.getArr().toUByteArray()))
+                        user = answer.user
+                        logger.print(answer.result)
                     }
-                    logger.print(ansIterator.deserializeString())
                 }
             } catch (e: UnexpectedCommandException) {
                 logger.print(UnexpectedCommandException.message)

@@ -3,15 +3,19 @@
 package com.github.Diosa34.DMS_HelloWorld.io
 
 import com.github.Diosa34.DMS_HelloWorld.absctactions.Logger
+import com.github.Diosa34.DMS_HelloWorld.serialize.OneLineAnswer
 import com.github.Diosa34.DMS_HelloWorld.serialize.serial
+import com.github.Diosa34.DMS_HelloWorld.users.User
+import io.github.landgrafhomyak.itmo.dms_lab.io.Server2ClientEncoder
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
 
 class BufferLogger(
     val sock: SocketChannel
 ) : Logger {
+    private var user: User? = null
     private var buf = StringBuilder()
-    private var arr: ByteArray = ByteArray(1024*1024)
+    private var arr = mutableListOf<UByteArray>()
 
     override fun print(message: String) {
         if (buf.isNotBlank()) {
@@ -21,16 +25,13 @@ class BufferLogger(
         }
     }
 
-    fun bufSerialize(){
-        val str: UByteArray = this.buf.toString().toByteArray(Charsets.UTF_8).toUByteArray()
-        this.arr += (str.size.serial() + str).toByteArray()
-    }
-
-    fun userToArr(user: ByteArray){
-        this.arr += user
+    fun setUser(user: User){
+        this.user = user
     }
 
     fun flush() {
-        this.sock.write(ByteBuffer.wrap(this.arr))
+        val answer = OneLineAnswer(this.user, this.buf.toString())
+        OneLineAnswer.serializer().serialize(Server2ClientEncoder(this.arr), answer)
+        this.sock.write(ByteBuffer.wrap(this.arr.flatten().toUByteArray().toByteArray()))
     }
 }

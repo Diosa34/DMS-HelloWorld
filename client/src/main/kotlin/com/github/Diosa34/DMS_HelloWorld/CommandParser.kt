@@ -10,7 +10,9 @@ import com.github.Diosa34.DMS_HelloWorld.io.FileStringReader
 import com.github.Diosa34.DMS_HelloWorld.serialize.CompositeConsoleDecoderDelegate
 import com.github.Diosa34.DMS_HelloWorld.serialize.CompositeFileDecoderDelegate
 import com.github.Diosa34.DMS_HelloWorld.serialize.GeneralDecoder
+import io.github.landgrafhomyak.itmo.dms_lab.interop.ConsoleInputDecoder
 import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.Decoder
 import kotlin.jvm.Throws
 
 /**
@@ -28,29 +30,29 @@ object CommandParser{
             throw UnexpectedCommandException()
         }
 
-        var decoder: CompositeDecoder = CompositeConsoleDecoderDelegate(logger, attempts, stringReader)
-        if (stringReader is FileStringReader) {
-            decoder = CompositeFileDecoderDelegate(logger, attempts, stringReader)
-        }
+        var decoder: Decoder = ConsoleInputDecoder(attempts.toUInt())
+//        if (stringReader is FileStringReader) {
+//            decoder = CompositeFileDecoderDelegate(logger, attempts, stringReader)
+//        }
 
         val command: BoundCommand = when (request[0]) {
-            "registry" -> Register.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
-            "log_in" -> LogIn.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
-            "add" -> Add.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
-            "add_if_min" -> AddIfMin.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
-            "clear" -> Clear.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
-            "count_by_type" -> CountByType.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
-            "execute_script" -> ExecuteScript.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
-            "exit" -> Exit.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
-            "group_counting_by_type" -> GroupCountingByType.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
-            "help" -> Help.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
-            "info" -> Info.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
-            "remove_by_id" -> RemoveById.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
-            "remove_first" -> RemoveFirst.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
-            "remove_lower" -> RemoveLower.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
-            "show" -> Show.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
-            "sum_of_engine_power" -> SumOfEnginePower.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
-            "update" -> Update.serializer().deserialize(GeneralDecoder(attempts, stringReader, logger, decoder))
+            "registry" -> Register.serializer().deserialize(decoder)
+            "log_in" -> LogIn.serializer().deserialize(decoder)
+            "add" -> Add.serializer().deserialize(decoder)
+            "add_if_min" -> AddIfMin.serializer().deserialize(decoder)
+            "clear" -> Clear.serializer().deserialize(decoder)
+            "count_by_type" -> CountByType.serializer().deserialize(decoder)
+            "execute_script" -> ExecuteScript.serializer().deserialize(decoder)
+            "exit" -> Exit.serializer().deserialize(decoder)
+            "group_counting_by_type" -> GroupCountingByType.serializer().deserialize(decoder)
+            "help" -> Help.serializer().deserialize(decoder)
+            "info" -> Info.serializer().deserialize(decoder)
+            "remove_by_id" -> RemoveById.serializer().deserialize(decoder)
+            "remove_first" -> RemoveFirst.serializer().deserialize(decoder)
+            "remove_lower" -> RemoveLower.serializer().deserialize(decoder)
+            "show" -> Show.serializer().deserialize(decoder)
+            "sum_of_engine_power" -> SumOfEnginePower.serializer().deserialize(decoder)
+            "update" -> Update.serializer().deserialize(decoder)
             else -> throw UnexpectedCommandException()
         }
         return command

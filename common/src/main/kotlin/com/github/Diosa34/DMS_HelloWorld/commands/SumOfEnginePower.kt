@@ -7,9 +7,11 @@ import com.github.Diosa34.DMS_HelloWorld.absctactions.ApplicableToCollection
 import com.github.Diosa34.DMS_HelloWorld.absctactions.CollectionOfVehicles
 import com.github.Diosa34.DMS_HelloWorld.absctactions.Logger
 import com.github.Diosa34.DMS_HelloWorld.users.User
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+@SerialName("sum_of_engine_power")
 object SumOfEnginePower: ApplicableToCollection, AbstractDescription {
     override val title: String = "sum_of_engine_power"
     override val help: String = "вывести сумму значений мощностей двигателей всех элементов"

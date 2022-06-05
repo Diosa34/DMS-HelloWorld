@@ -8,7 +8,8 @@ val exposedVersion: String by project
 
 repositories {
     mavenCentral()
-    maven(url = "https://jitpack.io/")
+    maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
+//    maven(url = "https://jitpack.io/")
 }
 
 kotlin {
@@ -26,11 +27,12 @@ kotlin {
                 implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
                 implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
                 implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
-                implementation("com.github.Diosa34:ObjectConverter:master-SNAPSHOT")
+//                implementation("com.github.Diosa34:ObjectConverter:master-SNAPSHOT")
                 implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposedVersion")
                 implementation("org.postgresql:postgresql:42.2.10")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
+                implementation("io.github.landgrafhomyak.itmo:dms-lab-core:1.0-b1-SNAPSHOT")
                 implementation(project(":common"))
                 implementation(project(":client"))
             }

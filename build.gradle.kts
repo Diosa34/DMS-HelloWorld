@@ -8,5 +8,5 @@ version = "1.0"
 
 repositories {
     mavenCentral()
-    maven(url = "https://jitpack.io/")
+//    maven(url = "https://jitpack.io/")
 }

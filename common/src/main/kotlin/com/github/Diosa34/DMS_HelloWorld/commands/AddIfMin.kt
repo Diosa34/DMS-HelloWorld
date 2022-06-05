@@ -9,11 +9,16 @@ import com.github.Diosa34.DMS_HelloWorld.absctactions.CollectionOfVehicles
 import com.github.Diosa34.DMS_HelloWorld.absctactions.Logger
 import com.github.Diosa34.DMS_HelloWorld.collection.Vehicle
 import com.github.Diosa34.DMS_HelloWorld.users.User
+import io.github.landgrafhomyak.itmo.dms_lab.interop.DisplayName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+@SerialName("add_if_min")
 class AddIfMin(
+    @DisplayName("Марка средства передвижения")
     private val name: String,
+    @DisplayName("Средство передвижения")
     private val vehicle: Vehicle
 ): ApplicableToCollection {
     override fun execute(logger: Logger, collection: CollectionOfVehicles, user: User) {

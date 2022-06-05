@@ -6,15 +6,16 @@ import com.github.Diosa34.DMS_HelloWorld.absctactions.CollectionOfUsers
 import com.github.Diosa34.DMS_HelloWorld.io.BufferLogger
 import com.github.Diosa34.DMS_HelloWorld.users.User
 import io.github.landgrafhomyak.itmo.dms_lab.interop.DisplayName
+import kotlinx.serialization.SerialName
 import java.sql.SQLException
 import kotlinx.serialization.Serializable
 
 @Serializable
-@DisplayName("регистрация")
+@SerialName("registry")
 class Register(
-    @DisplayName("логин")
+    @DisplayName("Логин")
     private val login: String,
-    @DisplayName("пароль")
+    @DisplayName("Пароль")
     private val password: String
 ): AuthenticationCommand {
     override fun execute(logger: BufferLogger, userCollection: CollectionOfUsers) {
@@ -27,7 +28,7 @@ class Register(
     }
 
     companion object Description: AbstractDescription {
-        override val title: String = "register"
+        override val title: String = "registry"
         override val help: String = "зарегистрироваться"
     }
 }

@@ -22,6 +22,8 @@ class GeneralEncoder @OptIn(ExperimentalUnsignedTypes::class) constructor(
     override val serializersModule: SerializersModule
         get() = EmptySerializersModule
 
+    private var level = 0L
+
     override fun beginStructure(descriptor: SerialDescriptor): CompositeEncoder {
         return CompositeEncoderDelegate(this.arr)
     }

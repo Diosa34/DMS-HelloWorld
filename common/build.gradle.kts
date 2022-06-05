@@ -6,7 +6,8 @@ plugins {
 
 repositories {
     mavenCentral()
-    maven(url = "https://jitpack.io/")
+    maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
+//    maven(url = "https://jitpack.io/")
 }
 
 java {
@@ -26,9 +27,10 @@ kotlin {
         val main by getting {
             dependencies {
                 implementation(kotlin("stdlib-jdk8"))
-                implementation("com.github.Diosa34:ObjectConverter:master-SNAPSHOT")
+//                implementation("com.github.Diosa34:ObjectConverter:master-SNAPSHOT")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
+                implementation("io.github.landgrafhomyak.itmo:dms-lab-core:1.0-b1-SNAPSHOT")
             }
         }
         val test by getting {

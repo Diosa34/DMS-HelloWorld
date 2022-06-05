@@ -2,17 +2,12 @@
 
 package com.github.Diosa34.DMS_HelloWorld
 
-import com.github.Diosa34.DMS_HelloWorld.absctactions.BoundCommand
 import com.github.Diosa34.DMS_HelloWorld.absctactions.CollectionOfVehicles
-import com.github.Diosa34.DMS_HelloWorld.commands.LogIn
-import com.github.Diosa34.DMS_HelloWorld.commands.Register
 import com.github.Diosa34.DMS_HelloWorld.exceptions.CollectionException
 import com.github.Diosa34.DMS_HelloWorld.exceptions.DeserializeException
 import com.github.Diosa34.DMS_HelloWorld.io.BufferLogger
-import com.github.Diosa34.DMS_HelloWorld.serialize.CommandDeserializer
-import com.github.Diosa34.DMS_HelloWorld.serialize.GeneralServerDecoder
-import com.github.Diosa34.DMS_HelloWorld.users.User
-import kotlinx.serialization.encoding.Decoder
+import com.github.Diosa34.DMS_HelloWorld.serialize.Request
+import io.github.landgrafhomyak.itmo.dms_lab.io.Client2ServerDecoder
 import java.net.*
 import java.nio.Buffer
 import java.nio.ByteBuffer
@@ -26,50 +21,40 @@ class Server(
     host: InetAddress,
     port: Int,
     log: Logger,
-    var sock: SocketChannel = SocketChannel.open()
+    private var sock: SocketChannel = SocketChannel.open()
 ) {
     private val log: Logger
-    val serv: ServerSocketChannel = ServerSocketChannel.open()
+    private val serv: ServerSocketChannel = ServerSocketChannel.open()
 
     init {
         this.log = log
-        val addres: SocketAddress = InetSocketAddress(host, port)
-        serv.bind(addres)
+        val address: SocketAddress = InetSocketAddress(host, port)
+        serv.bind(address)
         this.sock = serv.accept()
         this.log.info("Установлено новое подключение")
     }
 
     fun receive(collection: CollectionOfVehicles, usersCollection: SQLUsersCollection) {
-        val commandArr = ByteArray(1024 * 1024)
-        val userArr = ByteArray(1024 * 1024)
-        val commandBuf = ByteBuffer.wrap(commandArr)
-        val userBuf = ByteBuffer.wrap(userArr)
-        this.sock.read(commandBuf)
+        val requestArr = ByteArray(1024 * 1024)
+        val requestBuf = ByteBuffer.wrap(requestArr)
+        this.sock.read(requestBuf)
         this.log.info("Получен новый запрос от клиента")
-        (commandBuf as Buffer).flip()
-        if (commandArr.contentEquals(ByteArray(1024 * 1024))) {
+        (requestBuf as Buffer).flip()
+        if (requestArr.contentEquals(ByteArray(1024 * 1024))) {
             this.serv.close()
             throw ConnectException()
         }
         val bufferLogger = BufferLogger(this.sock)
-        val command: BoundCommand
-        var user: User? = null
+        val request: Request
         try {
-            command = CommandDeserializer.deserialize(commandArr.toUByteArray(), bufferLogger)
-            if (command !is Register && command !is LogIn){
-                this.sock.read(userBuf)
-                (userBuf as Buffer).flip()
-                user = User.serializer().deserialize(GeneralServerDecoder(userArr, 1, bufferLogger,
-                    userArr.toUByteArray().iterator()))
-            }
+            request = Request.serializer().deserialize(Client2ServerDecoder(requestArr.toUByteArray()))
         } catch (ex: DeserializeException) {
             bufferLogger.print(ex.message)
-            bufferLogger.bufSerialize()
             bufferLogger.flush()
             return
         }
         try {
-            executeCall(command, bufferLogger, collection, usersCollection, user)
+            executeCall(request.command, bufferLogger, collection, usersCollection, request.user)
         } catch (ex: CollectionException) {
             bufferLogger.print(ex.message)
         } catch (ex: SQLException) {
@@ -79,7 +64,6 @@ class Server(
             this.log.log(Level.WARNING, "IllegalStateException: ", ex)
             bufferLogger.print("Доступ к базе данных не получен")
         }
-        bufferLogger.bufSerialize()
         bufferLogger.flush()
         this.log.info("Ответ отправлен клиенту")
     }

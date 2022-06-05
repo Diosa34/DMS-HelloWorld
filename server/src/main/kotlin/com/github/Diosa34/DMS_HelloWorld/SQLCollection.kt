@@ -93,11 +93,11 @@ class SQLCollection: CollectionOfVehicles {
             CollectionOfVehicles.UpdateResult.NOT_FOUND
         }
     }
-
-    fun selectMaxId(): Int? {
-        val maxId = SQLVehicles.id.max()
-        return transaction { SQLVehicles.slice(maxId).selectAll().map{it[maxId]}.last() }
-    }
+//
+//    fun selectMaxId(): Int? {
+//        val maxId = SQLVehicles.id.max()
+//        return transaction { SQLVehicles.slice(maxId).selectAll().map{it[maxId]}.last() }
+//    }
 
     private fun Vehicle.sqlClosure(user:User): SQLVehicles.(UpdateBuilder<*>) -> Unit {
         return {

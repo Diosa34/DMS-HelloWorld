@@ -7,10 +7,14 @@ import com.github.Diosa34.DMS_HelloWorld.absctactions.ApplicableToCollection
 import com.github.Diosa34.DMS_HelloWorld.absctactions.CollectionOfVehicles
 import com.github.Diosa34.DMS_HelloWorld.absctactions.Logger
 import com.github.Diosa34.DMS_HelloWorld.users.User
+import io.github.landgrafhomyak.itmo.dms_lab.interop.DisplayName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+@SerialName("remove_lower")
 class RemoveLower(
+    @DisplayName("Марка средства передвижения")
     private val name: String
 ): ApplicableToCollection {
 
