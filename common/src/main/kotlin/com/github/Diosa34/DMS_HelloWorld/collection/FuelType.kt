@@ -2,14 +2,18 @@
 
 package com.github.Diosa34.DMS_HelloWorld.collection
 
+import io.github.landgrafhomyak.itmo.dms_lab.interop.DisplayName
 import kotlinx.serialization.Serializable
 
 private var countOfInstances = 0
 
 @Serializable
 enum class FuelType {
+    @DisplayName("GASOLINE")
     GASOLINE,
+    @DisplayName("DIESEL")
     DIESEL,
+    @DisplayName("NUCLEAR")
     NUCLEAR;
 
     var index: Int = countOfInstances++
