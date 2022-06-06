@@ -32,7 +32,7 @@ kotlin {
                 implementation("org.postgresql:postgresql:42.2.10")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
-                implementation("io.github.landgrafhomyak.itmo:dms-lab-core:1.0-b1-SNAPSHOT")
+                implementation("io.github.landgrafhomyak.itmo:dms-lab-core:1.0-b0+-SNAPSHOT")
                 implementation(project(":common"))
                 implementation(project(":client"))
             }

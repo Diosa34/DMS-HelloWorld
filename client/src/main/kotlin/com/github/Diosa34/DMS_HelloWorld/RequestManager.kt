@@ -22,6 +22,9 @@ object RequestManager {
         var user: User? = null
         for (line in stringReader) {
             try {
+                if (line != "registry" && line != "log_in" && user == null) {
+                throw NotAuthorized("Перед началом работы необходимо авторизоваться")
+                }
                 val command: BoundCommand = CommandParser.parse(logger, line, attempts, stringReader)
                 when (command) {
                     is ExecuteScript -> if (user != null) {command.execute(logger, client)}
@@ -36,8 +39,6 @@ object RequestManager {
                         var request = Request(command)
                         if (line != "registry" && line != "log_in" && user != null){
                             request = Request(command, user)
-                        } else if (line != "registry" && line != "log_in" && user == null) {
-                            throw NotAuthorized("Перед началом работы необходимо авторизоваться")
                         }
                         Request.serializer().serialize(Client2ServerEncoder(requestArr), request)
                         client.send(requestArr.flatten().toUByteArray().toByteArray())
