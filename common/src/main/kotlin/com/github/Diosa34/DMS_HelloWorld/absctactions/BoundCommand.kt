@@ -9,6 +9,5 @@ import kotlinx.serialization.Serializable
  * Entity describing the command
  */
 @Serializable(InterfaceSerializer::class)
-interface BoundCommand {
-}
+interface BoundCommand
 
