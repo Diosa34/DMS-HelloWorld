@@ -1,4 +1,4 @@
-package com.github.Diosa34.DMS_HelloWorld
+package com.github.Diosa34.DMS_HelloWorld.sql
 
 import com.github.Diosa34.DMS_HelloWorld.absctactions.CollectionOfVehicles
 import com.github.Diosa34.DMS_HelloWorld.collection.Coordinates
@@ -24,7 +24,7 @@ class SQLCollection: CollectionOfVehicles {
     }
 
     override fun clear(user: User): CollectionOfVehicles.ClearResult {
-        return if (transaction { SQLVehicles.deleteWhere{SQLVehicles.username eq user.login} } > 0) {
+        return if (transaction { SQLVehicles.deleteWhere{ SQLVehicles.username eq user.login} } > 0) {
             CollectionOfVehicles.ClearResult.DELETED
         } else {
             CollectionOfVehicles.ClearResult.NOT_FOUND
@@ -38,8 +38,8 @@ class SQLCollection: CollectionOfVehicles {
     override fun groupCountingByType(): Groups {
         return Groups(
             transaction { SQLVehicles.select { SQLVehicles.vehicleType eq VehicleType.CAR } }.count().toInt(),
-            transaction { SQLVehicles.select {SQLVehicles.vehicleType eq VehicleType.SUBMARINE } }.count().toInt(),
-            transaction { SQLVehicles.select {SQLVehicles.vehicleType eq VehicleType.SHIP } }.count().toInt())
+            transaction { SQLVehicles.select { SQLVehicles.vehicleType eq VehicleType.SUBMARINE } }.count().toInt(),
+            transaction { SQLVehicles.select { SQLVehicles.vehicleType eq VehicleType.SHIP } }.count().toInt())
     }
 
     override fun info(): CollectionOfVehicles.Information {
@@ -49,7 +49,7 @@ class SQLCollection: CollectionOfVehicles {
     }
 
     override fun removeById(id: Int, user: User): CollectionOfVehicles.RemoveByIdResult {
-        val deletedCount = transaction { SQLVehicles.deleteWhere {SQLVehicles.id eq id and (SQLVehicles.username eq user.login) } }
+        val deletedCount = transaction { SQLVehicles.deleteWhere { SQLVehicles.id eq id and (SQLVehicles.username eq user.login) } }
         return if (deletedCount > 0) {
             CollectionOfVehicles.RemoveByIdResult.DELETED
         } else {
@@ -59,9 +59,9 @@ class SQLCollection: CollectionOfVehicles {
 
     override fun removeFirst(user: User): Boolean {
         val minId = SQLVehicles.id.min()
-        val id = transaction { SQLVehicles.slice(minId).selectAll().map{SQLVehicles.id}.first() }
+        val id = transaction { SQLVehicles.slice(minId).selectAll().map{ SQLVehicles.id }.first() }
         val number = transaction {
-            SQLVehicles.deleteWhere{SQLVehicles.id eq id and (SQLVehicles.username eq user.login) } }
+            SQLVehicles.deleteWhere{ SQLVehicles.id eq id and (SQLVehicles.username eq user.login) } }
         return number > 0
     }
 

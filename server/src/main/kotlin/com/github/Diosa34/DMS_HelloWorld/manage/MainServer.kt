@@ -1,5 +1,8 @@
-package com.github.Diosa34.DMS_HelloWorld
+package com.github.Diosa34.DMS_HelloWorld.manage
 
+import com.github.Diosa34.DMS_HelloWorld.sql.SQLAndMemoryCollection
+import com.github.Diosa34.DMS_HelloWorld.sql.SQLManager
+import com.github.Diosa34.DMS_HelloWorld.sql.SQLUsersCollection
 import org.postgresql.util.PSQLException
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -12,12 +15,6 @@ import java.util.logging.Logger
 
 fun main() {
     try {
-//        val property = Properties()
-//        val cFile = "server\\src\\main\\resources\\server.properties"
-//        val fis = FileInputStream(cFile)
-//        property.load(fis)
-
-
         val host = InetAddress.getLocalHost()
         val port = 5489
 

@@ -3,6 +3,7 @@ package com.github.Diosa34.DMS_HelloWorld
 import com.github.Diosa34.DMS_HelloWorld.absctactions.*
 import com.github.Diosa34.DMS_HelloWorld.commands.*
 import com.github.Diosa34.DMS_HelloWorld.io.BufferLogger
+import com.github.Diosa34.DMS_HelloWorld.sql.SQLUsersCollection
 import com.github.Diosa34.DMS_HelloWorld.users.User
 
 fun executeCall(command: BoundCommand, logger: BufferLogger, collection: CollectionOfVehicles,

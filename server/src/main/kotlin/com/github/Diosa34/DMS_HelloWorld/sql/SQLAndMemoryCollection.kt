@@ -1,4 +1,4 @@
-package com.github.Diosa34.DMS_HelloWorld
+package com.github.Diosa34.DMS_HelloWorld.sql
 
 import com.github.Diosa34.DMS_HelloWorld.absctactions.CollectionOfVehicles
 import com.github.Diosa34.DMS_HelloWorld.collection.CollectionInMemory
