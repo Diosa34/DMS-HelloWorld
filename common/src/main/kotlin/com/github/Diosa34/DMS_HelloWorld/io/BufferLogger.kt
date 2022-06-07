@@ -4,7 +4,6 @@ package com.github.Diosa34.DMS_HelloWorld.io
 
 import com.github.Diosa34.DMS_HelloWorld.absctactions.Logger
 import com.github.Diosa34.DMS_HelloWorld.serialize.OneLineAnswer
-import com.github.Diosa34.DMS_HelloWorld.serialize.serial
 import com.github.Diosa34.DMS_HelloWorld.users.User
 import io.github.landgrafhomyak.itmo.dms_lab.io.Server2ClientEncoder
 import java.nio.ByteBuffer

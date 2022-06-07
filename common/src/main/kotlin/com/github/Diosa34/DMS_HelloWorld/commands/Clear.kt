@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalUnsignedTypes::class)
-
 package com.github.Diosa34.DMS_HelloWorld.commands
 
 import com.github.Diosa34.DMS_HelloWorld.absctactions.AbstractDescription
@@ -17,7 +15,7 @@ object Clear : ApplicableToCollection, AbstractDescription {
     override val help: String = "очистить коллекцию"
 
     override fun execute(logger: Logger, collection: CollectionOfVehicles, user: User) {
-        collection.clear()
-        logger.print("Коллекция очищена")
+        collection.clear(user)
+        logger.print("Удалены все элементы принадлежащие вам")
     }
 }

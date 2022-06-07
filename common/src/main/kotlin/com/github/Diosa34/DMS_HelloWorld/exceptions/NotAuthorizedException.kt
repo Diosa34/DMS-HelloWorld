@@ -1,7 +1,5 @@
 package com.github.Diosa34.DMS_HelloWorld.exceptions
 
-import java.io.IOException
-
-class CollectionException(
+class NotAuthorizedException(
     override val message: String
-): IOException()
+): Exception()

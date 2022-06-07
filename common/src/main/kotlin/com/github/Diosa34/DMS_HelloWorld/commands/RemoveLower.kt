@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalUnsignedTypes::class)
-
 package com.github.Diosa34.DMS_HelloWorld.commands
 
 import com.github.Diosa34.DMS_HelloWorld.absctactions.AbstractDescription
@@ -19,10 +17,11 @@ class RemoveLower(
 ): ApplicableToCollection {
 
     override fun execute(logger: Logger, collection: CollectionOfVehicles, user: User) {
-        when (collection.removeLower(name)) {
+        when (collection.removeLower(name, user)) {
             CollectionOfVehicles.RemoveLowerResult.EMPTY -> logger.print("Коллекция пуста, нет элементов для удаления")
             CollectionOfVehicles.RemoveLowerResult.DELETED -> logger.print("Элементы удалены")
-            CollectionOfVehicles.RemoveLowerResult.LESS_NOT_FOUND -> logger.print("Элементов с более короткой маркой не найдено")
+            CollectionOfVehicles.RemoveLowerResult.LESS_NOT_FOUND -> logger.print("Элементов с более короткой маркой не" +
+                    " найдено или они принадлежат другому пользователю")
         }
     }
 

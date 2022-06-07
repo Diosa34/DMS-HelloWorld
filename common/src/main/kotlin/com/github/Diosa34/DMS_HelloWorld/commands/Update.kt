@@ -22,7 +22,8 @@ class Update(
         when (collection.update(id, vehicle, user)) {
             CollectionOfVehicles.UpdateResult.EMPTY -> logger.print("Коллекция пуста, элемент НЕ был обновлён")
             CollectionOfVehicles.UpdateResult.UPDATED -> logger.print("Элемент успешно обновлён")
-            CollectionOfVehicles.UpdateResult.NOT_FOUND -> logger.print("Элементов с соответствующим id не найдено")
+            CollectionOfVehicles.UpdateResult.NOT_FOUND -> logger.print("Элементов с соответствующим id не найдено" +
+                    "или данный элемент принадлежит другому пользователю")
         }
     }
 

@@ -8,5 +8,4 @@ import kotlinx.serialization.Serializable
 class Request(
     val command: BoundCommand,
     val user: User? = null
-) {
-}
+)

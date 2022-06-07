@@ -7,5 +7,4 @@ import kotlinx.serialization.Serializable
 class OneLineAnswer(
     val user: User? = null,
     val result: String
-) {
-}
+)

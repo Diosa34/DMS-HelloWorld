@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalUnsignedTypes::class)
-
 package com.github.Diosa34.DMS_HelloWorld.commands
 
 import com.github.Diosa34.DMS_HelloWorld.absctactions.AbstractDescription
@@ -24,6 +22,5 @@ object Show: ApplicableToCollection, AbstractDescription {
         } else {
             logger.print("Коллекция пуста")
         }
-        collection.print()
     }
 }

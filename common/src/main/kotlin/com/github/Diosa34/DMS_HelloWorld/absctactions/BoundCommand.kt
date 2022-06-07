@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalUnsignedTypes::class)
-
 package com.github.Diosa34.DMS_HelloWorld.absctactions
 
 import com.github.Diosa34.DMS_HelloWorld.serialize.InterfaceSerializer

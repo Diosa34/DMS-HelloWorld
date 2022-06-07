@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalUnsignedTypes::class)
-
 package com.github.Diosa34.DMS_HelloWorld.collection
 
 import io.github.landgrafhomyak.itmo.dms_lab.interop.DisplayName

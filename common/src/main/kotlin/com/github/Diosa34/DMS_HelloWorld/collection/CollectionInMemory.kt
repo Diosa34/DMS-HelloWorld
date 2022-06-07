@@ -4,7 +4,6 @@ import com.github.Diosa34.DMS_HelloWorld.absctactions.CollectionOfVehicles
 import com.github.Diosa34.DMS_HelloWorld.users.User
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import java.time.LocalDateTime
 import java.util.*
 
 
@@ -12,10 +11,6 @@ class CollectionInMemory : CollectionOfVehicles {
 
     private val collection: LinkedList<Vehicle> = LinkedList()
     private val initDate: Instant = Clock.System.now()
-
-    override fun print() {
-        println(this.collection)
-    }
 
     fun copyFromDB(vehicle: Vehicle){
         this.collection.add(vehicle)
@@ -39,8 +34,14 @@ class CollectionInMemory : CollectionOfVehicles {
         }
     }
 
-    override fun clear() {
-        this.collection.clear()
+    override fun clear(user: User): CollectionOfVehicles.ClearResult {
+        if (this.collection.any { it.username == user.login}) {
+            this.collection.removeIf { elem ->
+                elem.username == user.login
+            }
+            return CollectionOfVehicles.ClearResult.NOT_FOUND
+        }
+        return CollectionOfVehicles.ClearResult.DELETED
     }
 
     override fun countByType(type: VehicleType): Int {
@@ -60,19 +61,22 @@ class CollectionInMemory : CollectionOfVehicles {
         return CollectionOfVehicles.Information(this.collection.size, this.initDate)
     }
 
-    override fun removeById(id: Int): CollectionOfVehicles.RemoveByIdResult {
+    override fun removeById(id: Int, user: User): CollectionOfVehicles.RemoveByIdResult {
         if (collection.size == 0) {
             return CollectionOfVehicles.RemoveByIdResult.EMPTY
         } else if (collection.removeIf {
-                it.id == id
+                it.id == id && it.username == user.login
             }) {
             return CollectionOfVehicles.RemoveByIdResult.DELETED
         }
         return CollectionOfVehicles.RemoveByIdResult.NOT_FOUND
     }
 
-    override fun removeFirst(): Boolean {
+    override fun removeFirst(user: User): Boolean {
         return if (this.collection.size > 0) {
+            if (this.collection.first().username == user.login) {
+                this.collection.removeFirst()
+            }
             this.collection.removeFirst()
             true
         } else {
@@ -80,11 +84,11 @@ class CollectionInMemory : CollectionOfVehicles {
         }
     }
 
-    override fun removeLower(name: String): CollectionOfVehicles.RemoveLowerResult {
+    override fun removeLower(name: String, user: User): CollectionOfVehicles.RemoveLowerResult {
         return if (this.collection.size != 0) {
-            if (this.collection.any { it < name }) {
+            if (this.collection.any { it.name < name && it.username == user.login}) {
                 this.collection.removeIf { elem ->
-                    elem.name < name
+                    elem.name < name && elem.username == user.login
                 }
                 CollectionOfVehicles.RemoveLowerResult.DELETED
             } else {
@@ -109,11 +113,11 @@ class CollectionInMemory : CollectionOfVehicles {
 
     override fun update(id: Int, vehicle: Vehicle, user: User): CollectionOfVehicles.UpdateResult {
         return if (this.collection.size > 0) {
-            if (this.collection.none { it.id == id }) {
+            if (this.collection.none { it.id == id && it.username == user.login}) {
                 CollectionOfVehicles.UpdateResult.NOT_FOUND
             } else {
                 for (elem in collection) {
-                    if (elem.id == id) {
+                    if (elem.id == id && elem.username == user.login) {
                         collection[collection.indexOf(elem)] = vehicle
                     }
                 }

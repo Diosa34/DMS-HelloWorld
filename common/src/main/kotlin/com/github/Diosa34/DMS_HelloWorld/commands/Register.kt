@@ -23,7 +23,7 @@ class Register(
             userCollection.add(User(this.login, this.password))
             logger.print("Пользователь успешно зарегистрирован")
         } catch (ex: SQLException) {
-            logger.print("Ошибка при регистрации")
+            logger.print("Такой пользователь уже есть в базе")
         }
     }
 

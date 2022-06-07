@@ -4,8 +4,6 @@ import com.github.Diosa34.DMS_HelloWorld.absctactions.BoundCommand
 import com.github.Diosa34.DMS_HelloWorld.commands.*
 import com.github.Diosa34.DMS_HelloWorld.exceptions.DeserializeException
 import com.github.Diosa34.DMS_HelloWorld.exceptions.UnexpectedCommandException
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.ContextualSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -18,7 +16,7 @@ object InterfaceSerializer : KSerializer<BoundCommand> {
 
     override fun deserialize(decoder: Decoder): BoundCommand {
         try {
-            return when (val s = decoder.decodeString()) {
+            return when (decoder.decodeString()) {
                 "registry" -> Register.serializer().deserialize(decoder)
                 "log_in" -> LogIn.serializer().deserialize(decoder)
                 "add" -> Add.serializer().deserialize(decoder)

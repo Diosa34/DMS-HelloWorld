@@ -20,10 +20,6 @@ class SQLAndMemoryCollection: CollectionOfVehicles {
         return this.sqlCollection
     }
 
-    override fun print() {
-        collectionInMemory.print()
-    }
-
     override fun add(vehicle: Vehicle, user: User): Int {
         val id = this.sqlCollection.add(vehicle, user)
         vehicle.id = id
@@ -45,9 +41,17 @@ class SQLAndMemoryCollection: CollectionOfVehicles {
         }
     }
 
-    override fun clear() {
-        this.sqlCollection.clear()
-        this.collectionInMemory.clear()
+    override fun clear(user: User): CollectionOfVehicles.ClearResult {
+        val sqlResult = this.sqlCollection.clear(user)
+        val sqlSuccess = sqlResult.isSuccess
+        val memoryResult = this.collectionInMemory.clear(user)
+        val memorySuccess = memoryResult.isSuccess
+        if (sqlSuccess == memorySuccess) {
+            return memoryResult
+        } else {
+            throw CollectionException("Ошибка удаления принадлежащих Вам элементов:\nsql-результат: $sqlResult\n" +
+                    "результат работы с коллекцией в памяти: $memoryResult")
+        }
     }
 
     override fun countByType(type: VehicleType): Int {
@@ -62,38 +66,38 @@ class SQLAndMemoryCollection: CollectionOfVehicles {
         return this.collectionInMemory.info()
     }
 
-    override fun removeById(id: Int): CollectionOfVehicles.RemoveByIdResult {
-        val sqlResult = this.sqlCollection.removeById(id)
+    override fun removeById(id: Int, user: User): CollectionOfVehicles.RemoveByIdResult {
+        val sqlResult = this.sqlCollection.removeById(id, user)
         val sqlSuccess = sqlResult.isSuccess
-        val memoryResult = this.collectionInMemory.removeById(id)
+        val memoryResult = this.collectionInMemory.removeById(id, user)
         val memorySuccess = memoryResult.isSuccess
         if (sqlSuccess == memorySuccess) {
             return memoryResult
         } else {
-            throw CollectionException("Ошибка удаления элемента с id $id:\nsql-результат: $sqlResult\n" +
-                    "результат работы с коллекцией в памяти: $memoryResult")
+            throw CollectionException("Ошибка удаления элемента с id $id, который должен принадлежать вам:" +
+                    "\nsql-результат: $sqlResult\nрезультат работы с коллекцией в памяти: $memoryResult")
         }
     }
 
-    override fun removeFirst(): Boolean {
-        val result = this.sqlCollection.removeFirst()
-        if (result == this.collectionInMemory.removeFirst()) {
+    override fun removeFirst(user: User): Boolean {
+        val result = this.sqlCollection.removeFirst(user)
+        if (result == this.collectionInMemory.removeFirst(user)) {
             return result
         } else {
-            throw CollectionException("Ошибка удаления первого элемента")
+            throw CollectionException("Ошибка удаления первого элемента, который при этом должен принадлежать вам")
         }
     }
 
-    override fun removeLower(name: String): CollectionOfVehicles.RemoveLowerResult {
-        val sqlResult = this.sqlCollection.removeLower(name)
+    override fun removeLower(name: String, user: User): CollectionOfVehicles.RemoveLowerResult {
+        val sqlResult = this.sqlCollection.removeLower(name, user)
         val sqlSuccess = sqlResult.isSuccess
-        val memoryResult = this.collectionInMemory.removeLower(name)
+        val memoryResult = this.collectionInMemory.removeLower(name, user)
         val memorySuccess = memoryResult.isSuccess
         if (sqlSuccess == memorySuccess) {
             return memoryResult
         } else {
-            throw CollectionException("Ошибка удаления меньших элементов:\nsql-результат: $sqlResult\n" +
-                    "результат работы с коллекцией в памяти: $memoryResult")
+            throw CollectionException("Ошибка удаления меньших элементов, принадлежащих вам:\nsql-результат:" +
+                    " $sqlResult\nрезультат работы с коллекцией в памяти: $memoryResult")
         }
     }
 
@@ -114,8 +118,8 @@ class SQLAndMemoryCollection: CollectionOfVehicles {
         if (sqlSuccess == memorySuccess) {
             return memoryResult
         } else {
-            throw CollectionException("Ошибка обновления элемента с id $id:\nsql-результат: $sqlResult\n" +
-                    "результат работы с коллекцией в памяти: $memoryResult")
+            throw CollectionException("Ошибка обновления элемента с id $id, который должен принадлежать Вам:" +
+                    "\nsql-результат: $sqlResult\nрезультат работы с коллекцией в памяти: $memoryResult")
         }
     }
 }

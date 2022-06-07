@@ -5,15 +5,13 @@ import com.github.Diosa34.DMS_HelloWorld.collection.Vehicle
 import com.github.Diosa34.DMS_HelloWorld.collection.VehicleType
 import com.github.Diosa34.DMS_HelloWorld.users.User
 import kotlinx.datetime.Instant
-import java.time.LocalDateTime
 
 interface CollectionOfVehicles: Iterable<Vehicle> {
-    fun print()
     fun add(vehicle: Vehicle, user: User): Int
 
     fun addIfMin(name: String, vehicle: Vehicle, user: User): Pair<AddIfMinResult, Int?>
 
-    fun clear()
+    fun clear(user: User): ClearResult
 
     fun countByType(type: VehicleType): Int
 
@@ -21,11 +19,11 @@ interface CollectionOfVehicles: Iterable<Vehicle> {
 
     fun info(): Information
 
-    fun removeById(id: Int): RemoveByIdResult
+    fun removeById(id: Int, user: User): RemoveByIdResult
 
-    fun removeFirst(): Boolean
+    fun removeFirst(user: User): Boolean
 
-    fun removeLower(name: String): RemoveLowerResult
+    fun removeLower(name: String, user: User): RemoveLowerResult
 
     override fun iterator(): Iterator<Vehicle>
 
@@ -39,6 +37,13 @@ interface CollectionOfVehicles: Iterable<Vehicle> {
         EMPTY(true),
         SUCCESS(true),
         LESS_FOUND(false);
+    }
+
+    enum class ClearResult(
+        val isSuccess: Boolean
+    ){
+        DELETED(true),
+        NOT_FOUND(false)
     }
 
     enum class RemoveByIdResult(

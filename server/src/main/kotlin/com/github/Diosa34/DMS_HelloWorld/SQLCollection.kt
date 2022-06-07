@@ -9,12 +9,8 @@ import com.github.Diosa34.DMS_HelloWorld.users.User
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.time.ZoneOffset
 
 class SQLCollection: CollectionOfVehicles {
-    override fun print(){
-        TODO()
-    }
     override fun add(vehicle: Vehicle, user: User): Int {
         return transaction { SQLVehicles.insert (vehicle.sqlClosure(user)) get SQLVehicles.id }
     }
@@ -27,8 +23,12 @@ class SQLCollection: CollectionOfVehicles {
         }
     }
 
-    override fun clear() {
-        transaction { SQLVehicles.deleteAll() }
+    override fun clear(user: User): CollectionOfVehicles.ClearResult {
+        return if (transaction { SQLVehicles.deleteWhere{SQLVehicles.username eq user.login} } > 0) {
+            CollectionOfVehicles.ClearResult.DELETED
+        } else {
+            CollectionOfVehicles.ClearResult.NOT_FOUND
+        }
     }
 
     override fun countByType(type: VehicleType): Int {
@@ -48,8 +48,8 @@ class SQLCollection: CollectionOfVehicles {
             transaction { InformationTable.selectAll().map {it[InformationTable.initDate]}} [0])
     }
 
-    override fun removeById(id: Int): CollectionOfVehicles.RemoveByIdResult {
-        val deletedCount = transaction { SQLVehicles.deleteWhere {SQLVehicles.id eq id } }
+    override fun removeById(id: Int, user: User): CollectionOfVehicles.RemoveByIdResult {
+        val deletedCount = transaction { SQLVehicles.deleteWhere {SQLVehicles.id eq id and (SQLVehicles.username eq user.login) } }
         return if (deletedCount > 0) {
             CollectionOfVehicles.RemoveByIdResult.DELETED
         } else {
@@ -57,16 +57,17 @@ class SQLCollection: CollectionOfVehicles {
         }
     }
 
-    override fun removeFirst(): Boolean {
+    override fun removeFirst(user: User): Boolean {
         val minId = SQLVehicles.id.min()
         val id = transaction { SQLVehicles.slice(minId).selectAll().map{SQLVehicles.id}.first() }
         val number = transaction {
-            SQLVehicles.deleteWhere{SQLVehicles.id eq id } }
+            SQLVehicles.deleteWhere{SQLVehicles.id eq id and (SQLVehicles.username eq user.login) } }
         return number > 0
     }
 
-    override fun removeLower(name: String): CollectionOfVehicles.RemoveLowerResult {
-        val number = transaction { SQLVehicles.deleteWhere { SQLStringLen(SQLVehicles.name) less name.length } }
+    override fun removeLower(name: String, user: User): CollectionOfVehicles.RemoveLowerResult {
+        val number = transaction { SQLVehicles.deleteWhere { SQLStringLen(SQLVehicles.name) less name.length and
+                (SQLVehicles.username eq user.login)} }
         return if (number > 0) {
             CollectionOfVehicles.RemoveLowerResult.DELETED
         } else {
@@ -74,12 +75,11 @@ class SQLCollection: CollectionOfVehicles {
         }
     }
 
-    // возможна ошибка транзакции внутри лямбды
     override fun iterator(): Iterator<Vehicle> {
         return transaction { SQLVehicles.selectAll().map{ r ->
             SQLVehicles.run{ Vehicle(
                 r[id], r[name], Coordinates(r[x], r[y]),
-                r[creationDate], r[enginePower], r[vehicleType], r[fuelType]) }}.iterator() }
+                r[creationDate], r[enginePower], r[vehicleType], r[fuelType], r[username]) }}.iterator() }
     }
 
     override fun sumOfEnginePower(): Float {
@@ -87,7 +87,8 @@ class SQLCollection: CollectionOfVehicles {
     }
 
     override fun update(id: Int, vehicle: Vehicle, user: User): CollectionOfVehicles.UpdateResult {
-        return if (transaction { SQLVehicles.update({ SQLVehicles.id eq id }, body = vehicle.sqlClosure(user)) > 0 }) {
+        return if (transaction { SQLVehicles.update({ SQLVehicles.id eq id and (SQLVehicles.username eq user.login)},
+                body = vehicle.sqlClosure(user)) > 0 }) {
             CollectionOfVehicles.UpdateResult.UPDATED
         } else {
             CollectionOfVehicles.UpdateResult.NOT_FOUND

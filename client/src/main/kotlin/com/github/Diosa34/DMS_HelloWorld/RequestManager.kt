@@ -4,6 +4,7 @@ import com.github.Diosa34.DMS_HelloWorld.absctactions.AbstractStringReader
 import com.github.Diosa34.DMS_HelloWorld.absctactions.BoundCommand
 import com.github.Diosa34.DMS_HelloWorld.absctactions.Logger
 import com.github.Diosa34.DMS_HelloWorld.commands.Exit
+import com.github.Diosa34.DMS_HelloWorld.exceptions.NotAuthorizedException
 import com.github.Diosa34.DMS_HelloWorld.exceptions.ParseException
 import com.github.Diosa34.DMS_HelloWorld.exceptions.UnexpectedCommandException
 import com.github.Diosa34.DMS_HelloWorld.serialize.*
@@ -23,9 +24,9 @@ object RequestManager {
         for (line in stringReader) {
             try {
                 if (line != "registry" && line != "log_in" && user == null) {
-                throw NotAuthorized("Перед началом работы необходимо авторизоваться")
+                throw NotAuthorizedException("Перед началом работы необходимо авторизоваться")
                 }
-                val command: BoundCommand = CommandParser.parse(logger, line, attempts, stringReader)
+                val command: BoundCommand = CommandParser.parse(line, attempts)
                 when (command) {
                     is ExecuteScript -> if (user != null) {command.execute(logger, client)}
                     is Exit -> {logger.print("Клиентское приложение завершило работу")
@@ -50,17 +51,17 @@ object RequestManager {
                         logger.print("Соединение прервано, перезапустите сервер, затем клиента, ошибка сокета")
                         return
                     }
-                    if (line != "help" || line != "info" || line != "show") {
-                        val answer = OneLineAnswer.serializer().deserialize(Server2ClientDecoder(client.getArr().toUByteArray()))
+                    val answer = OneLineAnswer.serializer().deserialize(Server2ClientDecoder(client.getArr().toUByteArray()))
+                    logger.print(answer.result)
+                    if (line == "log_in") {
                         user = answer.user
-                        logger.print(answer.result)
                     }
                 }
             } catch (e: UnexpectedCommandException) {
                 logger.print(UnexpectedCommandException.message)
             } catch (e: ParseException) {
                 logger.print(e.message)
-            } catch (e: NotAuthorized) {
+            } catch (e: NotAuthorizedException) {
                 logger.print(e.message)
             }
         }

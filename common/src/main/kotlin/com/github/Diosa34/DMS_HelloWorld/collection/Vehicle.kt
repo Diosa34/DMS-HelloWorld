@@ -1,6 +1,6 @@
 package com.github.Diosa34.DMS_HelloWorld.collection
 
-import com.github.Diosa34.DMS_HelloWorld.serialize.InstantEpochSecondsSerializer
+import io.github.landgrafhomyak.itmo.dms_lab.InstantEpochSecondsSerializer
 import io.github.landgrafhomyak.itmo.dms_lab.interop.DisplayName
 import kotlinx.datetime.Instant
 import kotlinx.datetime.Clock.System
@@ -25,17 +25,20 @@ class Vehicle(
     @DisplayName("Тип средства передвижения")
     val type: VehicleType, //Поле не может быть null
     @DisplayName("Тип топлива")
-    val fuelType: FuelType //Поле может быть null
+    val fuelType: FuelType, //Поле может быть null
+    @DisplayName("Логин")
+    val username: String
 ){
     override fun toString(): String {
         return """
             Номер: ${this.id}
             Марка: ${this.name}
-            Координаты: ${this.coordinates}
+            Координаты: (${this.coordinates.x}, ${this.coordinates.y})
             Дата создания: ${this.creationDate}
             Мощность двигателя: ${this.enginePower}
             Тип средства передвижения: ${this.type}
             Тип топлива: ${this.fuelType}
+            Логин пользователя: ${this.username}
             """.trimIndent()
     }
 

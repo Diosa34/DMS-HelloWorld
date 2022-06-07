@@ -6,12 +6,7 @@ import com.github.Diosa34.DMS_HelloWorld.absctactions.Logger
 import com.github.Diosa34.DMS_HelloWorld.commands.*
 import com.github.Diosa34.DMS_HelloWorld.exceptions.ParseException
 import com.github.Diosa34.DMS_HelloWorld.exceptions.UnexpectedCommandException
-import com.github.Diosa34.DMS_HelloWorld.io.FileStringReader
-import com.github.Diosa34.DMS_HelloWorld.serialize.CompositeConsoleDecoderDelegate
-import com.github.Diosa34.DMS_HelloWorld.serialize.CompositeFileDecoderDelegate
-import com.github.Diosa34.DMS_HelloWorld.serialize.GeneralDecoder
 import io.github.landgrafhomyak.itmo.dms_lab.interop.ConsoleInputDecoder
-import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlin.jvm.Throws
 
@@ -24,7 +19,7 @@ object CommandParser{
      */
     @JvmStatic
     @Throws(UnexpectedCommandException::class, ParseException::class)
-    fun parse(logger: Logger, str: String, attempts: Int, stringReader: AbstractStringReader): BoundCommand {
+    fun parse(str: String, attempts: Int): BoundCommand {
         val request = str.trim().split(Regex("""\s+"""))
         if (request.isEmpty()){
             throw UnexpectedCommandException()

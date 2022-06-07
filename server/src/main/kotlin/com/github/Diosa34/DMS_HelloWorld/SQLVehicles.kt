@@ -7,7 +7,6 @@ import org.jetbrains.exposed.sql.Table
 import kotlinx.datetime.Instant
 import kotlinx.datetime.Clock.System
 import org.jetbrains.exposed.sql.kotlin.datetime.timestamp
-import java.time.LocalDateTime
 
 object SQLVehicles: Table() {
     var id: Column<Int> = integer("id").uniqueIndex().autoIncrement().check { it greater 0 }//Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически

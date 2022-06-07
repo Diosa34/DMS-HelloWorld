@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalUnsignedTypes::class)
-
 package com.github.Diosa34.DMS_HelloWorld.commands
 
 import com.github.Diosa34.DMS_HelloWorld.absctactions.AbstractDescription
@@ -19,10 +17,11 @@ class RemoveById(
 ): ApplicableToCollection {
 
     override fun execute(logger: Logger, collection: CollectionOfVehicles, user: User) {
-        when (collection.removeById(id)) {
+        when (collection.removeById(id, user)) {
             CollectionOfVehicles.RemoveByIdResult.EMPTY -> logger.print("Коллекция пуста, элемент с id $id не удалён")
             CollectionOfVehicles.RemoveByIdResult.DELETED -> logger.print("Элемент c id $id успешно удалён")
-            CollectionOfVehicles.RemoveByIdResult.NOT_FOUND -> logger.print("Элемент с id $id не найден")
+            CollectionOfVehicles.RemoveByIdResult.NOT_FOUND -> logger.print("Элемент с id $id не найден или он " +
+                    "принадлежит другому пользователю")
         }
     }
 
