@@ -6,19 +6,19 @@ import java.util.concurrent.BlockingQueue
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class HandlerManager(
+class HandleManager(
     private var inputQueue: BlockingQueue<RequestInInputQueue>,
     private var outputQueue: BlockingQueue<RequestInOutputQueue>,
     private val collection: CollectionOfVehicles,
     private val usersCollection: SQLUsersCollection
-): Runnable {
-    private val service: ExecutorService = Executors.newFixedThreadPool(3)
+) : Runnable {
+    private val service: ExecutorService = Executors.newCachedThreadPool()
     private var isRunning = false
 
     override fun run() {
         this.isRunning = true
         try {
-            while (this.isRunning){
+            while (this.isRunning) {
                 service.execute(Handler(this.inputQueue, this.outputQueue, this.collection, this.usersCollection))
             }
         } finally {

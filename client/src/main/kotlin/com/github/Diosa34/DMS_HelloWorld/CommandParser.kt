@@ -25,7 +25,7 @@ object CommandParser{
             throw UnexpectedCommandException()
         }
 
-        var decoder: Decoder = ConsoleInputDecoder(attempts.toUInt())
+        val decoder: Decoder = ConsoleInputDecoder(attempts.toUInt())
 //        if (stringReader is FileStringReader) {
 //            decoder = CompositeFileDecoderDelegate(logger, attempts, stringReader)
 //        }

@@ -9,6 +9,7 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class SQLUsersCollection: CollectionOfUsers {
+    @Synchronized
     override fun add(user: User): User{
         transaction { Users.insert {
             it[login] = user.login
@@ -16,6 +17,7 @@ class SQLUsersCollection: CollectionOfUsers {
         return user
     }
 
+    @Synchronized
     override fun getUser(login: String, password: String): User {
         return transaction {
             val users = Users.select { Users.login eq login and (Users.password eq password)}.map{ r ->

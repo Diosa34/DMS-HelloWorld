@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
  * Entity coordinate class
  */
 @Serializable
-class Coordinates(
+class Coordinates (
     @DisplayName("Координата х")
     val x: Float, //Поле не может быть null
     @DisplayName("Координата у")

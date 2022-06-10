@@ -9,12 +9,15 @@ import com.github.Diosa34.DMS_HelloWorld.users.User
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.security.MessageDigest
 
 class SQLCollection: CollectionOfVehicles {
+    @Synchronized
     override fun add(vehicle: Vehicle, user: User): Int {
         return transaction { SQLVehicles.insert (vehicle.sqlClosure(user)) get SQLVehicles.id }
     }
 
+    @Synchronized
     override fun addIfMin(name: String, vehicle: Vehicle, user: User): Pair<CollectionOfVehicles.AddIfMinResult, Int?> {
         return if (transaction { SQLVehicles.select { SQLStringLen(SQLVehicles.name) lessEq name.length}.empty() }){
             Pair(CollectionOfVehicles.AddIfMinResult.SUCCESS, add(vehicle, user))
@@ -23,6 +26,7 @@ class SQLCollection: CollectionOfVehicles {
         }
     }
 
+    @Synchronized
     override fun clear(user: User): CollectionOfVehicles.ClearResult {
         return if (transaction { SQLVehicles.deleteWhere{ SQLVehicles.username eq user.login} } > 0) {
             CollectionOfVehicles.ClearResult.DELETED
@@ -31,10 +35,12 @@ class SQLCollection: CollectionOfVehicles {
         }
     }
 
+    @Synchronized
     override fun countByType(type: VehicleType): Int {
         return transaction { SQLVehicles.select { SQLVehicles.vehicleType eq type } }.count().toInt()
     }
 
+    @Synchronized
     override fun groupCountingByType(): Groups {
         return Groups(
             transaction { SQLVehicles.select { SQLVehicles.vehicleType eq VehicleType.CAR } }.count().toInt(),
@@ -42,12 +48,14 @@ class SQLCollection: CollectionOfVehicles {
             transaction { SQLVehicles.select { SQLVehicles.vehicleType eq VehicleType.SHIP } }.count().toInt())
     }
 
+    @Synchronized
     override fun info(): CollectionOfVehicles.Information {
         return CollectionOfVehicles.Information(
             transaction { SQLVehicles.selectAll().count().toInt()},
             transaction { InformationTable.selectAll().map {it[InformationTable.initDate]}} [0])
     }
 
+    @Synchronized
     override fun removeById(id: Int, user: User): CollectionOfVehicles.RemoveByIdResult {
         val deletedCount = transaction { SQLVehicles.deleteWhere { SQLVehicles.id eq id and (SQLVehicles.username eq user.login) } }
         return if (deletedCount > 0) {
@@ -57,6 +65,7 @@ class SQLCollection: CollectionOfVehicles {
         }
     }
 
+    @Synchronized
     override fun removeFirst(user: User): Boolean {
         val minId = SQLVehicles.id.min()
         val id = transaction { SQLVehicles.slice(minId).selectAll().map{ SQLVehicles.id }.first() }
@@ -65,6 +74,7 @@ class SQLCollection: CollectionOfVehicles {
         return number > 0
     }
 
+    @Synchronized
     override fun removeLower(name: String, user: User): CollectionOfVehicles.RemoveLowerResult {
         val number = transaction { SQLVehicles.deleteWhere { SQLStringLen(SQLVehicles.name) less name.length and
                 (SQLVehicles.username eq user.login)} }
@@ -75,6 +85,7 @@ class SQLCollection: CollectionOfVehicles {
         }
     }
 
+    @Synchronized
     override fun iterator(): Iterator<Vehicle> {
         return transaction { SQLVehicles.selectAll().map{ r ->
             SQLVehicles.run{ Vehicle(
@@ -82,10 +93,12 @@ class SQLCollection: CollectionOfVehicles {
                 r[creationDate], r[enginePower], r[vehicleType], r[fuelType], r[username]) }}.iterator() }
     }
 
+    @Synchronized
     override fun sumOfEnginePower(): Float {
         return transaction { SQLVehicles.selectAll().map{it[SQLVehicles.enginePower]}.sum() }
     }
 
+    @Synchronized
     override fun update(id: Int, vehicle: Vehicle, user: User): CollectionOfVehicles.UpdateResult {
         return if (transaction { SQLVehicles.update({ SQLVehicles.id eq id and (SQLVehicles.username eq user.login)},
                 body = vehicle.sqlClosure(user)) > 0 }) {
@@ -94,12 +107,8 @@ class SQLCollection: CollectionOfVehicles {
             CollectionOfVehicles.UpdateResult.NOT_FOUND
         }
     }
-//
-//    fun selectMaxId(): Int? {
-//        val maxId = SQLVehicles.id.max()
-//        return transaction { SQLVehicles.slice(maxId).selectAll().map{it[maxId]}.last() }
-//    }
 
+    @Synchronized
     private fun Vehicle.sqlClosure(user:User): SQLVehicles.(UpdateBuilder<*>) -> Unit {
         return {
             it[name] = this@sqlClosure.name

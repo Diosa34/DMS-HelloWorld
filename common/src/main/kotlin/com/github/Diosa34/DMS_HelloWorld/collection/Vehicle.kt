@@ -12,7 +12,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 class Vehicle(
     @DisplayName("ID(не может быть 0)")
-    var id: Int? = null, //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    @get:Synchronized
+    @set:Synchronized var id: Int? = null, //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     @DisplayName("Название")
     val name: String, //Поле не может быть null, Строка не может быть пустой
     @DisplayName("Координаты")

@@ -12,15 +12,18 @@ class CollectionInMemory : CollectionOfVehicles {
     private val collection: LinkedList<Vehicle> = LinkedList()
     private val initDate: Instant = Clock.System.now()
 
+    @Synchronized
     fun copyFromDB(vehicle: Vehicle){
         this.collection.add(vehicle)
     }
 
+    @Synchronized
     override fun add(vehicle: Vehicle, user: User): Int {
         this.collection.add(vehicle)
         return vehicle.id ?: throw NullPointerException()
     }
 
+    @Synchronized
     override fun addIfMin(name: String, vehicle: Vehicle, user: User): Pair<CollectionOfVehicles.AddIfMinResult, Int?> {
         return if (this.collection.size != 0) {
             val minElem = this.collection.sortedWith(compareBy { it.name.length })[0]
@@ -34,6 +37,7 @@ class CollectionInMemory : CollectionOfVehicles {
         }
     }
 
+    @Synchronized
     override fun clear(user: User): CollectionOfVehicles.ClearResult {
         if (this.collection.any { it.username == user.login}) {
             this.collection.removeIf { elem ->
@@ -44,12 +48,14 @@ class CollectionInMemory : CollectionOfVehicles {
         return CollectionOfVehicles.ClearResult.DELETED
     }
 
+    @Synchronized
     override fun countByType(type: VehicleType): Int {
         return this.collection.count {
             it.type == type
         }
     }
 
+    @Synchronized
     override fun groupCountingByType(): Groups {
         return Groups(this.collection.count {
             it.type == VehicleType.CAR
@@ -57,10 +63,12 @@ class CollectionInMemory : CollectionOfVehicles {
             this.collection.count { it.type == VehicleType.SHIP })
     }
 
+    @Synchronized
     override fun info(): CollectionOfVehicles.Information {
         return CollectionOfVehicles.Information(this.collection.size, this.initDate)
     }
 
+    @Synchronized
     override fun removeById(id: Int, user: User): CollectionOfVehicles.RemoveByIdResult {
         if (collection.size == 0) {
             return CollectionOfVehicles.RemoveByIdResult.EMPTY
@@ -72,6 +80,7 @@ class CollectionInMemory : CollectionOfVehicles {
         return CollectionOfVehicles.RemoveByIdResult.NOT_FOUND
     }
 
+    @Synchronized
     override fun removeFirst(user: User): Boolean {
         return if (this.collection.size > 0) {
             if (this.collection.first().username == user.login) {
@@ -84,6 +93,7 @@ class CollectionInMemory : CollectionOfVehicles {
         }
     }
 
+    @Synchronized
     override fun removeLower(name: String, user: User): CollectionOfVehicles.RemoveLowerResult {
         return if (this.collection.size != 0) {
             if (this.collection.any { it.name < name && it.username == user.login}) {
@@ -99,10 +109,12 @@ class CollectionInMemory : CollectionOfVehicles {
         }
     }
 
+    @Synchronized
     override fun iterator(): Iterator<Vehicle> {
         return this.collection.iterator()
     }
 
+    @Synchronized
     override fun sumOfEnginePower(): Float {
         var summa = 0.0F
         for (elem in this.collection) {
@@ -111,6 +123,7 @@ class CollectionInMemory : CollectionOfVehicles {
         return summa
     }
 
+    @Synchronized
     override fun update(id: Int, vehicle: Vehicle, user: User): CollectionOfVehicles.UpdateResult {
         return if (this.collection.size > 0) {
             if (this.collection.none { it.id == id && it.username == user.login}) {

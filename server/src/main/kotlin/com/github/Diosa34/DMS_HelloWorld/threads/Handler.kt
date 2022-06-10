@@ -33,6 +33,9 @@ class Handler(
                 bufferLogger.build()
                 this.outputQueue.put(RequestInOutputQueue(bufferLogger.answer, bufferLogger.socketWrap))
             }
+        } catch (e: InterruptedException) {
+            println("Поток обработки запросов завершился")
+            return
         } finally {
             this.isRunning = false
         }

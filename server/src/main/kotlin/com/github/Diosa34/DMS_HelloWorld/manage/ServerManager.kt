@@ -17,7 +17,7 @@ object ServerManager {
                 val server = Server(host, port, log)
                 try {
                     while (true) {
-                        server.receive(collection, usersCollectionWrap)
+                        server.mainLoop(collection, usersCollectionWrap)
                     }
                 } catch (ex: ConnectException) {
                     log.info("Завершена работа клиентского приложения")

@@ -3,6 +3,7 @@ package com.github.Diosa34.DMS_HelloWorld.threads
 import com.github.Diosa34.DMS_HelloWorld.io.SocketWrap
 import com.github.Diosa34.DMS_HelloWorld.serialize.Request
 import io.github.landgrafhomyak.itmo.dms_lab.io.Client2ServerDecoder
+import java.net.ConnectException
 import java.nio.Buffer
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
@@ -28,6 +29,10 @@ class Receiver(
     }
 
     private fun read(requestArr: ByteArray){
+//        if (requestArr.contentEquals(ByteArray(1024 * 1024))) {
+//            throw ConnectException()
+//        }
+
         val requestBuf = ByteBuffer.wrap(requestArr)
         this.sock.read(requestBuf)
         (requestBuf as Buffer).flip()
@@ -38,8 +43,7 @@ class Receiver(
         try {
             this.inputQueue.put(RequestInInputQueue(request.command, request.user, SocketWrap(this.sock)))
         } catch (e: InterruptedException) {
-            e.printStackTrace()
-            TODO()
+            println("Поток чтения запросов прерван")
         }
     }
 }

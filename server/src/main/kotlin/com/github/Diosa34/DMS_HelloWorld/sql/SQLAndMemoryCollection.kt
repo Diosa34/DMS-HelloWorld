@@ -20,6 +20,7 @@ class SQLAndMemoryCollection: CollectionOfVehicles {
         return this.sqlCollection
     }
 
+    @Synchronized
     override fun add(vehicle: Vehicle, user: User): Int {
         val id = this.sqlCollection.add(vehicle, user)
         vehicle.id = id
@@ -27,6 +28,7 @@ class SQLAndMemoryCollection: CollectionOfVehicles {
         return id
     }
 
+    @Synchronized
     override fun addIfMin(name: String, vehicle: Vehicle, user: User): Pair<CollectionOfVehicles.AddIfMinResult, Int?> {
         val sqlResult = this.sqlCollection.addIfMin(name, vehicle, user)
         val sqlSuccess = sqlResult.first.isSuccess
@@ -53,6 +55,7 @@ class SQLAndMemoryCollection: CollectionOfVehicles {
                     "результат работы с коллекцией в памяти: $memoryResult")
         }
     }
+
 
     override fun countByType(type: VehicleType): Int {
         return this.collectionInMemory.countByType(type)
@@ -109,6 +112,7 @@ class SQLAndMemoryCollection: CollectionOfVehicles {
         return this.collectionInMemory.sumOfEnginePower()
     }
 
+    @Synchronized
     override fun update(id: Int, vehicle: Vehicle, user: User): CollectionOfVehicles.UpdateResult {
         val sqlResult = this.sqlCollection.update(id, vehicle, user)
         val sqlSuccess = sqlResult.isSuccess

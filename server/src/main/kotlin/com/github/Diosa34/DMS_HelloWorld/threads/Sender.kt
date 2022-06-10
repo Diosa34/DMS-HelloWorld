@@ -13,6 +13,8 @@ class Sender(
                 val requestInOutputQueue = this.outputQueue.take()
                 requestInOutputQueue.socketWrap.sendToSocket(requestInOutputQueue.answer)
             }
+        } catch (e: InterruptedException) {
+            println("Поток отправки ответов прерван")
         } finally {
             this.isRunning = false
         }
