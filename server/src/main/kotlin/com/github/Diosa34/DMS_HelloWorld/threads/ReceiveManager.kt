@@ -17,8 +17,9 @@ class ReceiveManager(
         this.isRunning = true
         try {
             while (this.isRunning){
-                val sock = this.serv.accept()
                 println("ReceiveManager")
+                val sock = this.serv.accept()
+                println("ReceiveManagerNEW")
                 service.execute(Receiver(sock, this.queue))
             }
         } finally {

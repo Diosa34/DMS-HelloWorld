@@ -9,8 +9,8 @@ import com.github.Diosa34.DMS_HelloWorld.exceptions.ParseException
 import com.github.Diosa34.DMS_HelloWorld.exceptions.UnexpectedCommandException
 import com.github.Diosa34.DMS_HelloWorld.serialize.*
 import com.github.Diosa34.DMS_HelloWorld.users.User
-import io.github.landgrafhomyak.itmo.dms_lab.io.Client2ServerEncoder
-import io.github.landgrafhomyak.itmo.dms_lab.io.Server2ClientDecoder
+import io.github.landgrafhomyak.itmo.dms_lab.io.AsByteArrayDecoder
+import io.github.landgrafhomyak.itmo.dms_lab.io.AsByteArrayEncoder
 import java.net.ConnectException
 import java.net.SocketException
 import kotlin.Throws
@@ -35,14 +35,13 @@ object RequestManager {
                     }
                 }
                 if (line != "execute_script"){
-                    val requestArr = mutableListOf<UByteArray>()
                     try {
                         var request = Request(command)
                         if (line != "registry" && line != "log_in" && user != null){
                             request = Request(command, user)
                         }
-                        Request.serializer().serialize(Client2ServerEncoder(requestArr), request)
-                        client.send(requestArr.flatten().toUByteArray().toByteArray())
+                        Request.serializer().serialize(AsByteArrayEncoder(), request)
+                        client.send(AsByteArrayEncoder().export().toByteArray())
                         client.receive()
                     } catch (ex: ConnectException) {
                         logger.print("Соединение прервано, перезапустите сервер, затем клиента")
@@ -51,7 +50,7 @@ object RequestManager {
                         logger.print("Соединение прервано, перезапустите сервер, затем клиента, ошибка сокета")
                         return
                     }
-                    val answer = OneLineAnswer.serializer().deserialize(Server2ClientDecoder(client.getArr().toUByteArray()))
+                    val answer = OneLineAnswer.serializer().deserialize(AsByteArrayDecoder(client.getArr().toUByteArray()))
                     logger.print(answer.result)
                     if (line == "log_in") {
                         user = answer.user
