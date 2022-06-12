@@ -2,6 +2,7 @@ package com.github.Diosa34.DMS_HelloWorld.collection
 
 import io.github.landgrafhomyak.itmo.dms_lab.InstantEpochSecondsSerializer
 import io.github.landgrafhomyak.itmo.dms_lab.interop.DisplayName
+import io.github.landgrafhomyak.itmo.dms_lab.interop.IgnoreInput
 import kotlinx.datetime.Instant
 import kotlinx.datetime.Clock.System
 import kotlinx.serialization.Serializable
@@ -11,13 +12,16 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 class Vehicle(
+    @IgnoreInput
     @DisplayName("ID(не может быть 0)")
     @get:Synchronized
-    @set:Synchronized var id: Int? = null, //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    @set:Synchronized
+    var id: Int? = null, //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     @DisplayName("Название")
     val name: String, //Поле не может быть null, Строка не может быть пустой
     @DisplayName("Координаты")
     val coordinates: Coordinates, //Поле не может быть null
+    @IgnoreInput
     @Serializable(InstantEpochSecondsSerializer::class)
     @DisplayName("Дата создания")
     val creationDate: Instant = System.now(), //Поле не может быть null, Значение этого поля должно генерироваться автоматически
@@ -27,9 +31,11 @@ class Vehicle(
     val type: VehicleType, //Поле не может быть null
     @DisplayName("Тип топлива")
     val fuelType: FuelType, //Поле может быть null
+    @IgnoreInput
     @DisplayName("Логин")
     val username: String
 ){
+
     override fun toString(): String {
         return """
             Номер: ${this.id}
