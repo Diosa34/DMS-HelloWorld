@@ -40,8 +40,9 @@ object RequestManager {
                         if (line != "registry" && line != "log_in" && user != null){
                             request = Request(command, user)
                         }
-                        Request.serializer().serialize(AsByteArrayEncoder(), request)
-                        client.send(AsByteArrayEncoder().export().toByteArray())
+                        val arr = AsByteArrayEncoder()
+                        Request.serializer().serialize(arr, request)
+                        client.send(arr.export().toByteArray())
                         client.receive()
                     } catch (ex: ConnectException) {
                         logger.print("Соединение прервано, перезапустите сервер, затем клиента")

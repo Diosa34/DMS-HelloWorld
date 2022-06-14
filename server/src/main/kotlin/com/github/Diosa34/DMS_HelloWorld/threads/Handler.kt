@@ -17,6 +17,7 @@ class Handler(
     var isRunning = false
 
     override fun run() {
+        this.isRunning = true
         try {
             while (this.isRunning) {
                 val requestInQueue = inputQueue.take()

@@ -8,6 +8,7 @@ class Sender(
     var isRunning = false
 
     override fun run() {
+        this.isRunning = true
         try {
             while (this.isRunning) {
                 val requestInOutputQueue = this.outputQueue.take()

@@ -18,7 +18,7 @@ class Receiver(
     override fun run() {
         this.isRunning = true
         try {
-            while (isRunning){
+            while (this.isRunning){
                 val requestArr = ByteArray(1024 * 1024)
                 this.read(requestArr)
                 this.putCommand(requestArr)
