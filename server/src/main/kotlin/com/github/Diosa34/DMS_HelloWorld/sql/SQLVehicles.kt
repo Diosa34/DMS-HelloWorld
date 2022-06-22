@@ -26,6 +26,7 @@ object InformationTable: Table() {
 
 object Users: Table() {
     val login: Column<String> = varchar("user", 50).uniqueIndex().check { it neq "" }
+    override val primaryKey: PrimaryKey = PrimaryKey(login, name = "author_pkey")
     val password: Column<String> = varchar("password", 50).uniqueIndex().check { it neq "" }
     val salt: Column<String> = varchar("salt", 50)
 }

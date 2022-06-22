@@ -5,19 +5,12 @@ import java.util.concurrent.BlockingQueue
 class Sender(
     private var outputQueue: BlockingQueue<RequestInOutputQueue>
 ): Runnable {
-    var isRunning = false
 
     override fun run() {
-        this.isRunning = true
-        try {
-            while (this.isRunning) {
-                val requestInOutputQueue = this.outputQueue.take()
-                requestInOutputQueue.socketWrap.sendToSocket(requestInOutputQueue.answer)
-            }
-        } catch (e: InterruptedException) {
-            println("Поток отправки ответов прерван")
-        } finally {
-            this.isRunning = false
+        if (this.outputQueue.isNotEmpty()) {
+            val requestInOutputQueue = this.outputQueue.take()
+            println("Sender извлёк ответ из очереди")
+            requestInOutputQueue.socketWrap.sendToSocket(requestInOutputQueue.answer)
         }
     }
 }

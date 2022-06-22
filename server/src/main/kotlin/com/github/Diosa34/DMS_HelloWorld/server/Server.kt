@@ -25,8 +25,8 @@ class Server(
     }
 
     fun mainLoop(collection: CollectionOfVehicles, usersCollection: SQLUsersCollection) {
-        val inputQueue: BlockingQueue<RequestInInputQueue> = ArrayBlockingQueue(1024)
-        val outputQueue: BlockingQueue<RequestInOutputQueue> = ArrayBlockingQueue(1024)
+        val inputQueue: BlockingQueue<RequestInInputQueue> = ArrayBlockingQueue(100)
+        val outputQueue: BlockingQueue<RequestInOutputQueue> = ArrayBlockingQueue(100)
 
         val receiver = ReceiveManager(this.serv, inputQueue)
         val handler = HandleManager(inputQueue, outputQueue, collection, usersCollection)

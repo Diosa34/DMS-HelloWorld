@@ -8,12 +8,11 @@ import java.nio.channels.SocketChannel
 class SocketWrap (
     private val sock: SocketChannel,
 ) {
-    @OptIn(ExperimentalUnsignedTypes::class)
-    val serverToClientEncoder = AsByteArrayEncoder().export()
+    private val serverToClientEncoder = AsByteArrayEncoder()
 
     @OptIn(ExperimentalUnsignedTypes::class)
     fun sendToSocket(answer: OneLineAnswer){
-        OneLineAnswer.serializer().serialize(AsByteArrayEncoder(), answer)
-        this.sock.write(ByteBuffer.wrap(this.serverToClientEncoder.toByteArray()))
+        OneLineAnswer.serializer().serialize(this.serverToClientEncoder, answer)
+        this.sock.write(ByteBuffer.wrap(this.serverToClientEncoder.export().toByteArray()))
     }
 }

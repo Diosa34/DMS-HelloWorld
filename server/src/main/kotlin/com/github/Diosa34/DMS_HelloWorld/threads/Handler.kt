@@ -14,31 +14,23 @@ class Handler(
     private val collection: CollectionOfVehicles,
     private val usersCollection: SQLUsersCollection
 ): Runnable {
-    var isRunning = false
 
     override fun run() {
-        this.isRunning = true
-        try {
-            while (this.isRunning) {
-                val requestInQueue = inputQueue.take()
-                val bufferLogger = BufferLogger(requestInQueue.socketWrap)
-                try {
-                    executeCall(requestInQueue.command, bufferLogger, collection, usersCollection, requestInQueue.user)
-                } catch (ex: CollectionException) {
-                    bufferLogger.print(ex.message)
-                } catch (ex: SQLException) {
-                    bufferLogger.print("Ошибка обращения к базе данных")
-                } catch (ex: IllegalStateException) {
-                    bufferLogger.print("Доступ к базе данных не получен")
-                }
-                bufferLogger.build()
-                this.outputQueue.put(RequestInOutputQueue(bufferLogger.answer, bufferLogger.socketWrap))
+        if (this.inputQueue.isNotEmpty()) {
+            val requestInQueue = inputQueue.take()
+            println("Извлечён запрос из входящей очереди")
+            val bufferLogger = BufferLogger(requestInQueue.socketWrap)
+            try {
+                executeCall(requestInQueue.command, bufferLogger, collection, usersCollection, requestInQueue.user)
+            } catch (ex: CollectionException) {
+                bufferLogger.print(ex.message)
+            } catch (ex: SQLException) {
+                bufferLogger.print("Ошибка обращения к базе данных")
             }
-        } catch (e: InterruptedException) {
-            println("Поток обработки запросов завершился")
-            return
-        } finally {
-            this.isRunning = false
+            bufferLogger.build()
+            println(bufferLogger.answer.result)
+            this.outputQueue.put(RequestInOutputQueue(bufferLogger.answer, bufferLogger.socketWrap))
+            println("Запрос отправлен в исходящую очередь")
         }
     }
 }
