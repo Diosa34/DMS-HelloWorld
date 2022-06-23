@@ -54,7 +54,9 @@ fun hash(password: String, salt: String): String {
         val md = MessageDigest.getInstance("SHA-224")
         val digest = md.digest((pepper + password + salt).toByteArray())
         for (i in digest) {
-            hash.append(Integer.toHexString((i.and(0xff.toByte())).toInt()))
+            val str = "0"+Integer.toHexString(i.toInt())
+            hash.append(str.substring(str.length - 2))
+            println(hash.toString())
         }
         return@transaction hash.toString()
     }

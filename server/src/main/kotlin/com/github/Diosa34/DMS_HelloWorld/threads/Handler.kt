@@ -24,8 +24,8 @@ class Handler(
                 executeCall(requestInQueue.command, bufferLogger, collection, usersCollection, requestInQueue.user)
             } catch (ex: CollectionException) {
                 bufferLogger.print(ex.message)
-            } catch (ex: SQLException) {
-                bufferLogger.print("Ошибка обращения к базе данных")
+//            } catch (ex: SQLException) {
+//                bufferLogger.print("Ошибка обращения к базе данных")
             }
             bufferLogger.build()
             println(bufferLogger.answer.result)

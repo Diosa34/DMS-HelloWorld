@@ -33,7 +33,7 @@ class Vehicle(
     val fuelType: FuelType, //Поле может быть null
     @IgnoreInput
     @DisplayName("Логин")
-    val username: String
+    var username: String? = null
 ){
 
     override fun toString(): String {

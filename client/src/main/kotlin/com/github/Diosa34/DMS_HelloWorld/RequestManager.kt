@@ -9,6 +9,7 @@ import com.github.Diosa34.DMS_HelloWorld.exceptions.ParseException
 import com.github.Diosa34.DMS_HelloWorld.exceptions.UnexpectedCommandException
 import com.github.Diosa34.DMS_HelloWorld.serialize.*
 import com.github.Diosa34.DMS_HelloWorld.users.User
+import io.github.landgrafhomyak.itmo.dms_lab.interop.TriesLimitExceedException
 import io.github.landgrafhomyak.itmo.dms_lab.io.AsByteArrayDecoder
 import io.github.landgrafhomyak.itmo.dms_lab.io.AsByteArrayEncoder
 import java.net.ConnectException
@@ -59,6 +60,8 @@ object RequestManager {
                 }
             } catch (e: UnexpectedCommandException) {
                 logger.print(UnexpectedCommandException.message)
+            } catch (e: TriesLimitExceedException) {
+                logger.print("Ввод команды завершён")
             } catch (e: ParseException) {
                 logger.print(e.message)
             } catch (e: NotAuthorizedException) {

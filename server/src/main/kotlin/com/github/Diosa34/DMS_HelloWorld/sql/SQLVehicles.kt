@@ -14,7 +14,7 @@ object SQLVehicles: Table() {
     var x: Column<Float> = float("x") //Поле не может быть null
     var y: Column<Int> = integer("y") //Поле не может быть null
     var creationDate: Column<Instant> = timestamp("creationDate").clientDefault{System.now()} //Поле не может быть null, Значение этого поля должно генерироваться автоматически
-    var enginePower: Column<Float> = float("enginePower").check { it greater 0 } //Поле не может быть null, Значение поля должно быть больше 0
+    var enginePower: Column<Float> = float("enginePower") //Поле не может быть null, Значение поля должно быть больше 0
     var vehicleType: Column<VehicleType> = enumeration("vehicleType") //Поле не может быть null
     var fuelType: Column<FuelType> = enumeration("fuelType") //Поле может быть null
     val username: Column<String> = varchar("username", 50).check { it neq "" }
@@ -26,7 +26,6 @@ object InformationTable: Table() {
 
 object Users: Table() {
     val login: Column<String> = varchar("user", 50).uniqueIndex().check { it neq "" }
-    override val primaryKey: PrimaryKey = PrimaryKey(login, name = "author_pkey")
-    val password: Column<String> = varchar("password", 50).uniqueIndex().check { it neq "" }
+    val password: Column<String> = varchar("password", 100).uniqueIndex().check { it neq "" }
     val salt: Column<String> = varchar("salt", 50)
 }

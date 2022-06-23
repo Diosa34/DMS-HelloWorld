@@ -19,6 +19,7 @@ class CollectionInMemory : CollectionOfVehicles {
 
     @Synchronized
     override fun add(vehicle: Vehicle, user: User): Int {
+        vehicle.username = user.login
         this.collection.add(vehicle)
         return vehicle.id ?: throw NullPointerException()
     }
@@ -43,9 +44,9 @@ class CollectionInMemory : CollectionOfVehicles {
             this.collection.removeIf { elem ->
                 elem.username == user.login
             }
-            return CollectionOfVehicles.ClearResult.NOT_FOUND
+            return CollectionOfVehicles.ClearResult.DELETED
         }
-        return CollectionOfVehicles.ClearResult.DELETED
+        return CollectionOfVehicles.ClearResult.NOT_FOUND
     }
 
     @Synchronized
