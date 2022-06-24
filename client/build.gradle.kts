@@ -38,7 +38,7 @@ kotlin {
 }
 
 application {
-    mainClass.set("com.github.Diosa34.DMS_HelloWorld.MainClientKt")
+    mainClass.set("com.github.diosa.dms.MainClientKt")
 }
 
 val fatJar = tasks.create<Jar>("fatJar") {

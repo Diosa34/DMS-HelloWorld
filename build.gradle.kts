@@ -3,7 +3,7 @@ plugins {
     kotlin("plugin.serialization") version "1.6.10" apply false
 }
 
-group = "com.github.Diosa34"
+group = "com.github.diosa"
 version = "1.0"
 
 repositories {

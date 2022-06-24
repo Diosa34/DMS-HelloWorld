@@ -27,7 +27,6 @@ kotlin {
                 implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
                 implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
                 implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
-//                implementation("com.github.Diosa34:ObjectConverter:master-SNAPSHOT")
                 implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposedVersion")
                 implementation("org.postgresql:postgresql:42.2.10")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3")
@@ -46,7 +45,7 @@ kotlin {
 }
 
 application {
-    mainClass.set("com.github.Diosa34.DMS_HelloWorld.MainServerKt")
+    mainClass.set("com.github.diosa.dms.manage.MainServerKt")
 }
 
 val fatJar = tasks.create<Jar>("fatJar") {
