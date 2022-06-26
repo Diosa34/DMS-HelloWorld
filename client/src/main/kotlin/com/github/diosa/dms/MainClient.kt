@@ -15,7 +15,7 @@ fun main() {
     val port = 5489
 
     val logger: Logger = ConsoleLogger
-    val client: com.github.diosa.dms.Client
+    val client: Client
 
     val log: java.util.logging.Logger = java.util.logging.Logger.getLogger("ClientLogger")
     try {
@@ -41,7 +41,6 @@ fun main() {
     }
 
     logger.print("Для начала работы введите команду 'registry' для регистрации или 'log_in', если вы уже зарегистрированы")
-//    logger.print("Информация о командах доступна по команде 'help'")
 
     RequestManager.manage(logger, 3, ConsoleStringReader, client)
 }

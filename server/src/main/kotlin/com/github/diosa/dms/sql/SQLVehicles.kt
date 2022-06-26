@@ -27,5 +27,5 @@ object InformationTable: Table() {
 object Users: Table() {
     val login: Column<String> = varchar("user", 50).uniqueIndex().check { it neq "" }
     val password: Column<String> = varchar("password", 100).uniqueIndex().check { it neq "" }
-    val salt: Column<String> = varchar("salt", 50)
+    val salt: Column<String> = varchar("salt", 6)
 }
