@@ -1,7 +1,5 @@
-package com.github.diosa.dms;
-
-import com.github.diosa.dms.absctactions.Logger;
-import com.github.diosa.dms.absctactions.Logger;
+import com.github.diosa.dms.SameLinksException;
+import com.github.diosa.dms.mainGUI.Alert;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,13 +13,13 @@ import java.util.LinkedList;
 public class HistoryOfExecutingScripts extends LinkedList<Path> {
     public static HistoryOfExecutingScripts collectionOfFiles = new HistoryOfExecutingScripts();
 
-    public static void addScript(Logger logger, String filepath) throws IOException {
+    public static void addScript(String filepath) throws IOException {
         try {
             if (!isSameLinks(new File(filepath).toPath())) {
                 collectionOfFiles.add(new File(filepath).toPath());
             }
         } catch(SameLinksException e){
-            logger.print(SameLinksException.message);
+            Alert.error(SameLinksException.message);
         }
     }
 

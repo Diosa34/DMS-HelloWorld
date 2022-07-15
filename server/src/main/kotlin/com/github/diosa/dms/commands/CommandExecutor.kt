@@ -1,6 +1,7 @@
 package com.github.diosa.dms
 
 import com.github.diosa.dms.absctactions.*
+import com.github.diosa.dms.client.ExecuteScript
 import com.github.diosa.dms.commands.*
 import com.github.diosa.dms.io.BufferLogger
 import com.github.diosa.dms.sql.SQLUsersCollection

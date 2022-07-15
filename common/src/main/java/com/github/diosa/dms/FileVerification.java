@@ -42,7 +42,7 @@ public class FileVerification {
         } else if (isDirectoryCheck(filename)){
             throw new FileVerificationException("Указанный файл является директорией");
         } else if (!FileVerification.executePermissionCheck(new File(filename).toPath())) {
-                throw new FileVerificationException("Недостаточно прав доступа к файлу");
+            throw new FileVerificationException("Недостаточно прав доступа к файлу");
         }
         return true;
     }

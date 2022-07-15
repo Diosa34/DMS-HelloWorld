@@ -29,7 +29,11 @@ class Handler(
             }
             bufferLogger.build()
             println(bufferLogger.answer.result)
-            this.outputQueue.put(RequestInOutputQueue(bufferLogger.answer, bufferLogger.socketWrap))
+            try {
+                this.outputQueue.put(RequestInOutputQueue(bufferLogger.answer, bufferLogger.socketWrap))
+            } catch (e: InterruptedException){
+                Thread.currentThread().interrupt()
+            }
             println("Запрос отправлен в исходящую очередь")
         }
     }

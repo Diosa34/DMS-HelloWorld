@@ -1,4 +1,4 @@
-package com.github.diosa.dms
+package com.github.diosa.dms.client
 
 import com.github.diosa.dms.absctactions.BoundCommand
 import com.github.diosa.dms.commands.*
@@ -35,7 +35,7 @@ object CommandParser{
             "add_if_min" -> AddIfMin.serializer().deserialize(decoder)
             "clear" -> Clear.serializer().deserialize(decoder)
             "count_by_type" -> CountByType.serializer().deserialize(decoder)
-            "execute_script" -> com.github.diosa.dms.ExecuteScript.serializer().deserialize(decoder)
+            "execute_script" -> ExecuteScript.serializer().deserialize(decoder)
             "exit" -> Exit.serializer().deserialize(decoder)
             "group_counting_by_type" -> GroupCountingByType.serializer().deserialize(decoder)
             "help" -> Help.serializer().deserialize(decoder)

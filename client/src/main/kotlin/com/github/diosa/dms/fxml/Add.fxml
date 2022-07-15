@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTimePicker?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane prefHeight="200.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.diosa.dms.commandHandle.AddController">
+    <children>
+        <VBox alignment="CENTER" spacing="15.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <children>
+                <GridPane alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="450.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <Label text="Name" GridPane.columnIndex="1"/>
+                        <JFXTextField fx:id="name" GridPane.columnIndex="2"/>
+                        <Label text="X" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <JFXTextField GridPane.columnIndex="2" GridPane.rowIndex="1" fx:id="x"/>
+                        <Label text="Coordinates" GridPane.rowIndex="1"/>
+                        <JFXTextField fx:id="Y" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+                        <Label text="Y" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <Label text="Engine power" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                        <Label text="Vehicle type" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                        <Label text="Fuel type" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                        <JFXTextField fx:id="enginePower" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+                        <ChoiceBox fx:id="vehicleType" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
+                        <ChoiceBox fx:id="fuelType" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
+                    </children>
+                </GridPane>
+                <VBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                    <children>
+                        <JFXButton fx:id="add" text="Add" visible="false"/>
+                        <JFXButton fx:id="addIfMin" text="Add if min" visible="false"/>
+                        <JFXButton fx:id="Update" text="Update" visible="false"/>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

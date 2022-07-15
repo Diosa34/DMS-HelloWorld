@@ -2,12 +2,12 @@ plugins {
     application
     kotlin("jvm")
     kotlin("plugin.serialization")
+    id("org.openjfx.javafxplugin")
 }
 
 repositories {
     mavenCentral()
     maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
-//    maven(url = "https://jitpack.io/")
 }
 
 kotlin {
@@ -22,11 +22,11 @@ kotlin {
         val main by getting {
             dependencies {
                 implementation(kotlin("stdlib-jdk8"))
-//                implementation("com.github.Diosa34:ObjectConverter:master-SNAPSHOT")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
                 implementation("io.github.landgrafhomyak.itmo:dms-lab-core:1.0-b0+-SNAPSHOT")
                 implementation(project(":common"))
+                implementation("com.jfoenix:jfoenix:9.0.9")
             }
         }
         val test by getting {
@@ -38,7 +38,11 @@ kotlin {
 }
 
 application {
-    mainClass.set("com.github.diosa.dms.MainClientKt")
+    mainClass.set("com.github.diosa.dms.mainGUI.MainGUIKt")
+}
+
+javafx {
+    modules("javafx.controls", "javafx.fxml")
 }
 
 val fatJar = tasks.create<Jar>("fatJar") {

@@ -6,5 +6,4 @@ import kotlinx.serialization.Serializable
 class User(
     val login: String,
     val password: String
-) {
-}
+)

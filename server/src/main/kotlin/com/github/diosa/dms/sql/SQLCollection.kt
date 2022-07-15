@@ -110,15 +110,15 @@ class SQLCollection: CollectionOfVehicles {
 
     @Synchronized
     private fun Vehicle.sqlClosure(user:User): SQLVehicles.(UpdateBuilder<*>) -> Unit {
-        return {
-            it[name] = this@sqlClosure.name
-            it[x] = this@sqlClosure.coordinates.x
-            it[y] = this@sqlClosure.coordinates.y
-            it[creationDate] = this@sqlClosure.creationDate
-            it[enginePower] = this@sqlClosure.enginePower
-            it[vehicleType] = this@sqlClosure.type
-            it[fuelType] = this@sqlClosure.fuelType
-            it[username] = transaction { Users.select{ Users.login eq user.login}.map{ row -> row[Users.login]}[0] }
+        return {tableColumns ->
+            tableColumns[this.name] = this@sqlClosure.name
+            tableColumns[this.x] = this@sqlClosure.coordinates.x
+            tableColumns[this.y] = this@sqlClosure.coordinates.y
+            tableColumns[this.creationDate] = this@sqlClosure.creationDate
+            tableColumns[this.enginePower] = this@sqlClosure.enginePower
+            tableColumns[this.vehicleType] = this@sqlClosure.type
+            tableColumns[this.fuelType] = this@sqlClosure.fuelType
+            tableColumns[this.username] = transaction { Users.select{ Users.login eq user.login}.map{ row -> row[Users.login]}[0] }
         }
     }
 }
