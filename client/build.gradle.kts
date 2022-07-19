@@ -10,6 +10,11 @@ repositories {
     maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
 kotlin {
     target {
         compilations.all {
@@ -25,6 +30,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
                 implementation("io.github.landgrafhomyak.itmo:dms-lab-core:1.0-b0+-SNAPSHOT")
+                implementation ("no.tornado:fx:1.2.3")
                 implementation(project(":common"))
                 implementation("com.jfoenix:jfoenix:9.0.9")
             }
@@ -38,11 +44,11 @@ kotlin {
 }
 
 application {
-    mainClass.set("com.github.diosa.dms.mainGUI.MainGUIKt")
+    mainClass.set("com.github.diosa.dms.mainGUI.MainGUI.java")
 }
 
 javafx {
-    modules("javafx.controls", "javafx.fxml")
+    modules("javafx.controls", "javafx.fxml", "javafx.graphics")
 }
 
 val fatJar = tasks.create<Jar>("fatJar") {

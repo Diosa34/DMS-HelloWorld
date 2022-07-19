@@ -1,4 +1,5 @@
-import com.github.diosa.dms.SameLinksException;
+package com.github.diosa.dms;
+
 import com.github.diosa.dms.mainGUI.Alert;
 
 import java.io.File;

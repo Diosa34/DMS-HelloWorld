@@ -2,10 +2,9 @@ package com.github.diosa.dms.client
 
 import com.github.diosa.dms.FileVerification
 import com.github.diosa.dms.FileVerificationException
-import HistoryOfExecutingScripts
+import com.github.diosa.dms.HistoryOfExecutingScripts
 import com.github.diosa.dms.absctactions.AbstractDescription
 import com.github.diosa.dms.absctactions.BoundCommand
-import com.github.diosa.dms.io.FileStringReader
 import com.github.diosa.dms.mainGUI.Alert
 import kotlinx.serialization.Serializable
 import java.io.File
