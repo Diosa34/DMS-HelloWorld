@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <GridPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.diosa.dms.MainSceneController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" />
@@ -18,8 +19,8 @@
     <children>
         <HBox GridPane.columnIndex="0" GridPane.rowIndex="0">
             <Label visible="false"/>
-            <Button text="Sign Up" onAction="#signUpHandle"/>
-            <Button text="Log In" onAction="#logInHandle"/>
+            <JFXButton fx:id="signUpBtn" text="Sign Up" onAction="#signUpHandle"/>
+            <JFXButton fx:id="logInBtn" text="Log In" onAction="#logInHandle"/>
             <Label text="" visible="false"/>
         </HBox>
         <Canvas GridPane.columnIndex="2" GridPane.rowSpan="3" />

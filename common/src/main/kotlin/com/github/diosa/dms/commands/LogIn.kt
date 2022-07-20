@@ -19,7 +19,6 @@ class LogIn(
         try {
             logger.setUser(userCollection.getUser(this.login, this.password))
             logger.print("Пользователь $login успешно авторизован")
-            logger.print("Информация о командах доступна по команде 'help'")
         } catch (ex: NotAuthorizedException) {
             logger.print(ex.message)
         }

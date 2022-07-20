@@ -5,6 +5,7 @@
 
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXButton?>
 <AnchorPane prefHeight="148.0" prefWidth="411.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.github.diosa.dms.mainGUI.LogInController">
    <DialogPane layoutY="22.0">
@@ -27,6 +28,6 @@
           </GridPane>
       </header>
    </DialogPane>
-   <Button layoutX="181.0" layoutY="108.0" mnemonicParsing="false" text="Log In" onAction="#loginButtonHandle"/>
+   <JFXButton fx:id="readyButton" layoutX="181.0" layoutY="108.0" mnemonicParsing="false" text="Log In" onAction="#loginButtonHandle"/>
 
 </AnchorPane>

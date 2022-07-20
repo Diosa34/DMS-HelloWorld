@@ -1,5 +1,6 @@
 package com.github.diosa.dms.client
 
+import com.github.diosa.dms.mainGUI.Alert
 import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
@@ -28,7 +29,7 @@ object Client {
             return
         } catch (ex: ConnectException) {
             log.log(Level.SEVERE, "ConnectException: ", ex)
-            println("Соединение не установлено, запустите сервер, а затем клиент.")
+            Alert.error("Соединение не установлено, перезапустите сервер, а затем клиент.")
         } catch (e: UnknownHostException) {
             log.log(Level.SEVERE, "UnknownHostException", e)
             println("Неизвестный хост")
