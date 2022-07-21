@@ -1,4 +1,4 @@
 package com.github.diosa.dms.commandHandle
 
-class CountByTypeController {
+class CountByTypeController: ButtonController {
 }

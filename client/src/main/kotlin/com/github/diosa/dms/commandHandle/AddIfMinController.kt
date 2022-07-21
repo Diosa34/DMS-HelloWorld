@@ -1,4 +1,4 @@
 package com.github.diosa.dms.commandHandle
 
-class AddController: ButtonController {
+class AddIfMinController: ButtonController {
 }

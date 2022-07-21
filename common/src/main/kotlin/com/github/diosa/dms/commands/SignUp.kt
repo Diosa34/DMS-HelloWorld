@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("registry")
-class Register(
+class SignUp(
     @DisplayName("Логин")
     private val login: String,
     @DisplayName("Пароль")

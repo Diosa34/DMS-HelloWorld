@@ -11,8 +11,8 @@ repositories {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_9
-    targetCompatibility = JavaVersion.VERSION_1_9
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 kotlin {
@@ -32,7 +32,7 @@ kotlin {
                 implementation("io.github.landgrafhomyak.itmo:dms-lab-core:1.0-b0+-SNAPSHOT")
                 implementation ("no.tornado:fx:1.2.3")
                 implementation(project(":common"))
-                implementation("com.jfoenix:jfoenix:9.0.9")
+                implementation("com.jfoenix:jfoenix:8.0.10")
             }
         }
         val test by getting {

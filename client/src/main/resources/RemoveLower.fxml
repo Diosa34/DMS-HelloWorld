@@ -9,7 +9,7 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.github.diosa.dms.commandHandle.RLController">
+            fx:controller="com.github.diosa.dms.commandHandle.RemoveLowerController">
     <DialogPane AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0" layoutY="22.0">
         <header>
             <GridPane alignment="center" vgap="10.0">

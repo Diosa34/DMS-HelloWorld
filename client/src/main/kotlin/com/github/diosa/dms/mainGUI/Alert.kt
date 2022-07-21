@@ -10,25 +10,23 @@ object Alert{
 
     @JvmStatic
     fun notification(message: String){
-        notification.close();
-        notification.dialogPane.buttonTypes.add(ButtonType.OK);
-        notification.contentText = message;
+        notification.dialogPane.buttonTypes.add(ButtonType.OK)
+        notification.contentText = message
         notification.show()
     }
 
     @JvmStatic
     fun error(message: String){
-        error.close();
-        error.dialogPane.buttonTypes.add(ButtonType.OK);
-        error.contentText = message;
+        error.dialogPane.buttonTypes.add(ButtonType.OK)
+        error.contentText = message
         error.show()
     }
 
     @JvmStatic
     fun warning(message: String){
         warning.close()
-        warning.dialogPane.buttonTypes.add(ButtonType.OK);
-        warning.contentText = message;
+        warning.dialogPane.buttonTypes.add(ButtonType.OK)
+        warning.contentText = message
         warning.show()
     }
 }

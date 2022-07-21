@@ -17,7 +17,7 @@ object InterfaceSerializer : KSerializer<BoundCommand> {
     override fun deserialize(decoder: Decoder): BoundCommand {
         try {
             return when (decoder.decodeString()) {
-                "registry" -> Register.serializer().deserialize(decoder)
+                "registry" -> SignUp.serializer().deserialize(decoder)
                 "log_in" -> LogIn.serializer().deserialize(decoder)
                 "add" -> Add.serializer().deserialize(decoder)
                 "add_if_min" -> AddIfMin.serializer().deserialize(decoder)
@@ -51,7 +51,7 @@ object InterfaceSerializer : KSerializer<BoundCommand> {
 
     override fun serialize(encoder: Encoder, value: BoundCommand) {
         when (value) {
-            is Register -> Register.serializer().encodeWithSerialName(encoder, value)
+            is SignUp -> SignUp.serializer().encodeWithSerialName(encoder, value)
             is LogIn -> LogIn.serializer().encodeWithSerialName(encoder, value)
             is Add -> Add.serializer().encodeWithSerialName(encoder, value)
             is AddIfMin -> AddIfMin.serializer().encodeWithSerialName(encoder, value)

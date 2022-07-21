@@ -5,30 +5,29 @@
 
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
-<AnchorPane prefHeight="148.0" prefWidth="411.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<?import com.jfoenix.controls.JFXButton?>
+<AnchorPane prefHeight="148.0" prefWidth="411.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+fx:controller="com.github.diosa.dms.commandHandle.SignUpController">
     <DialogPane layoutY="22.0">
         <header>
             <GridPane alignment="center" vgap="10.0">
                 <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="127.20000762939453" minWidth="10.0" prefWidth="87.2" />
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="326.0" minWidth="10.0" prefWidth="323.4" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="127.20000762939453" minWidth="10.0" prefWidth="87.2"/>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="326.0" minWidth="10.0" prefWidth="323.4"/>
                 </columnConstraints>
                 <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               <RowConstraints />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints/>
                 </rowConstraints>
-                <children>
-                    <Label text="Login: " />
-                    <JFXTextField fx:id="login" promptText="Login" GridPane.columnIndex="1" />
-                    <Label text="Password: " GridPane.rowIndex="1" />
-                    <JFXPasswordField fx:id="password" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                    <Label text="Password again: " GridPane.rowIndex="2" />
-                    <JFXPasswordField fx:id="passwordAgain" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                </children>
+                <Label text="Login: "/>
+                <JFXTextField fx:id="login" promptText="Login" GridPane.columnIndex="1"/>
+                <Label text="Password: " GridPane.rowIndex="1"/>
+                <JFXPasswordField fx:id="password" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <Label text="Password again: " GridPane.rowIndex="2"/>
+                <JFXPasswordField fx:id="passwordAgain" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
             </GridPane>
         </header>
     </DialogPane>
-    <Button layoutX="181.0" layoutY="144.0" mnemonicParsing="false" text="Sign Up" />
-
+    <JFXButton fx:id="readyButton" layoutX="181.0" layoutY="144.0" mnemonicParsing="false" text="Sign Up" onAction="#signUpButtonHandle"/>
 </AnchorPane>

@@ -1,4 +1,4 @@
-package com.github.diosa.dms.client
+package com.github.diosa.dms.exceptions
 
 import java.io.IOException
 

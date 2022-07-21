@@ -29,7 +29,7 @@ object CommandParser{
 //        }
 
         val command: BoundCommand = when (request[0]) {
-            "registry" -> Register.serializer().deserialize(decoder)
+            "registry" -> SignUp.serializer().deserialize(decoder)
             "log_in" -> LogIn.serializer().deserialize(decoder)
             "add" -> Add.serializer().deserialize(decoder)
             "add_if_min" -> AddIfMin.serializer().deserialize(decoder)
