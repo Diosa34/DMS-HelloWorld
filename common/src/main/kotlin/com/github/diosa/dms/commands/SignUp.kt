@@ -22,8 +22,10 @@ class SignUp(
         try {
             userCollection.add(User(this.login, this.password))
             logger.print("Пользователь успешно зарегистрирован")
+            logger.success = true
         } catch (ex: SQLException) {
             logger.print("Такой пользователь уже есть в базе")
+            logger.success = false
         }
     }
 

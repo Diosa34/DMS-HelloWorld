@@ -4,12 +4,13 @@ import com.github.diosa.dms.absctactions.CollectionOfVehicles
 import com.github.diosa.dms.users.User
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlinx.serialization.Serializable
 import java.util.*
 
-
+@Serializable
 class CollectionInMemory : CollectionOfVehicles {
 
-    private val collection: LinkedList<Vehicle> = LinkedList()
+    private val collection: MutableList<Vehicle> = mutableListOf()
     private val initDate: Instant = Clock.System.now()
 
     @Synchronized

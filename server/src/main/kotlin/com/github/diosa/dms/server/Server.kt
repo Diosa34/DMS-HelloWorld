@@ -1,6 +1,7 @@
 package com.github.diosa.dms.server
 
 import com.github.diosa.dms.absctactions.CollectionOfVehicles
+import com.github.diosa.dms.sql.SQLAndMemoryCollection
 import com.github.diosa.dms.sql.SQLUsersCollection
 import com.github.diosa.dms.threads.*
 import java.net.*
@@ -24,7 +25,7 @@ class Server(
         this.log.info("Установлено новое подключение")
     }
 
-    fun mainLoop(collection: CollectionOfVehicles, usersCollection: SQLUsersCollection) {
+    fun mainLoop(collection: SQLAndMemoryCollection, usersCollection: SQLUsersCollection) {
         val inputQueue: BlockingQueue<RequestInInputQueue> = ArrayBlockingQueue(100)
         val outputQueue: BlockingQueue<RequestInOutputQueue> = ArrayBlockingQueue(100)
 

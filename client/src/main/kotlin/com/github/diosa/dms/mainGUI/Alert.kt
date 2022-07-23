@@ -24,7 +24,6 @@ object Alert{
 
     @JvmStatic
     fun warning(message: String){
-        warning.close()
         warning.dialogPane.buttonTypes.add(ButtonType.OK)
         warning.contentText = message
         warning.show()

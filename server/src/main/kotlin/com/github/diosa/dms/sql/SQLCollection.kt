@@ -9,7 +9,6 @@ import com.github.diosa.dms.users.User
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.security.MessageDigest
 
 class SQLCollection: CollectionOfVehicles {
     @Synchronized

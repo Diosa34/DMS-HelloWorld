@@ -68,6 +68,7 @@ object InterfaceSerializer : KSerializer<BoundCommand> {
             is Show -> Show.serializer().encodeWithSerialName(encoder, value)
             is SumOfEnginePower -> SumOfEnginePower.serializer().encodeWithSerialName(encoder, value)
             is Update -> Update.serializer().encodeWithSerialName(encoder, value)
+            is GetCollection -> GetCollection.serializer().encodeWithSerialName(encoder, value)
             else -> throw UnexpectedCommandException()
         }
     }

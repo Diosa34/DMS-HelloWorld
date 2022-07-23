@@ -1,63 +1,87 @@
-package com.github.diosa.dms
+package com.github.diosa.dms.mainGUI
 
+import com.github.diosa.dms.client.RequestManager
+import com.github.diosa.dms.collection.CollectionInMemory
+import com.github.diosa.dms.collection.Vehicle
 import com.github.diosa.dms.commandHandle.ButtonController
 import com.github.diosa.dms.commandHandle.LogInController
 import com.github.diosa.dms.commandHandle.SignUpController
-import com.github.diosa.dms.exceptions.MismatchedPasswordsException
-import com.github.diosa.dms.exceptions.NotValidFieldException
+import com.github.diosa.dms.commands.GetCollection
 import com.github.diosa.dms.users.User
 import com.jfoenix.controls.JFXButton
+import javafx.beans.property.SimpleFloatProperty
+import javafx.beans.property.SimpleIntegerProperty
+import javafx.beans.property.SimpleStringProperty
+import javafx.collections.FXCollections
+import javafx.collections.ObservableList
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.control.Label
+import javafx.scene.control.TableColumn
+import javafx.scene.control.TableView
+import javafx.scene.control.cell.PropertyValueFactory
 import javafx.stage.Stage
 import java.io.IOException
 
 class MainSceneController {
-    private var user: User? = null
+    var user: User? = null
+    lateinit var nick: Label
 
-    @FXML
-    private lateinit var nick: Label
+    @FXML private lateinit var signUpBtn: JFXButton
+    @FXML private lateinit var logInBtn: JFXButton
+    @FXML private lateinit var addIfMin: JFXButton
+    @FXML private lateinit var clear: JFXButton
+    @FXML private lateinit var removeById: JFXButton
+    @FXML private lateinit var removeLower: JFXButton
+    @FXML private lateinit var update: JFXButton
+    @FXML private lateinit var countByType: JFXButton
+    @FXML private lateinit var groupCountingByType: JFXButton
+    @FXML private lateinit var removeFirst: JFXButton
+    @FXML private lateinit var sumOfEnginePower: JFXButton
+    @FXML private lateinit var add: JFXButton
 
-    @FXML
-    private lateinit var signUpBtn: JFXButton
+    @FXML private lateinit var table: TableView<VehicleTable>
 
-    @FXML
-    private lateinit var logInBtn: JFXButton
+    @FXML private lateinit var id: TableColumn<VehicleTable, Int>
+    @FXML private lateinit var name: TableColumn<VehicleTable, String>
+    @FXML private lateinit var x: TableColumn<VehicleTable, Float>
+    @FXML private lateinit var y: TableColumn<VehicleTable, Int>
+    @FXML private lateinit var creationDate: TableColumn<VehicleTable, String>
+    @FXML private lateinit var enginePower: TableColumn<VehicleTable, Float>
+    @FXML private lateinit var vehicleType: TableColumn<VehicleTable, String>
+    @FXML private lateinit var fuelType: TableColumn<VehicleTable, String>
+    @FXML private lateinit var username: TableColumn<VehicleTable, String>
 
-    @FXML
-    private lateinit var addIfMin: JFXButton
+    private val data: ObservableList<VehicleTable> = FXCollections.observableArrayList();
 
-    @FXML
-    private lateinit var clear: JFXButton
+    fun collectionVisualise(){
+        val answer = RequestManager.manage(null, GetCollection)
+        val collection: CollectionInMemory = answer.collection ?: throw NullPointerException()
+        println(collection)
+        val iter: Iterator<Vehicle> = collection.iterator()
 
-    @FXML
-    private lateinit var removeById: JFXButton
+        while (iter.hasNext()){
+            val i = iter.next()
+            data.add(VehicleTable(SimpleIntegerProperty(i.id!!), SimpleStringProperty(i.name), SimpleFloatProperty(i.coordinates.x),
+                SimpleIntegerProperty(i.coordinates.y), SimpleStringProperty(i.creationDate.toString()), SimpleFloatProperty(i.enginePower),
+                SimpleStringProperty(i.type.toString()), SimpleStringProperty(i.fuelType.toString()), SimpleStringProperty(i.username)))
+        }
 
-    @FXML
-    private lateinit var removeLower: JFXButton
+        this.id.cellValueFactory = PropertyValueFactory("id")
+        this.name.cellValueFactory = PropertyValueFactory("name")
+        this.x.cellValueFactory = PropertyValueFactory("x")
+        this.y.cellValueFactory = PropertyValueFactory("y")
+        this.creationDate.cellValueFactory = PropertyValueFactory("creationDate")
+        this.enginePower.cellValueFactory = PropertyValueFactory("enginePower")
+        this.vehicleType.cellValueFactory = PropertyValueFactory("vehicleType")
+        this.fuelType.cellValueFactory = PropertyValueFactory("fuelType")
+        this.username.cellValueFactory = PropertyValueFactory("username")
 
-    @FXML
-    private lateinit var update: JFXButton
+        table.items = data
+    }
 
-    @FXML
-    private lateinit var countByType: JFXButton
-
-    @FXML
-    private lateinit var groupCountingByType: JFXButton
-
-    @FXML
-    private lateinit var removeFirst: JFXButton
-
-    @FXML
-    private lateinit var sumOfEnginePower: JFXButton
-
-    @FXML
-    private lateinit var add: JFXButton
-
-    @FXML
-    private fun buttonHandle(buttonName: String, controller: ButtonController): Stage {
+    @FXML private fun buttonHandle(buttonName: String, controller: ButtonController): Stage {
         val stage = Stage()
         val loader = FXMLLoader()
         loader.location = MainSceneController::class.java.getResource("/$buttonName.fxml")
@@ -74,40 +98,18 @@ class MainSceneController {
 
     @FXML
     private fun signUpHandle() {
-        try {
             this.signUpBtn.setOnAction { buttonHandle("SignUp", SignUpController()) }
-        } catch (ex: NotValidFieldException){
-            com.github.diosa.dms.mainGUI.Alert.warning(ex.message)
-        } catch (ex: MismatchedPasswordsException) {
-            com.github.diosa.dms.mainGUI.Alert.warning(ex.message)
-        }
     }
 
     @FXML
     private fun logInHandle() {
-        try {
-            this.logInBtn.setOnAction{
-                val logInController = LogInController()
-                val stage = buttonHandle("LogIn", logInController)
-                stage.setOnCloseRequest{
-                    this.user = logInController.user
-                    setComponents()
-                    this.signUpBtn.isVisible = false
-                    this.logInBtn.isVisible = false
-                    this.add.isVisible = true
-                    this.addIfMin.isVisible = true
-                    this.clear.isVisible = true
-                    this.countByType.isVisible = true
-                    this.groupCountingByType.isVisible = true
-                    this.removeById.isVisible = true
-                    this.removeFirst.isVisible = true
-                    this.removeLower.isVisible = true
-                    this.sumOfEnginePower.isVisible = true
-                    this.update.isVisible = true
-                }
+        this.logInBtn.setOnAction{
+            val logInController = LogInController()
+            val stage = buttonHandle("LogIn", logInController)
+            stage.setOnCloseRequest{
+                setComponents()
+
             }
-        } catch (ex: NotValidFieldException) {
-            com.github.diosa.dms.mainGUI.Alert.warning(ex.message)
         }
     }
 
@@ -115,7 +117,18 @@ class MainSceneController {
         if (user != null) {
             this.nick.text = user!!.login
             nick.isVisible = true
-            //перенести сюда изменение видимости кнопок
+            this.signUpBtn.isVisible = false
+            this.logInBtn.isVisible = false
+            this.add.isVisible = true
+            this.addIfMin.isVisible = true
+            this.clear.isVisible = true
+            this.countByType.isVisible = true
+            this.groupCountingByType.isVisible = true
+            this.removeById.isVisible = true
+            this.removeFirst.isVisible = true
+            this.removeLower.isVisible = true
+            this.sumOfEnginePower.isVisible = true
+            this.update.isVisible = true
         }
     }
 }

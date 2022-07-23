@@ -19,8 +19,10 @@ class LogIn(
         try {
             logger.setUser(userCollection.getUser(this.login, this.password))
             logger.print("Пользователь $login успешно авторизован")
+            logger.success = true
         } catch (ex: NotAuthorizedException) {
             logger.print(ex.message)
+            logger.success = false
         }
     }
 

@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<GridPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.diosa.dms.MainSceneController">
+<GridPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.diosa.dms.mainGUI.MainSceneController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" />
         <ColumnConstraints hgrow="SOMETIMES" />
@@ -58,18 +58,18 @@
                 <RowConstraints fillHeight="false" vgrow="NEVER" />
             </rowConstraints>
             <children>
-                <TableView GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <TableView fx:id="table" GridPane.columnIndex="0" GridPane.rowIndex="0">
                     <columns>
                         <!-- Колонки таблицы -->
-                        <TableColumn text="ID" />
-                        <TableColumn text="Name" />
-                        <TableColumn text="X" />
-                        <TableColumn text="Y" />
-                        <TableColumn text="Creation Date" />
-                        <TableColumn text="Engine Power" />
-                        <TableColumn text="Vehicle Type" />
-                        <TableColumn text="Fuel Type" />
-                        <TableColumn text="Username" />
+                        <TableColumn fx:id="id" text="ID"/>
+                        <TableColumn fx:id="name" text="Name"/>
+                        <TableColumn fx:id="x" text="X"/>
+                        <TableColumn fx:id="y" text="Y"/>
+                        <TableColumn fx:id="creationDate" text="Creation Date"/>
+                        <TableColumn fx:id="enginePower" text="Engine Power"/>
+                        <TableColumn fx:id="vehicleType" text="Vehicle Type"/>
+                        <TableColumn fx:id="fuelType" text="Fuel Type"/>
+                        <TableColumn fx:id="username" text="Username"/>
                     </columns>
                 </TableView>
                 <ScrollBar orientation="VERTICAL" GridPane.columnIndex="1" GridPane.rowIndex="0" />

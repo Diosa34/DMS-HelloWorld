@@ -4,6 +4,7 @@ import com.github.diosa.dms.absctactions.CollectionOfVehicles
 import com.github.diosa.dms.exceptions.CollectionException
 import com.github.diosa.dms.executeCall
 import com.github.diosa.dms.io.BufferLogger
+import com.github.diosa.dms.sql.SQLAndMemoryCollection
 import com.github.diosa.dms.sql.SQLUsersCollection
 import java.sql.SQLException
 import java.util.concurrent.BlockingQueue
@@ -11,7 +12,7 @@ import java.util.concurrent.BlockingQueue
 class Handler(
     private var inputQueue: BlockingQueue<RequestInInputQueue>,
     private var outputQueue: BlockingQueue<RequestInOutputQueue>,
-    private val collection: CollectionOfVehicles,
+    private val collection: SQLAndMemoryCollection,
     private val usersCollection: SQLUsersCollection
 ): Runnable {
 

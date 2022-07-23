@@ -4,12 +4,14 @@ import com.github.diosa.dms.absctactions.*
 import com.github.diosa.dms.client.ExecuteScript
 import com.github.diosa.dms.commands.*
 import com.github.diosa.dms.io.BufferLogger
+import com.github.diosa.dms.sql.SQLAndMemoryCollection
 import com.github.diosa.dms.sql.SQLUsersCollection
 import com.github.diosa.dms.users.User
 
-fun executeCall(command: BoundCommand, logger: BufferLogger, collection: CollectionOfVehicles,
+fun executeCall(command: BoundCommand, logger: BufferLogger, collection: SQLAndMemoryCollection,
                 usersCollection: SQLUsersCollection, user: User?){
     when (command) {
+        is AdminCommand -> command.execute(logger, collection.getCollectionInMemory())
         is ApplicableToCollection -> if (user != null) {
             command.execute(logger, collection, user)
         }
