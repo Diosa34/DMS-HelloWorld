@@ -33,7 +33,7 @@ class ExecuteScript(
     }
 
     companion object Description: AbstractDescription {
-        override val title: String = "execute_script"
+        override val title: String = "Execute script"
         override val help: String = "считать и исполнить скрипт из указанного файла"
     }
 }

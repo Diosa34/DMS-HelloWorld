@@ -29,7 +29,7 @@ object Client {
             return
         } catch (ex: ConnectException) {
             log.log(Level.SEVERE, "ConnectException: ", ex)
-            Alert.error("Соединение не установлено, перезапустите сервер, а затем клиент.")
+            println("Соединение не установлено, перезапустите сервер, а затем клиент.")
         } catch (e: UnknownHostException) {
             log.log(Level.SEVERE, "UnknownHostException", e)
             println("Неизвестный хост")

@@ -6,8 +6,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-@SerialName("exit")
+@SerialName("Exit")
 object Exit: BoundCommand, AbstractDescription {
-    override val title: String = "exit"
+    override val title: String = "Exit"
     override val help: String = "завершить программу (без сохранения в файл)"
 }

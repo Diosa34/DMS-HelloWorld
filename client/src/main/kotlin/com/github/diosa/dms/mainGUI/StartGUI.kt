@@ -10,14 +10,13 @@ import java.io.IOException
 class StartGUI : Application() {
     @Throws(IOException::class)
     override fun start(stage: Stage) {
-        val mainController = MainSceneController()
         val loader = FXMLLoader()
         loader.location = StartGUI::class.java.getResource("/main.fxml")
         val root = loader.load<Parent>()
         stage.scene = Scene(root)
         stage.title = "Vehicle visualizer"
-        loader.setController(mainController)
-        mainController.collectionVisualise()
+        loader.setController(MainSceneController())
+//        mainController.collectionVisualise()
         stage.show()
     }
 }

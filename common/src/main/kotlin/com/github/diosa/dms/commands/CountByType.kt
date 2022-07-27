@@ -11,7 +11,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-@SerialName("count_by_type")
+@SerialName("Count by type")
 class CountByType(
     @DisplayName("Тип средства передвижения")
     private val type: VehicleType
@@ -22,7 +22,7 @@ class CountByType(
     }
 
     companion object Description: AbstractDescription {
-        override val title: String = "count_by_type"
+        override val title: String = "Count by type"
         override val help: String = "вывести количество элементов, значение типа которых равно заданному"
     }
 }

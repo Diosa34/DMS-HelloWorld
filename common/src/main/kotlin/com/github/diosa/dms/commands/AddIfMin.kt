@@ -11,7 +11,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-@SerialName("add_if_min")
+@SerialName("Add if min")
 class AddIfMin(
     @DisplayName("Марка средства передвижения")
     private val name: String,
@@ -27,7 +27,7 @@ class AddIfMin(
     }
 
     companion object Description: AbstractDescription {
-        override val title: String = "add_if_min"
+        override val title: String = "Add if min"
         override val help: String = "добавить новый элемент в коллекцию, если его значение меньше," +
         " чем у наименьшего элемента этой коллекции (элементы сравниваются по длине марки средства передвижения)"
     }

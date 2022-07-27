@@ -10,7 +10,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-@SerialName("remove_lower")
+@SerialName("Remove lower")
 class RemoveLower(
     @DisplayName("Марка средства передвижения")
     private val name: String
@@ -26,7 +26,7 @@ class RemoveLower(
     }
 
     companion object Description: AbstractDescription {
-        override val title: String = "remove_lower"
+        override val title: String = "Remove lower"
         override val help: String = "удалить из коллекции все элементы, меньшие, чем" +
                 " заданный (элементы сравниваются по длине марки средства передвижения)"
     }

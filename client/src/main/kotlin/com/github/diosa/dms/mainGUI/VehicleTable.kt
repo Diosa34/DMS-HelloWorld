@@ -15,7 +15,4 @@ class VehicleTable(
     val vehicleType: StringProperty,
     val fuelType: StringProperty,
     val username: StringProperty
-
-): RecursiveTreeObject<VehicleTable>() {
-
-}
+)

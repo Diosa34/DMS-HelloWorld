@@ -11,7 +11,7 @@ import java.sql.SQLException
 import kotlinx.serialization.Serializable
 
 @Serializable
-@SerialName("registry")
+@SerialName("Registry")
 class SignUp(
     @DisplayName("Логин")
     private val login: String,
@@ -30,7 +30,7 @@ class SignUp(
     }
 
     companion object Description: AbstractDescription {
-        override val title: String = "registry"
+        override val title: String = "Registry"
         override val help: String = "зарегистрироваться"
     }
 }

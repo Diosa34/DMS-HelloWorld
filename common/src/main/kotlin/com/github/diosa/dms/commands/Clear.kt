@@ -9,9 +9,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-@SerialName("clear")
+@SerialName("Clear")
 object Clear : ApplicableToCollection, AbstractDescription {
-    override val title: String = "clear"
+    override val title: String = "Clear"
     override val help: String = "очистить коллекцию"
 
     override fun execute(logger: Logger, collection: CollectionOfVehicles, user: User) {

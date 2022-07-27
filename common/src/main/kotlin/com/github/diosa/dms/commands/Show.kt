@@ -9,9 +9,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-@SerialName("show")
+@SerialName("Show")
 object Show: ApplicableToCollection, AbstractDescription {
-     override val title: String = "show"
+     override val title: String = "Show"
      override val help: String = "вывести все элементы коллекции"
 
     override fun execute(logger: Logger, collection: CollectionOfVehicles, user: User) {

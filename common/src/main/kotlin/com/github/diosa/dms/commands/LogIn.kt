@@ -8,7 +8,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-@SerialName("log_in")
+@SerialName("Log in")
 class LogIn(
     @DisplayName("Логин")
     private val login: String,
@@ -27,7 +27,7 @@ class LogIn(
     }
 
     companion object Description: AbstractDescription {
-        override val title: String = "log_in"
+        override val title: String = "Log in"
         override val help: String = "авторизоваться"
     }
 }

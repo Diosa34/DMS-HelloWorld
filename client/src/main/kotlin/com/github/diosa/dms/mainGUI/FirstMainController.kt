@@ -2,11 +2,10 @@ package com.github.diosa.dms.mainGUI
 
 import com.github.diosa.dms.client.RequestManager
 import com.github.diosa.dms.collection.CollectionInMemory
-import com.github.diosa.dms.collection.Vehicle
-import com.github.diosa.dms.commandHandle.ButtonController
-import com.github.diosa.dms.commandHandle.LogInController
-import com.github.diosa.dms.commandHandle.SignUpController
+import com.github.diosa.dms.commandHandle.*
+import com.github.diosa.dms.commands.Clear
 import com.github.diosa.dms.commands.GetCollection
+import com.github.diosa.dms.commands.RemoveFirst
 import com.github.diosa.dms.users.User
 import com.jfoenix.controls.JFXButton
 import javafx.beans.property.SimpleFloatProperty
@@ -22,9 +21,8 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.cell.PropertyValueFactory
 import javafx.stage.Stage
-import java.io.IOException
 
-class MainSceneController {
+class MainSceneController{
     var user: User? = null
     lateinit var nick: Label
 
@@ -40,56 +38,56 @@ class MainSceneController {
     @FXML private lateinit var removeFirst: JFXButton
     @FXML private lateinit var sumOfEnginePower: JFXButton
     @FXML private lateinit var add: JFXButton
+    @FXML private lateinit var info: JFXButton
+    @FXML private lateinit var help: JFXButton
+
+    private var data: ObservableList<VehicleTable> = FXCollections.observableArrayList();
 
     @FXML private lateinit var table: TableView<VehicleTable>
 
-    @FXML private lateinit var id: TableColumn<VehicleTable, Int>
-    @FXML private lateinit var name: TableColumn<VehicleTable, String>
-    @FXML private lateinit var x: TableColumn<VehicleTable, Float>
-    @FXML private lateinit var y: TableColumn<VehicleTable, Int>
-    @FXML private lateinit var creationDate: TableColumn<VehicleTable, String>
-    @FXML private lateinit var enginePower: TableColumn<VehicleTable, Float>
-    @FXML private lateinit var vehicleType: TableColumn<VehicleTable, String>
-    @FXML private lateinit var fuelType: TableColumn<VehicleTable, String>
-    @FXML private lateinit var username: TableColumn<VehicleTable, String>
-
-    private val data: ObservableList<VehicleTable> = FXCollections.observableArrayList();
+    @FXML private lateinit var idColumn : TableColumn<VehicleTable, Int>
+    @FXML private lateinit var nameColumn : TableColumn<VehicleTable, String>
+    @FXML private lateinit var xColumn : TableColumn<VehicleTable, Float>
+    @FXML private lateinit var yColumn : TableColumn<VehicleTable, Int>
+    @FXML private lateinit var creationDateColumn : TableColumn<VehicleTable, String>
+    @FXML private lateinit var enginePowerColumn : TableColumn<VehicleTable, Float>
+    @FXML private lateinit var vehicleTypeColumn : TableColumn<VehicleTable, String>
+    @FXML private lateinit var fuelTypeColumn : TableColumn<VehicleTable, String>
+    @FXML private lateinit var usernameColumn : TableColumn<VehicleTable, String>
 
     fun collectionVisualise(){
         val answer = RequestManager.manage(null, GetCollection)
-        val collection: CollectionInMemory = answer.collection ?: throw NullPointerException()
-        println(collection)
-        val iter: Iterator<Vehicle> = collection.iterator()
+        val collection: CollectionInMemory? = answer.collection
+        if (collection != null){
+            println(collection)
+            for (i in collection){
+                this.data.add(VehicleTable(SimpleIntegerProperty(i.id!!), SimpleStringProperty(i.name), SimpleFloatProperty(i.coordinates.x),
+                    SimpleIntegerProperty(i.coordinates.y), SimpleStringProperty(i.creationDate.toString()), SimpleFloatProperty(i.enginePower),
+                    SimpleStringProperty(i.type.toString()), SimpleStringProperty(i.fuelType.toString()), SimpleStringProperty(i.username)))
+            }
+            println(data.count())
+            this.table.items = data
 
-        while (iter.hasNext()){
-            val i = iter.next()
-            data.add(VehicleTable(SimpleIntegerProperty(i.id!!), SimpleStringProperty(i.name), SimpleFloatProperty(i.coordinates.x),
-                SimpleIntegerProperty(i.coordinates.y), SimpleStringProperty(i.creationDate.toString()), SimpleFloatProperty(i.enginePower),
-                SimpleStringProperty(i.type.toString()), SimpleStringProperty(i.fuelType.toString()), SimpleStringProperty(i.username)))
+            this.idColumn.cellValueFactory = PropertyValueFactory("id")
+            this.nameColumn.cellValueFactory = PropertyValueFactory("name")
+            this.xColumn.cellValueFactory = PropertyValueFactory("x")
+            this.yColumn.cellValueFactory = PropertyValueFactory("y")
+            this.creationDateColumn.cellValueFactory = PropertyValueFactory("creationDate")
+            this.enginePowerColumn.cellValueFactory = PropertyValueFactory("enginePower")
+            this.vehicleTypeColumn.cellValueFactory = PropertyValueFactory("vehicleType")
+            this.fuelTypeColumn.cellValueFactory = PropertyValueFactory("fuelType")
+            this.usernameColumn.cellValueFactory = PropertyValueFactory("username")
+
+        } else {
+            println("it is null")
         }
-
-        this.id.cellValueFactory = PropertyValueFactory("id")
-        this.name.cellValueFactory = PropertyValueFactory("name")
-        this.x.cellValueFactory = PropertyValueFactory("x")
-        this.y.cellValueFactory = PropertyValueFactory("y")
-        this.creationDate.cellValueFactory = PropertyValueFactory("creationDate")
-        this.enginePower.cellValueFactory = PropertyValueFactory("enginePower")
-        this.vehicleType.cellValueFactory = PropertyValueFactory("vehicleType")
-        this.fuelType.cellValueFactory = PropertyValueFactory("fuelType")
-        this.username.cellValueFactory = PropertyValueFactory("username")
-
-        table.items = data
     }
 
-    @FXML private fun buttonHandle(buttonName: String, controller: ButtonController): Stage {
+    @FXML private fun buttonHandle(buttonName: String, controller: CommandController): Stage {
         val stage = Stage()
         val loader = FXMLLoader()
         loader.location = MainSceneController::class.java.getResource("/$buttonName.fxml")
-        try {
-            stage.scene = Scene(loader.load())
-        } catch (ex: IOException) {
-            println(ex.message)
-        }
+        stage.scene = Scene(loader.load())
         stage.title = buttonName
         loader.setController(controller)
         stage.show()
@@ -98,7 +96,7 @@ class MainSceneController {
 
     @FXML
     private fun signUpHandle() {
-            this.signUpBtn.setOnAction { buttonHandle("SignUp", SignUpController()) }
+        this.signUpBtn.setOnAction { buttonHandle("SignUp", SignUpController()) }
     }
 
     @FXML
@@ -108,8 +106,111 @@ class MainSceneController {
             val stage = buttonHandle("LogIn", logInController)
             stage.setOnCloseRequest{
                 setComponents()
-
             }
+        }
+    }
+
+    @FXML
+    private fun addHandle() {
+        this.add.setOnAction {
+            val addController = AddController(user!!)
+            addController.id.isVisible = false
+            addController.addIfMinButton.isVisible = false
+            addController.updateButton.isVisible = false
+            val stage = buttonHandle("Add", addController)
+        }
+    }
+
+    @FXML
+    private fun addIfMinHandle() {
+        this.addIfMin.setOnAction {
+            val addIfMinController = AddController(user!!)
+            addIfMinController.id.isVisible = false
+            addIfMinController.addButton.isVisible = false
+            addIfMinController.updateButton.isVisible = false
+            val stage = buttonHandle("AddIfMin", addIfMinController)
+        }
+    }
+
+    @FXML
+    private fun updateHandle() {
+        this.update.setOnAction {
+            val updateController = AddController(user!!)
+            updateController.addIfMinButton.isVisible = false
+            updateController.addButton.isVisible = false
+            val stage = buttonHandle("Update", updateController)
+        }
+    }
+
+    @FXML
+    private fun countByTypeHandle(){
+        this.countByType.setOnAction {
+            val countByTypeController = CountByTypeController(user!!)
+            val stage = buttonHandle("CountByType", countByTypeController)
+        }
+    }
+
+    @FXML
+    private fun groupCountingByTypeHandle(){
+        this.groupCountingByType.setOnAction {
+            val groupCountingByTypeController = GroupCountingByTypeController(user!!)
+            val stage = buttonHandle("GroupCountingByType", groupCountingByTypeController)
+            groupCountingByTypeController.groupCountingButtonHandle()
+        }
+    }
+
+    @FXML
+    private fun removeByIdHandle(){
+        this.removeById.setOnAction {
+            val removeByIdController = RemoveByIdController(user!!)
+            val stage = buttonHandle("RemoveById", removeByIdController)
+        }
+    }
+
+    @FXML
+    private fun removeLowerHandle(){
+        this.removeLower.setOnAction {
+            val removeLowerController = RemoveLowerController(user!!)
+            val stage = buttonHandle("RemoveLower", removeLowerController)
+        }
+    }
+
+    @FXML
+    private fun sumOfEnginePowerHandle(){
+        this.sumOfEnginePower.setOnAction {
+            val sumOfEnginePowerController = SumOfEnginePowerController(user!!)
+            val stage = buttonHandle("SumOfEnginePower", sumOfEnginePowerController)
+        }
+    }
+
+    @FXML
+    private fun helpHandle() {
+        this.help.setOnAction {
+            val helpController = HelpController(user!!)
+            val stage = buttonHandle("Help", helpController)
+        }
+    }
+
+    @FXML
+    private fun infoHandle() {
+        this.info.setOnAction {
+            val infoController = InfoController(user!!)
+            val stage = buttonHandle("Info", infoController)
+            infoController.infoButtonHandle()
+        }
+    }
+
+    @FXML
+    private fun removeFirstHandle() {
+        this.removeFirst.setOnAction {
+            Alert.notification(RequestManager.manage(this.user, RemoveFirst).result)
+        }
+    }
+
+    @FXML
+    private fun clearHandle() {
+        this.clear.setOnAction {
+            Alert.notification(RequestManager.manage(this.user, Clear).result)
         }
     }
 

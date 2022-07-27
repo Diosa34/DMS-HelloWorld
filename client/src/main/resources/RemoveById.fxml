@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.*?>
 
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXButton?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.github.diosa.dms.commandHandle.RemoveByIdController">
@@ -23,10 +24,11 @@
                 </rowConstraints>
                 <children>
                     <Label text="ID: " />
-                    <JFXTextField fx:id="removeById" promptText="ID" GridPane.columnIndex="1" />
+                    <JFXTextField fx:id="id" promptText="ID" GridPane.columnIndex="1" />
+                    <Label fx:id="label" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
                 </children>
             </GridPane>
         </header>
     </DialogPane>
-    <Button layoutX="181.0" layoutY="108.0" mnemonicParsing="false" text="Remove by id" />
+    <JFXButton fx:id="readyButton" onAction="#removeByIdButtonHandle" layoutX="181.0" layoutY="108.0" mnemonicParsing="false" text="Remove" />
 </AnchorPane>

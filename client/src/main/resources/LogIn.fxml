@@ -24,7 +24,7 @@
               <JFXTextField fx:id="login" promptText="Login" GridPane.columnIndex="1"/>
               <Label text="Password: " GridPane.rowIndex="1"/>
               <JFXPasswordField fx:id="password" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-              <Label fx:id="message" text="message" GridPane.columnIndex="1" GridPane.rowIndex="2" visible="false" />
+              <Label fx:id="message" GridPane.columnIndex="1" GridPane.rowIndex="2" />
           </GridPane>
       </header>
    </DialogPane>

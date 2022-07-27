@@ -34,18 +34,21 @@
                 <RowConstraints vgrow="SOMETIMES" />
                 <RowConstraints vgrow="SOMETIMES" />
                 <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <JFXButton fx:id="add" text="Add" visible="false" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-                <JFXButton fx:id="addIfMin" text="Add if min" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-                <JFXButton fx:id="clear" text="Clear" visible="false" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                <JFXButton fx:id="removeById" text="Remove by ID" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                <JFXButton fx:id="removeLower" text="Remove lower" visible="false" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                <JFXButton fx:id="update" text="Update" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                <JFXButton fx:id="countByType" text="Count by type" visible="false" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                <JFXButton fx:id="groupCountingByType" text="Group counting by type" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                <JFXButton fx:id="removeFirst" text="Remove first" visible="false" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-                <JFXButton fx:id="sumOfEnginePower" text="Sum of engine power" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                <JFXButton fx:id="add" onAction="#addHandle" text="Add" visible="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                <JFXButton fx:id="addIfMin" onAction="#addIfMinHandle" text="Add if min" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                <JFXButton fx:id="clear" onAction="#clearHandle" text="Clear" visible="false" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                <JFXButton fx:id="removeById" onAction="#removeByIdHandle" text="Remove by ID" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                <JFXButton fx:id="removeLower" onAction="#removeLowerHandle" text="Remove lower" visible="false" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                <JFXButton fx:id="update" onAction="#updateHandle" text="Update" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                <JFXButton fx:id="countByType" onAction="#countByTypeHandle" text="Count by type" visible="false" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                <JFXButton fx:id="groupCountingByType" onAction="#groupCountingByTypeHandle" text="Group counting by type" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                <JFXButton fx:id="removeFirst" onAction="#removeFirstHandle" text="Remove first" visible="false" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                <JFXButton fx:id="sumOfEnginePower" onAction="#sumOfEnginePowerHandle" text="Sum of engine power" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                <JFXButton fx:id="help" onAction="#helpHandle" text="Help" visible="false" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                <JFXButton fx:id="info" onAction="#infoHandle" text="Info" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
             </children>
         </GridPane>
         <GridPane GridPane.columnIndex="1" GridPane.rowSpan="3">
@@ -61,15 +64,15 @@
                 <TableView fx:id="table" GridPane.columnIndex="0" GridPane.rowIndex="0">
                     <columns>
                         <!-- Колонки таблицы -->
-                        <TableColumn fx:id="id" text="ID"/>
-                        <TableColumn fx:id="name" text="Name"/>
-                        <TableColumn fx:id="x" text="X"/>
-                        <TableColumn fx:id="y" text="Y"/>
-                        <TableColumn fx:id="creationDate" text="Creation Date"/>
-                        <TableColumn fx:id="enginePower" text="Engine Power"/>
-                        <TableColumn fx:id="vehicleType" text="Vehicle Type"/>
-                        <TableColumn fx:id="fuelType" text="Fuel Type"/>
-                        <TableColumn fx:id="username" text="Username"/>
+                        <TableColumn fx:id="idColumn" text="ID"/>
+                        <TableColumn fx:id="nameColumn" text="Name"/>
+                        <TableColumn fx:id="xColumn" text="X"/>
+                        <TableColumn fx:id="yColumn" text="Y"/>
+                        <TableColumn fx:id="creationDateColumn" text="Creation Date"/>
+                        <TableColumn fx:id="enginePowerColumn" text="Engine Power"/>
+                        <TableColumn fx:id="vehicleTypeColumn" text="Vehicle Type"/>
+                        <TableColumn fx:id="fuelTypeColumn" text="Fuel Type"/>
+                        <TableColumn fx:id="usernameColumn" text="Username"/>
                     </columns>
                 </TableView>
                 <ScrollBar orientation="VERTICAL" GridPane.columnIndex="1" GridPane.rowIndex="0" />

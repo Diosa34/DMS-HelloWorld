@@ -11,7 +11,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-@SerialName("add")
+@SerialName("Add")
 class Add(
     @DisplayName("Средство передвижения")
     private val vehicle: Vehicle
@@ -22,7 +22,7 @@ class Add(
     }
 
     companion object Description: AbstractDescription {
-        override val title: String = "add"
+        override val title: String = "Add"
         override val help: String = "добавить новый элемент в коллекцию"
     }
 }

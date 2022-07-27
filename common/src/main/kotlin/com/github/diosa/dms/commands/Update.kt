@@ -11,7 +11,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-@SerialName("update")
+@SerialName("Update")
 class Update(
     @DisplayName("ID")
     private val id: Int,
@@ -28,7 +28,7 @@ class Update(
     }
 
     companion object Description: AbstractDescription {
-        override val title: String = "update"
+        override val title: String = "Update"
         override val help: String = "обновить значение элемента коллекции, номер которого равен заданному"
     }
 }

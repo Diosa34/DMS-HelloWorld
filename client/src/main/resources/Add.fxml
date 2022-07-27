@@ -14,6 +14,10 @@
 <?import javafx.scene.layout.VBox?>
 
 
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <AnchorPane prefHeight="200.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.diosa.dms.commandHandle.AddController">
     <children>
         <VBox alignment="CENTER" spacing="15.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
@@ -40,26 +44,57 @@
                         <RowConstraints vgrow="SOMETIMES"/>
                     </rowConstraints>
                     <children>
-                        <Label text="Name" GridPane.columnIndex="1"/>
-                        <JFXTextField fx:id="name" GridPane.columnIndex="2"/>
-                        <Label text="X" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                        <JFXTextField GridPane.columnIndex="2" GridPane.rowIndex="1" fx:id="x"/>
-                        <Label text="Coordinates" GridPane.rowIndex="1"/>
-                        <JFXTextField fx:id="Y" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
-                        <Label text="Y" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                        <Label text="Engine power" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-                        <Label text="Vehicle type" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-                        <Label text="Fuel type" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-                        <JFXTextField fx:id="enginePower" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
-                        <ChoiceBox fx:id="vehicleType" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
-                        <ChoiceBox fx:id="fuelType" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
+                        <Label text="ID" GridPane.columnIndex="1"/>
+                        <JFXTextField fx:id="id" GridPane.columnIndex="2"/>
+                        <Label fx:id="idLabel" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+
+                        <Label text="Name" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <JFXTextField fx:id="name" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+                        <Label fx:id="nameLabel" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+
+                        <Label text="X" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                        <JFXTextField GridPane.columnIndex="2" GridPane.rowIndex="4" fx:id="x"/>
+                        <Label text="Coordinates" GridPane.rowIndex="4"/>
+                        <Label fx:id="xLabel" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
+
+                        <JFXTextField fx:id="y" GridPane.columnIndex="2" GridPane.rowIndex="6"/>
+                        <Label text="Y" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                        <Label fx:id="yLabel" GridPane.columnIndex="2" GridPane.rowIndex="7"/>
+
+                        <Label text="Engine power" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+                        <JFXTextField fx:id="enginePower" GridPane.columnIndex="2" GridPane.rowIndex="8"/>
+                        <Label fx:id="epLabel" GridPane.columnIndex="2" GridPane.rowIndex="9"/>
+
+                        <Label text="Vehicle type" GridPane.columnIndex="1" GridPane.rowIndex="10"/>
+                        <JFXComboBox fx:id="vehicleType" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="10">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="CAR" />
+                                    <String fx:value="SHIP" />
+                                    <String fx:value="SUBMARINE" />
+                                </FXCollections>
+                            </items>
+                        </JFXComboBox>
+
+                        <Label text="Fuel type" GridPane.columnIndex="1" GridPane.rowIndex="11"/>
+                        <JFXComboBox fx:id="fuelType" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="11">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="DIESEL" />
+                                    <String fx:value="GASOLINE" />
+                                    <String fx:value="NUCLEAR" />
+                                </FXCollections>
+                            </items>
+                        </JFXComboBox>
+
+                        <Label fx:id="label" GridPane.columnIndex="2" GridPane.rowIndex="12"/>
                     </children>
                 </GridPane>
                 <VBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                     <children>
-                        <JFXButton fx:id="add" text="Add" visible="false"/>
-                        <JFXButton fx:id="addIfMin" text="Add if min" visible="false"/>
-                        <JFXButton fx:id="Update" text="Update" visible="false"/>
+                        <JFXButton fx:id="addButton" text="Add" visible="false" onAction="#addButtonHandle"/>
+                        <JFXButton fx:id="addIfMinButton" text="Add if min" visible="false" onAction="#addButtonHandle"/>
+                        <JFXButton fx:id="updateButton" text="Update" visible="false" onAction="#addButtonHandle"/>
                     </children>
                 </VBox>
             </children>

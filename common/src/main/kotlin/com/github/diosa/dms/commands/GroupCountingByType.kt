@@ -9,15 +9,15 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-@SerialName("group_counting_by_type")
+@SerialName("Group counting by type")
 object GroupCountingByType: ApplicableToCollection, AbstractDescription {
-    override val title: String = "group_counting_by_type"
+    override val title: String = "Group counting by type"
     override val help: String = "сгруппировать элементы коллекции по значению типа средства передвижения, вывести" +
             " количество элементов в каждой группе"
 
     override fun execute(logger: Logger, collection: CollectionOfVehicles, user: User) {
-        logger.print("${collection.groupCountingByType().countOfCar} - количество машин")
-        logger.print("${collection.groupCountingByType().countOfSubmarine} - количество подводных лодок")
-        logger.print("${collection.groupCountingByType().countOfShip} - количество кораблей")
+        logger.print("${collection.groupCountingByType().countOfCar};")
+        logger.print("${collection.groupCountingByType().countOfSubmarine};")
+        logger.print("${collection.groupCountingByType().countOfShip}")
     }
 }

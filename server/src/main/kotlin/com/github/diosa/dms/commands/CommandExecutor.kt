@@ -1,8 +1,6 @@
-package com.github.diosa.dms
+package com.github.diosa.dms.commands
 
 import com.github.diosa.dms.absctactions.*
-import com.github.diosa.dms.client.ExecuteScript
-import com.github.diosa.dms.commands.*
 import com.github.diosa.dms.io.BufferLogger
 import com.github.diosa.dms.sql.SQLAndMemoryCollection
 import com.github.diosa.dms.sql.SQLUsersCollection
@@ -17,9 +15,8 @@ fun executeCall(command: BoundCommand, logger: BufferLogger, collection: SQLAndM
         }
         is SystemCommand -> command.execute(logger)
         is Help -> command.execute(logger, Add.Description, AddIfMin.Description, Clear,
-            CountByType.Description, ExecuteScript.Description, Exit, GroupCountingByType, Help,
-            Info, RemoveById.Description, RemoveFirst, RemoveLower.Description, Show, SumOfEnginePower,
-            Update.Description)
+            CountByType.Description, GroupCountingByType, Help, Info, RemoveById.Description, RemoveFirst, RemoveLower.Description,
+            SumOfEnginePower, Update.Description)
         is AuthenticationCommand -> command.execute(logger, usersCollection)
     }
 }

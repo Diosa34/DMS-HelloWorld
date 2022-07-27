@@ -10,7 +10,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-@SerialName("remove_by_id")
+@SerialName("Remove by id")
 class RemoveById(
     @DisplayName("ID")
     private val id: Int
@@ -26,7 +26,7 @@ class RemoveById(
     }
 
     companion object Description: AbstractDescription {
-        override val title: String = "remove_by_id"
+        override val title: String = "Remove by id"
         override val help: String = "удалить элемент из коллекции по его номеру"
     }
 }

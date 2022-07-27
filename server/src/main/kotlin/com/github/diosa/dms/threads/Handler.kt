@@ -1,8 +1,7 @@
 package com.github.diosa.dms.threads
 
-import com.github.diosa.dms.absctactions.CollectionOfVehicles
 import com.github.diosa.dms.exceptions.CollectionException
-import com.github.diosa.dms.executeCall
+import com.github.diosa.dms.commands.executeCall
 import com.github.diosa.dms.io.BufferLogger
 import com.github.diosa.dms.sql.SQLAndMemoryCollection
 import com.github.diosa.dms.sql.SQLUsersCollection
