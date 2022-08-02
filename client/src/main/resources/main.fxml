@@ -37,7 +37,7 @@
                 <RowConstraints vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <JFXButton fx:id="add" onAction="#addHandle" text="Add" visible="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                <JFXButton fx:id="add" onAction="#addHandle" text="Add" visible="false" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
                 <JFXButton fx:id="addIfMin" onAction="#addIfMinHandle" text="Add if min" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
                 <JFXButton fx:id="clear" onAction="#clearHandle" text="Clear" visible="false" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                 <JFXButton fx:id="removeById" onAction="#removeByIdHandle" text="Remove by ID" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" />

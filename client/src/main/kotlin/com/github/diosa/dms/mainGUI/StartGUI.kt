@@ -15,8 +15,7 @@ class StartGUI : Application() {
         val root = loader.load<Parent>()
         stage.scene = Scene(root)
         stage.title = "Vehicle visualizer"
-        loader.setController(MainSceneController())
-//        mainController.collectionVisualise()
+        loader.getController<MainSceneController>().collectionInitialize()
         stage.show()
     }
 }

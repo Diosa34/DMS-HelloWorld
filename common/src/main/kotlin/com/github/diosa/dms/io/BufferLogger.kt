@@ -12,8 +12,8 @@ class BufferLogger(
     private var user: User? = null
     private var buf = StringBuilder()
     var success: Boolean = false
-    var collection: CollectionInMemory? = null
-    var answer: OneLineAnswer = OneLineAnswer(this.user, this.buf.toString())
+    lateinit var collection: CollectionInMemory
+    lateinit var answer: OneLineAnswer
 
     override fun print(message: String) {
         if (buf.isNotBlank()) {

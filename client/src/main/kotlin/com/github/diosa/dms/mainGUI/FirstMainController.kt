@@ -2,6 +2,7 @@ package com.github.diosa.dms.mainGUI
 
 import com.github.diosa.dms.client.RequestManager
 import com.github.diosa.dms.collection.CollectionInMemory
+import com.github.diosa.dms.collection.Vehicle
 import com.github.diosa.dms.commandHandle.*
 import com.github.diosa.dms.commands.Clear
 import com.github.diosa.dms.commands.GetCollection
@@ -13,6 +14,7 @@ import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
+import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
@@ -21,6 +23,9 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.cell.PropertyValueFactory
 import javafx.stage.Stage
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 class MainSceneController{
     var user: User? = null
@@ -41,6 +46,8 @@ class MainSceneController{
     @FXML private lateinit var info: JFXButton
     @FXML private lateinit var help: JFXButton
 
+    private lateinit var collection: CollectionInMemory
+
     private var data: ObservableList<VehicleTable> = FXCollections.observableArrayList();
 
     @FXML private lateinit var table: TableView<VehicleTable>
@@ -55,98 +62,100 @@ class MainSceneController{
     @FXML private lateinit var fuelTypeColumn : TableColumn<VehicleTable, String>
     @FXML private lateinit var usernameColumn : TableColumn<VehicleTable, String>
 
-    fun collectionVisualise(){
-        val answer = RequestManager.manage(null, GetCollection)
-        val collection: CollectionInMemory? = answer.collection
-        if (collection != null){
-            println(collection)
-            for (i in collection){
-                this.data.add(VehicleTable(SimpleIntegerProperty(i.id!!), SimpleStringProperty(i.name), SimpleFloatProperty(i.coordinates.x),
-                    SimpleIntegerProperty(i.coordinates.y), SimpleStringProperty(i.creationDate.toString()), SimpleFloatProperty(i.enginePower),
-                    SimpleStringProperty(i.type.toString()), SimpleStringProperty(i.fuelType.toString()), SimpleStringProperty(i.username)))
-            }
-            println(data.count())
-            this.table.items = data
-
-            this.idColumn.cellValueFactory = PropertyValueFactory("id")
-            this.nameColumn.cellValueFactory = PropertyValueFactory("name")
-            this.xColumn.cellValueFactory = PropertyValueFactory("x")
-            this.yColumn.cellValueFactory = PropertyValueFactory("y")
-            this.creationDateColumn.cellValueFactory = PropertyValueFactory("creationDate")
-            this.enginePowerColumn.cellValueFactory = PropertyValueFactory("enginePower")
-            this.vehicleTypeColumn.cellValueFactory = PropertyValueFactory("vehicleType")
-            this.fuelTypeColumn.cellValueFactory = PropertyValueFactory("fuelType")
-            this.usernameColumn.cellValueFactory = PropertyValueFactory("username")
-
-        } else {
-            println("it is null")
+    inner class LoginSuccessHandler: EventHandler<SuccessEvent> {
+        override fun handle(event: SuccessEvent) {
+            this@MainSceneController.user = event.user!!
+            println(this@MainSceneController.user)
         }
     }
 
-    @FXML private fun buttonHandle(buttonName: String, controller: CommandController): Stage {
+    fun collectionInitialize(){
+        val answer = RequestManager.manage(null, GetCollection)
+        this.collection = answer.collection!!
+        
+        this.tableSynchronize()
+        
+        this.idColumn.cellValueFactory = PropertyValueFactory<VehicleTable, Int>("id")
+        this.nameColumn.cellValueFactory = PropertyValueFactory("name")
+        this.xColumn.cellValueFactory = PropertyValueFactory("x")
+        this.yColumn.cellValueFactory = PropertyValueFactory("y")
+        this.creationDateColumn.cellValueFactory = PropertyValueFactory("creationDate")
+        this.enginePowerColumn.cellValueFactory = PropertyValueFactory("enginePower")
+        this.vehicleTypeColumn.cellValueFactory = PropertyValueFactory("vehicleType")
+        this.fuelTypeColumn.cellValueFactory = PropertyValueFactory("fuelType")
+        this.usernameColumn.cellValueFactory = PropertyValueFactory("username")
+    }
+    
+    private fun tableSynchronize() {
+        for (i in collection){
+            this.data.add(VehicleTable(SimpleIntegerProperty(i.id!!), SimpleStringProperty(i.name), SimpleFloatProperty(i.coordinates.x),
+                SimpleIntegerProperty(i.coordinates.y), SimpleStringProperty(i.creationDate.toString()), SimpleFloatProperty(i.enginePower),
+                SimpleStringProperty(i.type.toString()), SimpleStringProperty(i.fuelType.toString()), SimpleStringProperty(i.username.toString())))
+        }
+        println(data.count())
+        this.table.items = data
+    }
+
+    @OptIn(ExperimentalContracts::class)
+    private inline fun <T> buttonLoad(buttonName: String, configureController: T.() -> Unit = {}): Stage {
+        contract { callsInPlace(configureController, InvocationKind.EXACTLY_ONCE) }
         val stage = Stage()
         val loader = FXMLLoader()
         loader.location = MainSceneController::class.java.getResource("/$buttonName.fxml")
         stage.scene = Scene(loader.load())
         stage.title = buttonName
-        loader.setController(controller)
+        loader.getController<T>().configureController()
         stage.show()
         return stage
     }
 
     @FXML
     private fun signUpHandle() {
-        this.signUpBtn.setOnAction { buttonHandle("SignUp", SignUpController()) }
+        this.buttonLoad<SignUpController>("SignUp")
     }
 
     @FXML
     private fun logInHandle() {
-        this.logInBtn.setOnAction{
-            val logInController = LogInController()
-            val stage = buttonHandle("LogIn", logInController)
-            stage.setOnCloseRequest{
-                setComponents()
-            }
+        val stage = this.buttonLoad<LogInController>("LogIn"){
+            this.addReadyButtonHandler(this@MainSceneController.LoginSuccessHandler())
+        }
+        stage.setOnCloseRequest{
+            setComponents()
         }
     }
 
     @FXML
     private fun addHandle() {
-        this.add.setOnAction {
-            val addController = AddController(user!!)
-            addController.id.isVisible = false
-            addController.addIfMinButton.isVisible = false
-            addController.updateButton.isVisible = false
-            val stage = buttonHandle("Add", addController)
+        val stage = this.buttonLoad<AddController>("Add"){
+            this.user = this@MainSceneController.user!!
+            this.setAddControllerComponentsVisible(idVisible = false, addVisible = true, addIfMinVisible = false, updateVisible = false)
         }
+        this.tableSynchronize()
     }
 
     @FXML
     private fun addIfMinHandle() {
-        this.addIfMin.setOnAction {
-            val addIfMinController = AddController(user!!)
-            addIfMinController.id.isVisible = false
-            addIfMinController.addButton.isVisible = false
-            addIfMinController.updateButton.isVisible = false
-            val stage = buttonHandle("AddIfMin", addIfMinController)
+        val stage = buttonLoad<AddController>("AddIfMin") {
+            this.user = this@MainSceneController.user!!
+            this.setAddControllerComponentsVisible(idVisible = false, addVisible = false, addIfMinVisible = true, updateVisible = false)
         }
+        this.tableSynchronize()
     }
 
     @FXML
     private fun updateHandle() {
-        this.update.setOnAction {
-            val updateController = AddController(user!!)
-            updateController.addIfMinButton.isVisible = false
-            updateController.addButton.isVisible = false
-            val stage = buttonHandle("Update", updateController)
+        val stage = buttonLoad<AddController>("Update") {
+            this.user = this@MainSceneController.user!!
+            this.setAddControllerComponentsVisible(idVisible = true, addVisible = false, addIfMinVisible = false, updateVisible = true)
         }
+        this.tableSynchronize()
     }
 
     @FXML
     private fun countByTypeHandle(){
         this.countByType.setOnAction {
             val countByTypeController = CountByTypeController(user!!)
-            val stage = buttonHandle("CountByType", countByTypeController)
+//            val stage = buttonHandle("CountByType", countByTypeController)
         }
     }
 
@@ -154,7 +163,7 @@ class MainSceneController{
     private fun groupCountingByTypeHandle(){
         this.groupCountingByType.setOnAction {
             val groupCountingByTypeController = GroupCountingByTypeController(user!!)
-            val stage = buttonHandle("GroupCountingByType", groupCountingByTypeController)
+//            val stage = buttonHandle("GroupCountingByType", groupCountingByTypeController)
             groupCountingByTypeController.groupCountingButtonHandle()
         }
     }
@@ -163,7 +172,7 @@ class MainSceneController{
     private fun removeByIdHandle(){
         this.removeById.setOnAction {
             val removeByIdController = RemoveByIdController(user!!)
-            val stage = buttonHandle("RemoveById", removeByIdController)
+//            val stage = buttonHandle("RemoveById", removeByIdController)
         }
     }
 
@@ -171,7 +180,7 @@ class MainSceneController{
     private fun removeLowerHandle(){
         this.removeLower.setOnAction {
             val removeLowerController = RemoveLowerController(user!!)
-            val stage = buttonHandle("RemoveLower", removeLowerController)
+//            val stage = buttonHandle("RemoveLower", removeLowerController)
         }
     }
 
@@ -179,7 +188,7 @@ class MainSceneController{
     private fun sumOfEnginePowerHandle(){
         this.sumOfEnginePower.setOnAction {
             val sumOfEnginePowerController = SumOfEnginePowerController(user!!)
-            val stage = buttonHandle("SumOfEnginePower", sumOfEnginePowerController)
+//            val stage = buttonHandle("SumOfEnginePower", sumOfEnginePowerController)
         }
     }
 
@@ -187,7 +196,7 @@ class MainSceneController{
     private fun helpHandle() {
         this.help.setOnAction {
             val helpController = HelpController(user!!)
-            val stage = buttonHandle("Help", helpController)
+//            val stage = buttonHandle("Help", helpController)
         }
     }
 
@@ -195,7 +204,7 @@ class MainSceneController{
     private fun infoHandle() {
         this.info.setOnAction {
             val infoController = InfoController(user!!)
-            val stage = buttonHandle("Info", infoController)
+//            val stage = buttonHandle("Info", infoController)
             infoController.infoButtonHandle()
         }
     }

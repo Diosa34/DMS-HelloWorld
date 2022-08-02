@@ -18,9 +18,7 @@ import javafx.fxml.FXML
 import javafx.scene.control.Label
 import kotlinx.datetime.Clock
 
-class AddController(
-    val user: User
-): CommandController {
+class AddController: CommandController {
     @FXML lateinit var id: JFXTextField
     @FXML lateinit var idLabel: Label
     @FXML private lateinit var name: JFXTextField
@@ -39,6 +37,15 @@ class AddController(
     @FXML lateinit var addButton: JFXButton
     @FXML lateinit var addIfMinButton: JFXButton
     @FXML lateinit var updateButton: JFXButton
+
+    lateinit var user: User
+
+    fun setAddControllerComponentsVisible(idVisible: Boolean, addVisible: Boolean, addIfMinVisible: Boolean, updateVisible: Boolean) {
+        this.id.isVisible = idVisible
+        this.addButton.isVisible = addVisible
+        this.addIfMinButton.isVisible = addIfMinVisible
+        this.updateButton.isVisible = updateVisible
+    }
 
     @FXML
     private fun addButtonHandle() {
@@ -86,6 +93,7 @@ class AddController(
             }
             this.label.text = answer.result
 //                if (answer.success) {
+//
 //                }
         }
     }
